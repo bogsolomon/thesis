@@ -1,0 +1,374 @@
+\chapter{Architecture and High Level Design of Cloud Self-Organizing Servers} % Write in your own chapter title
+\label{Chapter3}
+\lhead{Chapter \ref{Chapter3}. \emph{Architecture and High Level Design of Cloud Self-Organizing Servers}} % Write in your own chapter title to set the page header
+
+The work presented in the thesis relates to the design and implementation of a self-optimized cloud-based client-sever systems using self-organization algorithms. The algorithms developed will be tested on a cloud based solution for a geographically distributed collaborative application. This chapter describes the design of this application server. The chapter presents also the modifications needed for migrating the server for the collaborative application from a single server to a distributed server deployed on multiple clouds. Figure \ref{fig:wtsingleserver} shows the server architecture with a single server while figure \ref{fig:wtmultipleservers} shows the server architecture under a distributed Software as a Service (SaaS) model.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.9\linewidth]{WT_SingleServer}
+	\caption{Single Server Deployment}
+	\label{fig:wtsingleserver}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.9\linewidth]{WT_MultipleClusters}
+	\caption{Software as a Service Deployment}
+	\label{fig:wtmultipleservers}
+\end{figure}
+
+The Software as a Service deployment model for the collaborative application has the following important characteristics:
+
+\begin{enumerate}
+	\item Server-client application - the system is a client-server application in which clients connect to a server and messages sent between clients go through the server, which distributes the messages to the appropriate destination clients.
+	\item Cloud based application - clients connect to a cluster of servers which is virtualized, and clients communicating with each other could connect to different server instances in the cloud.
+	\item Collaborative application - the system (servers in collaboration with the clients) ensures that clients in the same collaboration session view the same state of the shared ``workspace''. 
+	\item Geographically distributed application - clients connect to one of multiple clouds which are distributed in various locations. Clients from different clouds can still communicate with each other.
+	\item Containerization - the servers are deployed in the cloud inside containers.
+\end{enumerate}
+
+\section{Requirements}
+
+The above characteristics of the application result in a number of functional requirements for the application.
+
+\begin{description}
+	\item[Client Presence] Clients can see when their contacts come online, go offline, join a collaborative session and become busy.
+	\item[Client Synchronization] Clients in the same collaborative session must see the exact same thing in the collaborative part of the application.
+	\item[Client Communication] Clients in the same session can communicate with each other via text, audio, video. 
+	\item[Session Size] No restriction is set on how many clients in a session can broadcast video/audio at the same time.
+	\item[Session Setup] Any user can invite another available user to a collaborative session (pending restrictions created by the session's controller). 
+	\item[Session Number] Users can only participate in one session at any time.
+	\item[Session Control] Either any user can choose what is viewed in the shared collaboration panel or the session's manager can restrict the control to himself only.
+	\item[Session in Progress Synchronization] Clients who join a session already in progress must be synchronized to the state of the session.
+\end{description}
+
+On top of the functional requirements, the system also has a number of non-functional requirements:
+
+\begin{description}
+	\item[Client Connection] Clients connect to one of multiple clouds based on a metric which defines how good the performance of the server is for the client.
+	\item[Server Cluster] Servers are combined in clusters, which from the point of view of the client look like a single server.
+	\item[Server Cluster Scaling] Server clusters can scale up and down dynamically.
+	\item[Server Cluster Location] Clusters are distributed geographically. 
+	\item[In Cluster Communication] Servers can send messages to other servers in the same cluster.
+	\item[Message Distribution] Messages are distributed via a Group Membership System (GMS).
+	\item[Out of Cluster Communication] Servers can send messages to other servers in a different cluster.
+	\item[Gateway] Messages are distributed via a 'gateway' which sends messages to other clusters or receives messages from other clusters.
+	\item[Containerization] The servers and related infrastructure is deployed inside containers.
+\end{description}
+
+\section{Single Server Architecture}
+
+The first part of this chapter will focus on the architecture of a single server, while the later part will show how the server was modified and what other components were added to the system in order to support the requirements for cloud and geographically distributed deployment including containerization. The client side uses a browser based technology in order to provide better user accessibility, while the server side was developed as a Java based application.
+
+In order to achieve better modularity, the server is split into four core modules plus two other modules used for client side application communication. The four core services are:
+
+\begin{description}
+	\item[UserStateService] This service is used in order to indicate changes in user presence (coming online, going offline, currently busy), to retrieve the list of connected users and also to store the list of contacts for all connected users. The list of contacts is stored in order to decrease the number of messages related to users coming online. When a new user connects to the server, the server simply looks through the lists of already connected users to determine which users are contacts of the newly connected user. These users receive information that the new user is online, as well as the newly connected user receiving a list of contacts which are online.
+	\item[SessionService] This service manages the various collaborative sessions created by users. It stores a list of currently existing sessions, a map of clients to sessions as well as a map of clients which have been invited to a session but have not yet accepted/rejected the invite to rooms. Two other maps exist which are mirrors of each other, mapping invited clients to inviter clients and vice-versa. The service is used to create new sessions, join and leave sessions as well as broadcast messages in a session. The service is also responsible for synchronizing new users to the state of a session - however the server does not store the exact state of a session.
+	\item[WebcamVideoStreamService] This service is responsible for managing user's audio/video streams. It allows users to start/stop streaming and notifies the appropriate users that a new stream was started (using information from the \textit{SessionService}). For receiving users, the service allows users to subscribe to streams published by other users.
+	\item[ServerStatsService] This service generates statistics regarding the server's performance metrics, including CPU usage and memory usage, as well as gathering stats from the previous three services like bandwidth used for streams, number of users connected, sessions active, etc.
+\end{description}
+
+On top of these four core services, two other services exist which support client side ``applications''. 
+
+\begin{description}
+	\item[DocumentService] The document service allows clients to search for documents by keywords or by user who created the documents. Documents in this case include various types (spreadsheets, presentations, text files, etc.) which are uploaded by users to the server where they are converted to browser viewable date for viewing in the collaborative area of the client application. Documents can be defined as public or private and the search will ensure correct visibility of documents.
+	\item[GISSensorService] The GIS sensor service allows users to receive live data from Geographic Information System (GIS) sensors. Users can discover sensors and subscribe and unsubscribe to/from sensors. Once subscribed to a sensor, the service will create the respective subscriber to GIS data and forward the data when it is available to the clients.
+\end{description}
+
+Outside these six services, the server also contains a main application module called \textit{WatchTogetherServerModule}, and a \textit{WatchTogetherSession} class which maintains server side information regarding the state of a single collaborative session including the user who is the host of the session, the session's unique ID and the clients in the session. Figure \ref{fig:wtcloudservices} shows the various classes involved in the server. All services extend a \textit{ServiceArchetype} class which injects information about the main server application.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.9\linewidth]{WT_Service_Archi}
+	\caption{Server Side Services}
+	\label{fig:wtcloudservices}
+\end{figure}
+
+\subsection{Client-Server Communication}
+
+In this chapter \textit{User} refers to the person using the collaboration system while \textit{Client} refers to the software running inside the browser which connects to the collaboration server. Numbering is consistent between client and user, for example \textit{Client 1} is the client used by \textit{User 1}.
+
+The communication between client and server can be split into a number of types of messages: connection setup, session setup, session synchronization, audio/video communication.
+
+\subsubsection*{Connection Setup}
+
+Figure \ref{fig:connsetupseqdiag} shows the connection setup process as a sequence diagram. The diagram shows three client connections: \textit{Client 1}, \textit{Client 2} and \textit{Client 1 PrevConn}. Two of the connections \textit{Client 1} and \textit{Client 1 PrevConn} are connections associated with the same user (shows by some form of unique user ID). At the time when the diagram begins both \textit{Client 1 PrevConn} and \textit{Client 2} are actively connected to the server. Also the users represented by \textit{Client 1} and by \textit{Client 2} are contacts of each other.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1.0\linewidth]{WT_Service_Connect_Msg}
+	\caption{Client-Server Connection Setup}
+	\label{fig:connsetupseqdiag}
+\end{figure}
+
+The diagram begins with the server module receiving a new connection. The connect message contains a field specifying the unique ID of the user which is trying to connect. The server checks to determine if there is already an active connection for the specified user ID. If a connection already exists the previous client connected with the ID is sent a disconnect message and the connection information is purged from the server. The user ID is associated with the new client connection and the client is sent an accept connection message. Upon reception of accept connection, the client sends to the state service a message requiring the server to notify the user's contacts which are online that the new user has come online. The notifyOnline message passes a list of contactIDs to the server which represent user IDs which are contacts of the newly connected user. The state service goes through its list of connected users and determines which of these users are in the list received from \textit{User 1}. Each of these clients receives a notification regarding the online status of \textit{User 1}. At the same time, \textit{User 1} receives notifications for each of contacts which are already online. Since the connection and online notification is done in two steps, it is guaranteed that users will know about each others status without need to employ semaphores. Even if two users connect at exactly the same time, by the time the notifyIsOnline message comes from either client the server will know that a user with the given ID is already connected.
+
+\subsubsection*{Session Setup}
+
+Figure \ref{fig:sesssetupseqdiag} shows the session setup process as a sequence diagram. The session setup process starts when a user (\textit{User 1}) invites another user (\textit{User 2}) to a collaborative session. The invite message is sent to the session service, which in turn checks the availability of \textit{User 2}. The reason to check if the invited user is available at this time is due to the fact that a user could become busy by creating a session or accepting another invitation while the current invitation was in transit. As such \textit{User 1} would be sending an invite thinking that \textit{User 2} was still available. If \textit{User 2} is still available, the session service checks if \textit{User 1} is already in a session. If a session does not already exist for \textit{User 1}, a new session is created and \textit{User 1} is added to a session. The newly created session returns its unique ID back to the session service which stores it together with the actual session object. Once the session is created a message is sent by the server to \textit{User 2} notifying the user that the user has received an invitation. Once the user has decided whether to accept or decline the invitation (or the invitation timeout expires which results also in a decline reply from the client) the respective reply message is sent to the session service which processes it. The processing of the reply is shown in \ref{fig:sessinvitereplydiag}. The session service performs two extra actions which are not shown in the diagram: if either of the two users (invited or inviter) is available then the user's availability is changed to busy and all the user's contacts are notified about the status change.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1.0\linewidth]{WT_Service_SessionSetup_Msg}
+	\caption{Client-Server Session Setup}
+	\label{fig:sesssetupseqdiag}
+\end{figure}
+
+Once the reply for an invitation is received by the session service, the service checks if it is an accept or decline reply message. If the message is an accept message the user is added to the session, which results in the client receiving a list of other users in the session and any users in the session receiving a message notifying that \textit{User 2} has joined the session. \textit{User 1} receives a message that the invitation was accepted. Finally, the session service asks the session to synchronize the new user to the session state. The initial synchronization mechanism is showed in figure \ref{fig:sesssynchinitdiag}. If the reply message is a decline message however, \textit{User 2}'s availability is changed to show that the user is available to receive invitations and a message is broadcast to all the user's contacts to announce the status change. At the same time, \textit{User 1} is sent an invitation declined message. The server then checks to see if the session is empty - a session is defined as empty if there is only one user in the session and there are no invitations pending reply. If the session is in fact empty the last user in the session has the status changed to available and the session is destroyed.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1.0\linewidth]{WT_Service_SessionInviteReply_Msg}
+	\caption{Client-Server Invitation Reply}
+	\label{fig:sessinvitereplydiag}
+\end{figure}
+
+After a synchronization is requested, caused by a new user joining a session, the session service obtains a synchronization lock on the session and asks the session to synchronize the new user. The session finds the client which is the session's host - the host will be either the client which initiated the session by inviting another user or another user assigned randomly in case the initial host leaves the session. The new user which is to be synchronized to the session is then added to a list of users waiting for synchronization messages. If the list of users waiting for synchronization only contains one user a message requesting the synchronized state of the session is sent to the session host client, which replies with the current state of the collaborative session. The synchronization lock is released at this point. Upon reception of the current state by the session service, the service obtains a synchronization lock on the session and passes the synchronization information to the session, which in turns broadcasts the synchronization state to all the clients in the list of clients waiting for synchronization messages. Once all the messages have been sent, the lock is released. The reason to use a list of clients waiting for synchronization messages is in order to ensure that the host does not receive a large number of messages requesting synchronization. Imagine a user inviting a large number of contacts to a session, and a large number of these contacts accepting nearly simultaneously. The first accept message will generate a synchronization request, however all other accept messages received by the server before the host replies with the synch state will simply wait and not generate extra synchronization requests. Once the synch state reply reaches the server, all users waiting receive the same state. At the same time, the reason to use a semaphore for access to the two synchronization methods in the session is in order to ensure consistency in behavior. If for example, an accept reply is received while the server is in the process of broadcasting the synch state to the clients already waiting, it is better to have the new client wait until all the broadcasts have finished and then ask the host for new synch data instead of trying to add the newly arrived client in the broadcast group for the message.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1.0\linewidth]{WT_Service_SessionInitSynch_Msg}
+	\caption{Client-Server Session Initial Synchronization}
+	\label{fig:sesssynchinitdiag}
+\end{figure}
+
+\subsubsection*{Session Synchronization}
+
+The process of maintaining synchronization between users in the same session is relatively easy from the server's point of view, as the server only acts as a relay to broadcast the message to all the users in the originating user's session. The server does not do any processing of the message and never examines the contents of such a message. Figure \ref{fig:sesssynchdiag} shows a sequence diagram of the mechanism used for session synchronization. Initially, the originating client sends a message to be sent to all the users in the same session. Such a message is generated by the user performing some form of action in the web based client which should be reproduced on all clients. Upon reception of the request, the session service determines the session which the user is participating in and then broadcasts the respective message to all other clients in the session. Note that no semaphores or locks are used to block access to broadcast messages. This is due to the fact that even if there are for example two users sending synchronization messages to the server at the same time, it is impossible for the server to know which was the first message due to network delays.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1.0\linewidth]{WT_Service_SessionSynch_Msg}
+	\caption{Client-Server Session Synchronization}
+	\label{fig:sesssynchdiag}
+\end{figure}
+
+\subsubsection*{Audio/Video Communication}
+
+The audio/video communication is performed through an asynchronous setup. Upon reception of a new stream, the server can not simply start sending the stream to the other clients in the session. It is the responsibility of the clients to request that the server starts sending a certain stream. Because of this, the server notifies the clients that a new stream has started and then the clients request that the server sends the stream.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1.0\linewidth]{WT_Service_StartStream_Msg}
+	\caption{Client-Server Stream Start}
+	\label{fig:sessstreamstart}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1.0\linewidth]{WT_Service_StopStream_Msg}
+	\caption{Client-Server Stream Stop}
+	\label{fig:sessstreamstop}
+\end{figure}
+
+The stream start and stream stop setups are very similar. The process starts with the client starting or stopping a stream which generates a streamPublishStart or streamBroadcastClose event respectively. Upon reception of the message, the webcam stream service retrieves the client's ID from the stream metadata and then asks the session service to mark the respective user's stream as started or stopped. The session service finds the user's active session and sets the user's streaming information in the session as either started or stopped. The session then generates a message to be sent to the other user's in the session and broadcasts the message. If the message received by the clients is a stream started message, the client asks the server to start sending the stream which generates a streamPlayItemPlay event and the server starts streaming the data to the client. If the message received by the clients is a stream stopped message however, the client asks the server to stop sending the stream which generates a streamSubscriberClose event and the server stops streaming the data to the client. The webcam service also stores the information regarding which clients are streaming at any point in time. This is done in order to let any client which joins a session know if it should subscribe to streams from the users which are already streaming their video.
+
+\section{Clustered Server Architecture}
+
+In order to achieve the goal of having the server capable of being deployed as a cluster in which users connect to any server and can still communicate with any other user even if that user connected to a different server in the cluster the single server architecture had to be changed. First of all, the clustered system required a method for the servers to discover each other and communicate with each other. Second of all, the clustered system required a way to replicate user information across the cluster. Finally, the clustered system required a way to proxy the webcam stream from one server to another such that users can receive the stream from the server they are connected to. This section will show how the system was modified to accomplish the above requirements.
+
+\subsection{Server To Server Communication}
+
+Since the server cluster is not static in size and is allowed to scale up and down based on demand a very important ability of the servers is to discover new servers when the servers start and for servers to broadcast when a server leaves the cluster. In order to achieve this goal, the cluster architecture uses a Group Membership System (GMS) to create a group which the servers join and leave. The servers then use the group created by the GMS to communicate with each other. Using a GMS for such communication instead of an approach like broadcasting the messages in the network ensures that multiple clusters can be collocated in the same network and not interfere with each other's inter-server communication. The GMS used for this is the JGroups system \cite{software:jgroups}, which is the same system used by the JBoss Application Server for clustering. More specifically, the architecture adds an extra component in the form of a Gossip Router which runs on a specific host and port. The Gossip Router is responsible for registering and deregistering clients from groups, as well as for responding to queries for the members of a group. In order to deal with group members crashing, members send periodically a refresh message to update the status of their group membership. If a long enough period passes without a refresh from a group member, than that member is considered dead and removed from the group. If a group member attempts to join a group with a name that does not exist, then a group with that name is created. One issue with the Gossip Router is that it can be seen a single point of failure in the architecture. Currently the cluster assumes that the Gossip Router can not fail, however if redundancy is needed the system could use a backup Gossip Router in case the main router fails.
+
+Each server upon start-up creates a channel through which it communicates with the other servers in the cluster. Communication can be either point-to-point between two servers - if the sender of the message specifies a destination address - or a broadcast inside a group - if no destination address is provided. After a server creates a channel for group communication, the server connects to a predefined group based on name and then broadcasts in the group the servers information including host address, port on which the Red5 server is running as well as the name of the application. These three values are used to uniquely identify a server application. By depending on all three values, the cluster allows mixed systems in which either a host runs more than one Red5 server - each on a different port, or even a single Red5 server runs more than one application which joins the group - in which case both the host and port will match for both applications. Figure \ref{fig:groupjoin} shows the process of servers joining a group.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1.0\linewidth]{WT_Group_Join}
+	\caption{Server GMS Join}
+	\label{fig:groupjoin}
+\end{figure}
+
+Note that after a server connects to the group, it broadcasts its local information to the group. If other servers already exist in the group - in figure \ref{fig:groupjoin} when \textit{Server 2} joins - the gossip server broadcasts the message to all the other servers. Upon reception of a new server information message, if the message does not have a specific destination which would mean it was a broadcast message and not a point-to-point message, the receiving server sends a reply with its own information in order for the newly joined server to know the other servers in the cluster. This reply message is sent as a point-to-point message in order to prevent the newly joined server from also replying to a new server information message which would lead to an infinite loop.
+
+In order to allow for Inter-Server communication, two components were added to the server architecture - a group manager and a group receiver adapter. The group manager creates the communication channel and performs the group logic of the server, the group receiver adapter receives messages from other servers, parses them and passes the message to the corresponding method in the group manager. On top of these two components, the group system also uses a number of messages for passing data between servers. For the moment, the only important message is the \textit{Server} message. The other messages will be explained in the following two sections. Figure \ref{fig:groupclasses} shows the added components.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.9\linewidth]{WT_Group_Classes}
+	\caption{Server GMS Classes}
+	\label{fig:groupclasses}
+\end{figure}
+
+The server module creates a group manager on start-up, which sets up the JChannel and also creates the receiver. After creation of the receiver, the manager connects to the group and broadcasts a Server message which contains the local information which identifies the server instance (host, port, application) as well as a boolean which is true if the server is joining the group and false if the server is leaving the group. The group manager also stores a list of server peers which are Server objects representing the other servers in the cluster. New messages sent in the cluster originate from the group manager, while all messages from the cluster are received in the group receiver.
+
+\subsection{Cross-Server User Information Replication}
+
+In order for the cluster to allow clients to connect to any of the servers and still be able to communicate with each other certain user information has to be replicated across all the servers. For example, servers have to know to which servers other clients are connected in order to be able to route messages destined for those clients. In order to decrease the number of messages sent between servers, the status of the clients is also stored on all servers, even if the clients are connected to other servers. As such, the user information replication is formed from two parts: data that is being replicated and messages used to replicate the data and keep it in synch across the servers.
+
+\subsubsection*{Replicated Data}
+
+In order to encapsulate the knowledge of whether a client is local or remote, a class which represents a group client was added. This class encapsulates either a Red5 client, in which case the client is connected to the server containing this object, or a Server object, in which case the client is connected to a different server represented by the Server object. The group client also contains a send message method which is agnostic to where the client is connected. This method then delegates the actual message sending depending on where the client is connected to. Because of this, servers store a list of all group clients and not just local clients to the server. Furthermore, all servers store information regarding the activity status of all users (online, busy), not just local users. The reason to replicate the user status across all servers is in order to decrease server-to-server messages. For example, a new user connects to a server and sends to the server the list of contacts. The server then broadcasts a message to all other servers that a new user is online. The server however, does not need to wait for its peers to reply to the connect message - and in fact no reply is expected - before notifying the newly connected client which of its contacts are online and which are busy. Figure \ref{fig:groupclient} shows the static view of the group client by extending figure \ref{fig:groupclasses}. Each server has a list of \textit{GroupClients}, where each group client has either a localClient object or a remoteServer object. If both objects are set (which should not happen in practice) the client is assumed to be local and the localClient object is used for communication. The figure also shows the \textit{ClientConnect} message which is broadcast by a server in a group whenever a new client connects. The message contains the user's unique ID, the server object where the client has connected and a boolean representing if the user has connected or disconnected.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.9\linewidth]{WT_Group_Client_Classes}
+	\caption{Server GMS Group Client Classes}
+	\label{fig:groupclient}
+\end{figure}
+
+Figure \ref{fig:groupconnectmsg} shows the way the connection sequence diagram changes in a cluster. It is an extension of \ref{fig:connsetupseqdiag}. The figure does not show the process for disconnecting a client which was already connected using the same unique user ID since the process is the same as the one in \ref{fig:connsetupseqdiag}. As soon as a server - either the one to which the new client connects or one of its peers which receives a client connect broadcast - determines that a client with the same unique user ID is connected, it sends to that client a message notifying the client that it was disconnected. Upon receiving a new connection from a client, the server asks the group manager to broadcast a client connect message with the new user ID and at the same time accepts the user connection. The group manager creates a new \textit{ClientConnect} message with the joined boolean set to true and uses the group channel to broadcast the message. The message is received by \textit{Server 2} in the group receiver which determines if the message was a connect or disconnect message based on the value of the \textit{joined} boolean in the message. Since this was a join message, the receiver passes the client information to the group manager which stores the client information. At the same time, a second client connects to \textit{Server 2} and the process is repeated starting from \textit{Server 2}. Upon reception of the notifyOnline message from the client, \textit{Server 2} already knows that \textit{User 1} is online and connected to \textit{Server 1}, so it sends a message informing \textit{User 2} that \textit{User 1} is online. On the other side of the server-to-server communication, \textit{Server 1} receives the message that \textit{User 2} has just come online and since it knows the list of contacts for \textit{User 1} it informs \textit{User 1} that \textit{User 2} is online. One thing to note, is that in order to simplify this diagram, the server entity contains both the actual server module and the user state service.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1.0\linewidth]{WT_Group_Connect_Msg}
+	\caption{Server Group Connection Setup}
+	\label{fig:groupconnectmsg}
+\end{figure}
+
+\subsubsection*{Replication Messages}
+
+A number of messages are used in order to keep session data synchronized across the servers and clients connected to different servers. Figure \ref{fig:groupmsgs} shows the various possible messages used for maintaining the state across the servers. On top of the \textit{ClientConnect} message which was described previously, the system uses three types of messages and an abstract class. The abstract class named simply \textit{Message} defines three properties that all messages will have - clientID which is the unique user ID of the destination user for the message, method which represents the method which will be called in the destination client and params which is an array of parameters to be passed to the method. The first type of message used is \textit{InviteMessage} which is used to pass invitation requests and invitation reply between users which are not on the same server. Invitation messages include in the message the session ID which the message refers to, as well as a message type variable which can be one of \textsl{invite}, \textsl{accept} and \textsl{deny}. For invite messages the params structure will contain the inviter's unique ID, while for accept and deny the params structure will contain the ID of the user sending the reply. The \textit{SessionStateMessage} propagates session synchronization messages and simply contains a session ID pointing to the session which the message refers to. All other information is encapsulated in the method and params structures of the \textit{Message} superclass. Finally, the \textit{UserStatusMessage} simply extends the \textit{Message} class without adding any extra property. The reason to add this message type is in order to be able to parse in the group receiver what kind of message has been received based on message class only. \textit{UserStatusMessages} have to update the user status in remote servers as well and as such it is not sufficient to simply forward them to the destination client like some of the other \textit{Message} implementations which are not processed by the server.
+ 
+\begin{figure}
+	\centering
+	\includegraphics[width=0.9\linewidth]{WT_Group_Message_Classes}
+	\caption{Server GMS Group Messages}
+	\label{fig:groupmsgs}
+\end{figure}
+
+The processing of group replication messages at the receiver is relatively simple. Upon reception of a message, the group receiver determines the message type. If the message is a \textit{ClientConnect} message then the server uses the process previously described. 
+
+\begin{enumerate}
+	\item If the message is not a session state message, then the message is sent to the destination client and then the server process the message to update its own internal state.
+	\item If the message is a user status message, then the remote user's status is updated in the server.
+	\item If the message is an invite message, then the server creates a session if none already exists with the specified ID and performs the actions previously presented for the single server case.
+	\item If the message is an invite accept message, then the server synchronizes the new client to the session. The server will first try to use a local user to synchronize even if the local user is not the session host. If no local users exist in the session, then the server requests that the session host is used to synchronize the new user through a \textit{SessionStateMessage}.
+	\item If the message is an invite decline message, then the server determines if the session is empty (in this case an empty session is defined as one with no local clients, or one local client and no remote clients). If the session is empty the server destroys the session.
+	\item If the message is a \textit{SessionStateMessage} the server broadcasts it to all the clients in the session (including remote clients). The server takes care not to send the same message multiple times to the same server, if there is more than one client in a session on a remote server. An exception to broadcasting the message is done in case the message is a reply to a synchronization request, in which case only the clients waiting for synch and servers with clients waiting for synch will receive the message.
+\end{enumerate}
+ 
+\subsection{Webcam Stream Proxy}
+
+A very important consideration is the capability of the cluster architecture to proxy streams such that a client connecting to Server 1 can send a stream to a client connected to Server 2. It is also very important that if for example two clients connect to Server 2, only one stream is sent between Server 1 and Server 2. Because of these requirements audio/video streaming uses two types of messages: \textit{StreamMessage} and \textit{StreamProxyMessage}. Figure \ref{fig:groupstreammsg} shows the stream messages. \textit{StreamMessage} contains the client ID which the message refers to and the type of stream messages which can be one of stream started or stream stopped. This message is generated when a user starts or stops streaming in order to notify other clients that a new stream has started, such that clients can subscribe to the stream. \textit{StreamProxyMessages} are used to communicate between servers in order to request the creation of proxies. A \textit{StreamProxyMessage} contains a server object which represents the server receiving the proxy stream and a stream name which is the name of the stream which should be proxied. Stream names always use the unique user ID of the streamer to simplify stream subscriptions.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.5\linewidth]{WT_Group_Stream_Classes}
+	\caption{Server GMS Group Stream Messages}
+	\label{fig:groupstreammsg}
+\end{figure}
+
+Figure \ref{fig:groupstreamseq} shows the sequence used in order to set up a stream between two clients connected to two different servers including the creation of the proxy. This sequence diagram is an extension of figure \ref{fig:sessstreamstart}. In order to simplify the diagram note that the \textit{Server} entity contains both the server module and the stream service components while the \textit{GroupControl} entity contains both the group manager and the group receiver. The diagram also skips some of the steps which are already shown in figure \ref{fig:sessstreamstart} such as obtaining the user ID from the stream publish request, and modifying the session state with regard to the user streaming. The broadcastMessage in figure \ref{fig:sessstreamstart} which was done locally, becomes a group broadcast which creates a \textit{StreamMessage} containing the user ID and the type of stream message which is start in this case. Upon reception of the stream message, \textit{Server 2} finds the session which \textit{User 1} is part of, if any, and notifies the other local clients in the session that a new stream was started. Upon reception of this message, like in the local version, clients attempt to start playing the stream. Once the play request is received by the server, the server checks if it is already receiving a stream with the given user ID. If the server is receiving the stream already - either because the streaming user is also local or because a streaming proxy was already created - the server sends the stream data to the client. If the server is not already receiving the required stream, the server checks to determine if it has already requested the proxy from the other server. If the proxy request was already sent, the client is added to a list of clients waiting for the respective stream. If however, no stream proxy request has already been sent, the server asks the group manager to request from its server peer a proxy creation. The group manager creates a \textit{StreamProxyMessage} with itself as the server and the ID of the user as the stream name and sends the message to the server to which the streaming client is connected. Upon reception of the \textit{StreamProxyMessage}, the server creates a new \textit{StreamProxy} with the correct destination and source stream and starts the proxy. The stream destination server simply passes the data to any clients waiting to play the stream.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1.0\linewidth]{WT_Group_StreamStart_Msg}
+	\caption{Server GMS Stream Proxy Setup}
+	\label{fig:groupstreamseq}
+\end{figure}
+
+The stop stream sequence is similar, with the difference that no stream proxy message is sent to the streamer client's server. Since the server detects when a client stops streaming, the server automatically destroys the stream proxy which also stops the stream and cleans up the stream resources used by the server. Upon detection of a proxy stream being closed, the server which received the proxy also cleans up any resources used for the stream. Figure \ref{fig:groupstreamstopseq} shows the tear-down sequence for a stream.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1.0\linewidth]{WT_Group_StreamStop_Msg}
+	\caption{Server GMS Stream Proxy Teardown}
+	\label{fig:groupstreamstopseq}
+\end{figure}
+
+\section{Geographically Distributed Cluster Based \\ Architecture}
+
+At this point, the thesis has introduced an architecture for a cluster of servers which are used to allow users to collaborate in real-time. Compared to the requirements presented at the beginning of this chapter, the architecture is still missing the geographically distributed nature. Two components are necessary in order to achieve the desired characteristics: a way for servers which are in different clusters to communicate with each other and an admission control system which redirects clients to the appropriate cluster based on some form of metric.
+
+\subsection{Cluster To Cluster Communication}
+
+While the server to server communication uses lists made of the servers in the cluster in order to know where the server peers are located, such an approach would be prohibitive for the entire distributed nature of the architecture. At the same time servers inside the same cluster can know the host names and IP addresses of their peers since the servers are on the same network. In a geographically distributed cloud architecture, servers from one cluster can not know the host names or IP addresses of servers in other clusters, or even if they know them can not use the values. Because of this, a tradeoff has to be made between decreasing the number of messages sent between clusters and the global system state stored at each cluster. To achieve the cluster to cluster communication, the architecture uses a gateway component placed in each cluster (the section will also discuss the possibility of using multiple gateways). The gateway itself will be a peer in the GMS group created for the cluster, but instead of processing the messages like the servers do, the gateway will simply broadcast the message to the other clusters. In the case of client-to-client messages, if the destination client is connected to the local cluster (the gateway also stores a list of connected clients) then the message is not sent to other clusters. The gateway will also be responsible for receiving messages from other gateways, and broadcasting the messages inside the cluster. A special gateway will also be created for creating stream proxies between clusters. The messages which must be broadcast by the gateway are the following:
+
+\begin{enumerate}
+	\item Client connected message - must be sent to all the clusters forming the system since clusters do not know ahead of time where contacts of the newly joined user are located.
+	\item Client disconnected message - must be sent to all the clusters forming the system since clusters do not know ahead of time where contacts of the leaving user are located.
+	\item Invite message - if the invited client is in the local cluster, then no action is taken; if the invited client is not in the local cluster, the message is sent to all other clusters.
+	\item Invite accept/reject message - if the inviter client is in the local cluster, then no action is taken; if the inviter client is not in the local cluster, the message is sent to the originating clusters (a list is kept for invites awaiting reply).
+	\item Session state message - the gateway stores for each session ID a list of clusters participating in the session (this is determined by checking the invite accept replies received from other clusters or sent to other clusters) and sends the message to the participating clusters. This implies that cleanup also has to be done by the gateway when sessions are destroyed or when another cluster no longer has clients participating in a session - a simple counter can be used to achieve this.
+	\item User status message - must be sent to all the clusters forming the system since clusters do not know ahead of time where contacts of the user whose status changed are located.
+	\item Stream message - must be sent to all the clusters forming the system since clusters do not know ahead of time where contacts of the user who started or stopped streaming are located. In the case of stream start messages, gateways store the originating cluster address in order to be able to route proxy messages. This data should not be stored the entire time that a user is streaming at all clusters. Because of this a new message must be added which notifies the gateway that a server is interested in the stream. If all servers reply with not interested, the data can be deleted from the gateway.
+	\item Stream proxy message - must be sent back to the originating cluster, based on the knowledge from the stream message received previously. Since servers from separate clusters can not communicate directly, a stream proxy gateway is used which allows a stream to be proxied between two clusters. Figure \ref{fig:cloudstream} shows the machines through which the stream is going.
+\end{enumerate}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.65\linewidth]{WT_Clouds_Stream}
+	\caption{Geographic Cloud Streaming}
+	\label{fig:cloudstream}
+\end{figure}
+
+In terms of static structure the gateway will be very similar to the group mechanisms used for each of the servers. The gateway will have a \textit{GroupManager} and a \textit{GroupReceiverAdapter}, the \textit{GroupManager} will create the communication channel and join the group using a special ID in order for the servers to know the gateway and not assume it is just another server. The \textit{GroupReceiverAdapter} will receive receive group messages and pass them to appropriate methods in the \textit{GroupManager}. On top of these two classes the gateway will also use a \textit{CloudManager} class which is responsible for communicating with the other gateways. Since the cloud structure can be assumed to be nearly static - clouds will not be created on the fly - the \textit{CloudManager} will simply use a list of static IP addresses to know the location of the other gateways. In the case that a new cloud is added to the system, the IP address of the new gateway can simply be added to all the other gateways. This constraint also means that the gateways will represent single points of failure. The gateway system will use the same message classes used by the inter-server group communication system.
+
+Note that more reliability can be added to the cloud communication system by using multiple gateways per cloud. Instead of having one gateway for all outward communications, each cloud can have one gateway for communications with each of the other clouds (thus for $N$ clouds, each of the clouds would have $N-1$ gateways). This approach would also decrease the stress put on the gateways. Instead of using a deployment like figure \ref{fig:singlegateway}, the system would use a deployment like figure \ref{fig:multigateway}. Stream gateways would use the same approach, with one gateway per communication link. If multiple gateways are used, the gateways in the same cloud could create their own group to quickly exchange messages without sending the messages to the servers.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.65\linewidth]{WT_Clouds_OneGateway}
+	\caption{One Gateway Per Cloud}
+	\label{fig:singlegateway}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.65\linewidth]{WT_Clouds_MultiGateway}
+	\caption{One Gateway Per Cloud Communication}
+	\label{fig:multigateway}
+\end{figure}
+
+The connect and disconnect message sequences are very simple as the gateway simply broadcasts the messages to the other clouds. Figure \ref{fig:cloudsesssetup} shows the process used to setup a session across two clouds. The diagram assumes that an invite was sent by a client who is connected to \textit{Server 1} in \textit{Cluster 1} to \textit{Client 2} who is connected to \textit{Server 2} in \textit{Cluster 2}. \textit{Server 1} knows that the user is not connected to its cluster since the server has a list of all users connected to the cluster and as such sends the invite request to the gateway. Upon reception, the gateway broadcasts the message to all known external gateways. \textit{Gateway 2} receives the broadcast and determines that \textit{Client 2} is connected to \textit{Server 2} in its local cluster so it saves the invitation information to be able to route the answer back to the originating cluster and routes the message to the appropriate server. Other gateways which receive the message, determine that the required client is not connected to the cluster which they manage and drop the message. Upon reception of the reply from the client, the server determines that the inviter is not in the local cluster and sends the reply to the gateway. The gateway checks if the invite reply is an accept or decline, and if it is an accept message it stores the information that the cluster has one more client in the session the invite was performed in. It also stores the gateway the invitation originated from as being a member in the session and sends the reply to \textit{Gateway 1}. \textit{Gateway 1} also checks the type of the reply and performs the same actions as \textit{Gateway 2} and finally routes the reply to the inviter's server. If multiple gateways per cluster are used servers broadcast the invite and invite reply to all gateways. In the case of invite reply, gateways which do not have stored data regarding the invite, simply drop the message.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.9\linewidth]{WT_Cloud_SessionSetup_Msg}
+	\caption{Session Setup Across Clouds}
+	\label{fig:cloudsesssetup}
+\end{figure}
+
+The stream setup sequence is more complicated due to the introduction of the streaming proxies in the architecture. Figure \ref{fig:cloudstreamsetup} shows the sequence diagram for the stream setup. While the message that a user starts streaming goes through the gateways, the proxy request goes back through the stream gateways, which are responsible themselves for creating stream proxies. This ensures that if a user in a cloud already receives a certain stream, no proxy request will go to the originating cluster, since the stream gateway can send the stream itself. An important thing to note is that the stream gateway checks with the message gateway to see where the stream originating gateway is, and then uses the equivalent stream gateway to request the proxy. The stream proxy has to have in this case a mapping of gateways to stream gateways. Such knowledge can be useful also for the case where multiple gateways are used per cluster.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.9\linewidth]{WT_Cloud_StreamSetup_Msg}
+	\caption{Stream Setup Across Clouds}
+	\label{fig:cloudstreamsetup}
+\end{figure}
+
+\subsection{Cloud Admission Control}
+
+Another very important consideration for the system is the admission control used to accept and route clients to servers. A single cluster deployment can use a very simple admission control policy similar to round-robin admission. The goal of the geographic clouds deployment is to improve the user perceived performance by connecting the user to a cloud which offers better performance. Because of this requirement, the cloud deployment must use a more complex admission control scheme. A simple way to achieve such admission, is to use location based admission control. Upon reception of a connection request, the admission system determines the user's latitude and longitude by using a geolocation system and based on this information finds the closest cloud with the service. While very simple to implement, this approach does not guarantee good latency between server and client, first of all because short geographic distance does not necessary mean short internet route and second of all because even if a short route was guaranteed, a short route could be more congested than a longer route.
+
+A second approach to offer admission control is to allow the client to ping a small subset of close clouds and then choose the best one. This has the advantage of improving the latency between server and client at the expense of a longer start-up for the application, which must wait for the reply from the various clouds offered by the admission control system. This approach is the one used in this thesis proposal.
+
+This approach can be seen in Figure \ref{fig:servercontrolloop}. The Admission Controller receives the information from all the servers in the cloud, seen as RTp Server X in the figure, and uses this information to control the admission rates of the servers.
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.9\linewidth]{Self-optimizingControlLoop}
+	\caption{Server Control Loop Block Diagram}
+	\label{fig:servercontrolloop}
+\end{figure}
+
+\section{Containerization}
+
+In recent years, containers have become a very important technology as they allow for very quick deployment of applications as well as good network isolation. Containers offer almost all the benefits of virtual machines and resolve some of the issues of VMs. For this reason, the architecture described in the previous section uses containers to deploy the various servers and components. Each of the components previously described is deployed in a container, with all containers having a base container they extend which defines the OS, Java version and server version. 
+
+At the same time, two virtual networks were defined and used - the first network allows external access to the servers and only the ports which should be accessible from outside are connected to this network. The second network is internal and allows the servers to communicate with each other, this is used primarily for the JGroups communication between servers.
+
+On top of the base container, a number of other containers were built:
+
+\begin{enumerate} 
+	\item JGroups container - container running the JGroups gossip router. It connects only to the internal network. A single container is run in a cloud but more could be added for better resiliency.
+	\item Media server container - includes the media server and connects to the external virtual network to allow clients to connect to it and also to to the internal network to communicate with other servers via JGroups.
+	\item Gateway container - includes the gateway to communicate with other clouds. Connects to the internal network as it receives messages from media servers, as well as to the external network where it exposes the port used to communicate with other gateways.
+	\item Admission Controller container - which routes client connections to media servers in the cloud. This container connects internally and communicates with the existing media servers to know which servers are up and which are down and also externally to receive client requests which are then routed internally.
+\end{enumerate}
+
+Figure \ref{fig:cloudcontainers} shows the containers deployment and networks with two clouds and two media servers in each cloud.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.9\linewidth]{WT_Cloud_Containers}
+	\caption{Stream Setup Across Clouds}
+	\label{fig:cloudcontainers}
+\end{figure}
+
+This chapter has presented the application which is to be self-optimized through a self-organizing system and showed how a real-time collaborative application can be scaled from a single server to a geographically distributed cloud. The next chapter presents the architecture for the controller and for the self-organized autonomic system.
