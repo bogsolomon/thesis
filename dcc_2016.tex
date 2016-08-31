@@ -1,0 +1,368 @@
+% THIS IS SIGPROC-SP.TEX - VERSION 3.1
+% WORKS WITH V3.2SP OF ACM_PROC_ARTICLE-SP.CLS
+% APRIL 2009
+%
+% It is an example file showing how to use the 'acm_proc_article-sp.cls' V3.2SP
+% LaTeX2e document class file for Conference Proceedings submissions.
+% ----------------------------------------------------------------------------------------------------------------
+% This .tex file (and associated .cls V3.2SP) *DOES NOT* produce:
+%       1) The Permission Statement
+%       2) The Conference (location) Info information
+%       3) The Copyright Line with ACM data
+%       4) Page numbering
+% ---------------------------------------------------------------------------------------------------------------
+% It is an example which *does* use the .bib file (from which the .bbl file
+% is produced).
+% REMEMBER HOWEVER: After having produced the .bbl file,
+% and prior to final submission,
+% you need to 'insert'  your .bbl file into your source .tex file so as to provide
+% ONE 'self-contained' source file.
+%
+% Questions regarding SIGS should be sent to
+% Adrienne Griscti ---> griscti@acm.org
+%
+% Questions/suggestions regarding the guidelines, .tex and .cls files, etc. to
+% Gerald Murray ---> murray@hq.acm.org
+%
+% For tracking purposes - this is V3.1SP - APRIL 2009
+
+%\documentclass{acm_proc_article-sp}
+\documentclass{sig-alternate}
+
+\usepackage{graphicx}
+\usepackage{tabu}
+\usepackage{subcaption}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{colortbl}
+
+\graphicspath{{Resources/Figures/}}
+
+\begin{document}
+
+\conferenceinfo{DCC}{'16, July 25, 2016, Chicago, Illinois, USA}
+\CopyrightYear{2016} 
+
+\title{Self-Organizing Load Balancing in Distributed Collaborative Cloud Applications}
+
+%
+% You need the command \numberofauthors to handle the 'placement
+% and alignment' of the authors beneath the title.
+%
+% For aesthetic reasons, we recommend 'three authors at a time'
+% i.e. three 'name/affiliation blocks' be placed beneath the title.
+%
+% NOTE: You are NOT restricted in how many 'rows' of
+% "name/affiliations" may appear. We just ask that you restrict
+% the number of 'columns' to three.
+%
+% Because of the available 'opening page real-estate'
+% we ask you to refrain from putting more than six authors
+% (two rows with three columns) beneath the article title.
+% More than six makes the first-page appear very cluttered indeed.
+%
+% Use the \alignauthor commands to handle the names
+% and affiliations for an 'aesthetic maximum' of six authors.
+% Add names, affiliations, addresses for
+% the seventh etc. author(s) as the argument for the
+% \additionalauthors command.
+% These 'additional authors' will be output/set for you
+% without further effort on your part as the last section in
+% the body of your article BEFORE References or any Appendices.
+
+\numberofauthors{3} %  in this sample file, there are a *total*
+% of EIGHT authors. SIX appear on the 'first-page' (for formatting
+% reasons) and the remaining two appear in the \additionalauthors section.
+%
+\author{
+% You can go ahead and credit any number of authors here,
+% e.g. one 'row of three' or two rows (consisting of one row of three
+% and a second row of one, two or three).
+%
+% The command \alignauthor (no curly braces needed) should
+% precede each author name, affiliation/snail-mail address and
+% e-mail address. Additionally, tag each line of
+% affiliation/address with \affaddr, and tag the
+% e-mail address with \email.
+%
+% 1st. author
+\alignauthor
+Bogdan Solomon\\
+       \affaddr{NCCT Lab, University of Ottawa}\\
+       \affaddr{161 Louis Pasteur}\\
+       \affaddr{Ottawa, Ontario, Canada}\\
+       \email{bsolomon@ncct.uottawa.ca}
+% 2nd. author
+\alignauthor
+Dan Ionescu\\
+       \affaddr{NCCT Lab, University of Ottawa}\\
+       \affaddr{161 Louis Pasteur}\\
+       \affaddr{Ottawa, Ontario, Canada}\\
+       \email{dan@ncct.uottawa.ca}
+% 3rd. author
+\alignauthor 
+Crsitian Gadea\\
+       \affaddr{NCCT Lab, University of Ottawa}\\
+       \affaddr{161 Louis Pasteur}\\
+       \affaddr{Ottawa, Ontario, Canada}\\
+       \email{cris@ncct.uottawa.ca}
+}
+% There's nothing stopping you putting the seventh, eighth, etc.
+% author on the opening page (as the 'third row') but we ask,
+% for aesthetic reasons that you place these 'additional authors'
+% in the \additional authors block, viz.
+%\additionalauthors{Additional authors: John Smith (The Th{\o}rv{\"a}ld Group,
+%email: {\texttt{jsmith@affiliation.org}}) and Julius P.~Kumquat
+%(The Kumquat Consortium, email: {\texttt{jpkumquat@consortium.net}}).}
+%\date{30 July 1999}
+% Just remember to make sure that the TOTAL number of authors
+% is the number that will appear on the first page PLUS the
+% number that will appear in the \additionalauthors section.
+
+\maketitle
+\begin{abstract}
+In the past decade, cloud computing has become an integral technology both for the day to day running of corporations, as well as in everyday life as more services are offered running on public or private clouds or grids. At the same time, online collaboration tools are becoming more important as both businesses and individuals need to share information and collaborate with other entities. Previous work has presented an architecture for a collaborative online application which allows users in different locations to share various content including videos, images and documents while at the same time communicating with each other via video chat. The application's servers are deployed in a cloud environment which can scale up and down based on demand. Furthermore, the design allows the application to be deployed on multiple clouds which are deployed in different geographic locations. One area which the previous work left open was how the load balancing is achieved in an intelligent manner. In this paper a self-organizing system based on ant colony path finding and ant colony relocation is proposed in order to achieve such an intelligent load balancing and self-optimization system.
+
+\end{abstract}
+
+% A category with the (minimum) three required fields
+%\category{H.4}{Information Systems Applications}{Miscellaneous}
+%A category including the fourth, optional field follows...
+%\category{C.2.4}{Distributed Systems}{Distributed applications}
+\category{D.2.8}{Software Engineering}
+
+
+\terms{Theory, Design, Self-organization}
+
+%\keywords{ACM proceedings, \LaTeX, text tagging} % NOT required for Proceedings
+
+\section{Introduction}
+
+Cloud computing and grids have become an integral technology as more and more services make use of the capability to both use hardware resources as a service and to scale a system from a small number of users to millions of users easily. Companies can now make use of outside resources and simply rent the hardware as needed from cloud providers like Amazon, Rackspace, and Microsoft or build their own internal clouds/grids in order to offer services internally or run business intelligence. In many cases the same infrastructure is shared by multiple departments in the same company, each with its own uses and demands. In the past, scaling an application after release would take weeks as new servers would need to be purchased, configured, tested and finally set to production. With the advent of cloud computing, a new image of a server can be created and be ready to be used in seconds or minutes. This helps in both scaling a service up and down based on demand or deploying new versions of applications in parallel with the old for testing.
+
+As businesses have expanded and have offices all across the world or do business with companies from other parts of the world technology to offer communication and sharing capabilities have become very important. Collaborative applications are important not just for businesses but also for normal persons who wish to communicate with friends or family who are far. Such applications must also be able to be deployed on a cloud and scale up and down based on user demands. In the past we have proposed such a collaborative application \cite{bogdan:cts2012}, \cite{bogdan:miles2012chapter} as well as a way to self-optimize the servers \cite{bogdan:amgcc2013}. However, previous work only presented a simple approach to self-optimize the cloud and group of clouds.
+
+At the same time, self-organizing systems have seen a large amount of research because of the intrinsic properties which they poses:
+\begin{enumerate}
+\item Adaptable - the ability to deal with changes in the environment which were not predicted at design time
+\item Resilient - parts of the system can die or be lost but the remaining still perform their goal
+\item Emergent - the complex behaviour arises from the properties and behaviour of the simple parts
+\item Anticipation - the system can anticipate problems and solve them before they impact the whole system
+\end{enumerate}
+
+Because of the above properties a self-organizing system would be perfectly suited to solve the problem of load balancing the servers for the collaborative application. Because the size of the cloud is not determined and can scale up and down, and because at peak demands a large number of servers are up, a self-organizing system can better cope with the self-optimization than a top-down control system.
+
+A number of biological systems have been researched in order to build self-organizing systems, from ant colonies and bee hives \cite{antalgorithm}, \cite{beehive} to glowworms \cite{glowworm} and bats \cite{bat}.
+
+In this paper, the proposed self-organizing system makes use of two ant self-organizing approaches in order to obtain the load balancing of the servers. The first is the ant colony route finding self-optimization algorithm. This is combined with the ant colony nest relocation self-optimizing algorithm to achieve the desired self-optimization of the cloud application.
+
+The rest of the paper is organized as follows. Section \ref{sec:problem} introduces the problem to be optimized. Section \ref{sec:solution} presents the self-organizing approach and section \ref{sec:conclusion} presents some conclusions and future work.
+
+\begin{figure}[htb!]
+\includegraphics[width=0.95\linewidth]{LevelControl}
+\caption{Level/Fluid Flow Model}
+\label{fig:LevelControl}
+\end{figure}
+
+\section{Collaborative Application}
+\label{sec:problem}
+
+In previous work \cite{bogdan:cts2012}, \cite{bogdan:miles2012chapter} and \cite{bogdan:amgcc2013} we have presented a collaboration application which can be used by users in different locations to share media like video, images and documents in a synchronized manner while also communicating through video and text chat. The application was deployed initially in a single cloud, where servers can scale up and down based on user demand. The application was then extended to be deployed on multiple clouds where users would connect to the best cloud in terms of QoS but were still able to communicate with users connected to other clouds.
+
+Each of the servers was extended to have with its own control loop for self-optimization such that when demand became too high the server stopped receiving connections. The control loop is developed using principles from flow-based models with a leaky bucket in which incoming requests are viewed as an incoming flow of water into the bucket and served requests are viewed as water leaking out of the bucket.
+
+A fluid model or a stochastic fluid flow model is a mathematical model used to describe the fluid level in a reservoir subject to randomly determined periods of filling and emptying. Fluid flow models are widely used in the performance evaluation of computing processes, and in the transmission of packets in high-speed communication networks. The fluid model is an idealized deterministic model. In a communication network a unit of ``fluid'' corresponds to some quantities of packets. A fluid model is often a starting point to build a model for the impact of topology, processing rates, and external arrivals on network behavior.
+
+In a computer environment the fluid represents the tasks stirred in a buffer of tasks; the tasks wait to be entered into execution and terminated, though in this flow the tasks might be interrupted and brought back into execution. Those latter tasks are called to  be re-entrant. The arrival and service processes are modulated by a random external environment, and the quantity of interest is the behavior of the occupied size of the buffer.
+
+The model has as the starting point the modeling of processes of level control. A level control process in a tank is fueled by one or many flows flowing through a number of pipes, while the liquid/fluid is evacuated from the tank via another number of pipes through which the fluid flows with different speeds/quantities as in Figure \ref{fig:LevelControl}.
+
+In order to achieve the global self-optimization of the system, previous work presented a simple voting system where each of the servers votes on whether to add or remove servers based on its own local knowledge of the system. A server which does not accept requests votes to have new servers added, while an under-loaded server votes to have servers removed from the cloud. This approach exhibits some self-organizing behaviour however there is still a need for a centralized vote counter which makes the decision of adding or removing servers. At the same time, the voting approach requires a threshold of votes to be passed in order to add/remove servers and results in a system with low emergence possibilities.
+
+In this paper, we propose to replace the voting system with a self-organizing system based on two ant colony optimization algorithms which will be presented in the next section.
+
+\section{Ant colony self-optimizing system}
+\label{sec:solution}
+
+Ant colony food finding is a well know self-organization algorithm used to find best routes in a network \cite{antalgorithm} or solve load balancing problems \cite{antalgofood}. The ant colony relocation algorithm is another self-organization algorithm used to find a new solution once the previous state of the system is no longer valid \cite{}. In this paper we proposed to combine the two ant colony self-organization algorithms to achieve the self-optimization of the cloud of collaborative applications. The ant colony food finding algorithm is used in order to continuously monitor the state of the cloud and determine when an SLA breach is in danger of happening. The ant colony relocation algorithm is then used in order to find a new optimum for the cloud of servers.
+
+\subsection{Ant colony food finding}
+
+The ant colony food finding algorithm \cite{antalgorithm}, \cite{antalgofood} can be used in order to load balance clouds or find the best route in a network. At a high level the algorithm uses a number of simple agents called ants which traverse the network and leave a trail of pheromones which other ants can then follow. Good paths or solutions are reinforced by having more ants traverse them and leaving more pheromones. Once a path or solution is no longer good, less ants travel it and another path is reinforced as more ants travel that path.
+
+Assume that the leaky token bucket adds tokens for each request received and removes tokens at a predefined rate. Thus an empty token bucket represents a server with no load and a full bucket represents an overloaded server.
+
+For the collaborative application cloud, whenever a server starts it creates a new ant and sends it through the network of servers. If the server is the first server and has no knowledge of other servers it sends no ant. Thus the total number of ants is equal to $N - 1$ where $N$ is the number of servers. Because the new server joins the cloud of servers and receives information about the other servers in the cloud randomly it will send the ant to the first server which replies to it. 
+
+As ants reach other servers they deposit pheromone at the server they arrive at a rate inversely proportional to the load of the server. At the same time ants wait at the server a time proportional to the load of the server. Thus overloaded servers will have less pheromone deposited when compared to underloaded server. By having ants wait a longer time at overloaded servers, the overall amount of pheromone in the network will further decreases. 
+
+Assume that an ant $k$ deposits an amount of pheromone $\tau_{k}$ when it reaches a node which has 0 load - represented by an empty leaky token bucket, and waits at the node $15s$. An ant $k$ which reaches a node where the leaky bucket is $50\%$ full will deposit only $\tau_{k} * (1 - p)$ where $p$ is the bucket fullness as a percentage and wait at the node a time of $15s/(1-p)$ with a maximum wait time of $60s$ to avoid waiting an infinite time when $p$ approaches $100\%$. At the same time, the pheromone left by the ants decays at a rate of $\rho$ every $15s$. As such, the amount of pheromone at any node can be seen as:
+
+\begin{equation}
+p^{t}_{n} = p^{t-1}_{n} + \sum_{i=1}^{K}(\tau * (1 - p)) - \rho
+\end{equation}
+
+where $p^{t}_{n}$ is the amount of pheromone at node $n$ at time $t$ where $t$ can be considered discrete in $15s$ increments and $K$ is the amount of ants arriving at the node in the time frame between $t-1$ and $t$.
+
+Ants store information about which servers they have visited and time passed since the last visit. When an ant decides which server to go to, it uses a random function which is proportional to the time since it has not visited a server. Thus the ant will give preference to the servers it has not visited in a long time, and especially the servers it has never visited. Because the server structure is not stable and servers can join and leave at any time, ants decide the next server to visit based on the servers known by the current server the ant is at.  Assume a cloud with 5 servers and an ant which has the following information in it's visit history table. 
+
+\begin{table}[]
+\centering
+\begin{tabular}{c|c}
+Server & Time since last visit (s) \\
+Server 1 & 15 \\
+Server 2 & 20 \\
+Server 3 & 5 \\
+Server 4 & 35 \\
+Server 5 & 0 \\
+\end{tabular}
+\caption{Ant routing knowledge prior}
+\label{tab:ant_prio}
+\end{table}
+
+Based on the table, the ant computes the probability of visiting each server as
+
+\begin{equation}
+P_s = t_s / \sum_{i=1}^{N} t_i
+\end{equation}
+
+where $P_s$ is the probability of visiting server $s$ and $t_s$ is the time since it has visited server $s$ last time. These probabilities are computed only on the servers known as being up by the server the ant is at. Since the server the ant is at has a time since last visit of 0, it does not need to be excluded from the calculations. Let us assume also that Server 5, which is the server the ant is at currently does not yet know about server 3. As such, the visit probability table looks as follows:
+
+\begin{table}[]
+\centering
+\begin{tabular}{c|c}
+Server & Probability (\%) \\
+Server 1 & 21.43 \\
+Server 2 & 28.57 \\
+Server 4 & 50 \\
+Server 5 & 0 \\
+\end{tabular}
+\caption{Ant routing probability}
+\label{tab:ant_prob}
+\end{table}
+
+As such, the ant will roll a random value between 0 and 1, and choose which server to go to. A value between 0 and 0.5 means Server 4, between 0.5 and 0.78 means Server 2 and between 0.78 and 1 means Server 1. Assuming the value the ant rolls is 0.8, and that the ant waits at Server 5 for 5s, the routing table after the jump will be:
+
+\begin{table}[]
+\centering
+\begin{tabular}{c|c}
+Server & Time since last visit (s) \\
+Server 1 & 0 \\
+Server 2 & 25 \\
+Server 3 & 10 \\
+Server 4 & 40 \\
+Server 5 & 5 \\
+\end{tabular}
+\caption{Ant routing knowledge posterior}
+\label{tab:ant_post}
+\end{table}
+
+In order to avoid having all ants visit a new node all at once, whenever an ant discovers a new server it initializes the time since it visited with a random value. Assume that after the ant reaches Server 1, it discovers a new server which was unknown before - Server 6. The time since last visiting Server 6 will be initialized with a random value between 0 and the maximum time since last visiting a server which is known to be alive as in Equation \ref{eq:randomnew}. If Server 1 only knows Server 2, 5 and 6 then the random value will be between 0 and 25s.
+
+\begin{equation}
+t_{new} = random(0, max(t_{known}))
+\label{eq:randomnew}
+\end{equation}
+
+This algorithm is used in order to decide when the system is about to breach its SLAs. Once it appears that the system's SLA is about to be breached the ant relocation algorithm kicks in in order to find how many servers should be started. As such, each ant is also responsible for measuring the pheromone level at each node it visits. Ants store a history of the last $N$ nodes that they visited and the pheronomone level at each of these nodes. Every time an ant moves to a new server, it removes the oldest pheronomone value from this list and adds the pheronomone at the current node. It then computes an aggregate metric of the pheronomone at the last $N$ nodes visited, which is a simple average:
+
+\begin{equation}
+p_{ant} = \sum_{i=1}^{N} p_{N} / N
+\end{equation}
+
+where $p_{N}$ is the pheromone at server $N$. Once the pheromone level of an ant goes under a predefined value, the ant morphs into an ant relocator which searches for the new count of servers which should be added to the cloud. Similarly, if the pheromone level of an ant becomes too high, the ant morphs and starts searching for the number of servers which should be removed from the cloud.
+
+\subsection{Ant colony relocation}
+
+The ant colony relocation algorithm can be used in order to optimize the number of servers in the cloud, by having ants search for the optimal number of servers which should exist in the cloud. This algorithm works by having each ant search for a new nest, where a nest is represented by a new optimum number of servers in the cloud. Once more than half of the ants have reached the same optimum value, the servers are added or removed as desired and all ants are morphed back into food foraging ants.
+
+When an ant morphs into an ant relocator it initializes itself with a range of possible solutions for the new size of the cloud. These possible solutions are computed as permutations of the current size of the cloud as known by the server the ant is at. If the ant was morphed because of lack of pheromone, then the ant generates a random value which would represent the number of servers to be added. Each random value is proportional to the size of the cloud and the pheromone level across the last $N$ servers. For example, if the cloud contains only 2 servers, then the ant is initialized with a random value between 1 and 2. However, if the cloud contains 100 servers, then the ant would be initialized with a random values, which is defined as:
+
+\begin{equation}
+ServerCount_{add} = 1 + rand * N / (p_{ant})
+\end{equation}
+
+such that the lower the pheronomone value, the higher the probability of more servers being added. The random value has the effect of generating multiple possible solutions across different ants.
+
+If however the ant was morphed because of too much pheromone, then it does a similar initialization, but in this case it randomly chooses $X$ servers and hides them from its knowledge of the cloud. The servers are still in the ants history but it does not consider them. Each ant will create a different such permutation of servers which are hidden.
+
+The ant relocation algorithm is performed in rounds. In the first round all relocator ants search for a new nest by searching their solution space. This is achieved by having each ant choose one solution and simulating its effect on the pheromone level. If the ant is a server adder then the ant simulates that the $ServerCount_{add}$ servers are up and with no load. It picks $K$ servers from the list of the last $N$ servers it has visited and hides them, and replaces them with servers with no load. It then uses this information in order to simulate the pheromone level. If the ant is a subtractor, it hides $K$ servers where $K$ is defined as part of its random solution and simulates the effect this would have on its pheromone level.
+
+In the second round, all ants meet at the home nest and compare their solutions. The ants with the worst $i$ solutions give up their solutions and stay at the home nest to be recruited by other ants. Ants which have valid solutions recruit from the ants which are waiting to be recruited. The recruitment process is completely random, and ants then go together to a new nest in a round similar to round one. While two ants can go together to the same 'nest' and simulate the same number of servers, the hidden servers will be different so the ants will have different pheronome levels. The ants will then return to the home nest again and try to recruit from the ants which are at home. After the second round, when ants reach a new nest they look at how many ants are at the new nest. If the number of ants has decreased, then they give up and return home to be recruited to other nests.
+
+\subsection{Advantages of proposed approach}
+
+Because it takes time for ants to find that the system is over or under loaded, there is no need to implement a dead time period in which no control decisions are taken and the system can not exhibit oscillations. 
+
+\section{Conclusions and Future Work} 
+\label{sec:conclusion}
+
+This paper introduced a novel approach for the autonomic control of a cloud based application responsible for providing user collaboration tools, which uses principles from network control and combines them with self-organizing mechanisms in order to ensure the self-optimizing function for the cloud due to changing demand. The paper also presented performance results obtained from the cloud, which were used to determine some parameters of the model.
+
+Future work will focus on providing a full implementation of the autonomic system described in this paper as well as using various load simulations in order to better determine the model parameters and also test the behavior of the autonomic system.
+
+%\end{document}  % This is where a 'short' article might terminate
+
+
+%
+% The following two commands are all you need in the
+% initial runs of your .tex file to
+% produce the bibliography for the citations in your paper.
+\bibliographystyle{abbrv}
+\bibliography{Resources/Bibliography/Bibliography}  % sigproc.bib is the name of the Bibliography in this case
+% You must have a proper ".bib" file
+%  and remember to run:
+% latex bibtex latex latex
+% to resolve all references
+%
+% ACM needs 'a single self-contained file'!
+%
+%APPENDICES are optional
+%\balancecolumns
+%\appendix
+%Appendix A
+%\section{Headings in Appendices}
+%The rules about hierarchical headings discussed above for
+%the body of the article are different in the appendices.
+%In the \textbf{appendix} environment, the command
+%\textbf{section} is used to
+%indicate the start of each Appendix, with alphabetic order
+%designation (i.e. the first is A, the second B, etc.) and
+%a title (if you include one).  So, if you need
+%hierarchical structure
+%\textit{within} an Appendix, start with \textbf{subsection} as the
+%highest level. Here is an outline of the body of this
+%document in Appendix-appropriate form:
+%\subsection{Introduction}
+%\subsection{The Body of the Paper}
+%\subsubsection{Type Changes and  Special Characters}
+%\subsubsection{Math Equations}
+%\paragraph{Inline (In-text) Equations}
+%\paragraph{Display Equations}
+%\subsubsection{Citations}
+%\subsubsection{Tables}
+%\subsubsection{Figures}
+%\subsubsection{Theorem-like Constructs}
+%\subsubsection*{A Caveat for the \TeX\ Expert}
+%\subsection{Conclusions}
+%\subsection{Acknowledgments}
+%\subsection{Additional Authors}
+%This section is inserted by \LaTeX; you do not insert it.
+%You just add the names and information in the
+%\texttt{{\char'134}additionalauthors} command at the start
+%of the document.
+%\subsection{References}
+%Generated by bibtex from your ~.bib file.  Run latex,
+%then bibtex, then latex twice (to resolve references)
+%to create the ~.bbl file.  Insert that ~.bbl file into
+%the .tex source file and comment out
+%the command \texttt{{\char'134}thebibliography}.
+% This next section command marks the start of
+% Appendix B, and does not continue the present hierarchy
+%\section{More Help for the Hardy}
+%The acm\_proc\_article-sp document class file itself is chock-full of succinct
+%and helpful comments.  If you consider yourself a moderately
+%experienced to expert user of \LaTeX, you may find reading
+%it useful but please remember not to change it.
+\balancecolumns
+% That's all folks!
+\end{document}
