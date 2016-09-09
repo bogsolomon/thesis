@@ -1,0 +1,194 @@
+\chapter{Self-Organizing Algorithms for Resource Control in Autonomic Systems} % Write in your own chapter title
+\label{Chapter4}
+\lhead{Chapter \ref{Chapter4}. \emph{Self-Organizing Algorithms for Resource Control in Autonomic Systems}} % Write in your own chapter title to set the page header
+
+The next step in the development of the self-organizing autonomic system is to develop the algorithms which will be used in order to control the resources (servers) in the autonomic system. This chapter will present the self-organizing algorithms which were chosen and implemented for the control of the geographically distributed cluster of servers.
+
+\section{Collaborative Geographic Cluster Self-Organizing Autonomic System}
+
+The collaborative server cluster will use a self-organizing approach in order to manage the distribution of clients across the cluster as well as to scale the cluster up and down. The self-organizing system can not be based on a model which considers only the number of clients as a perturbation. Load for a collaborative server is a combination of the number of clients connected to the server, the number of sessions running on the server and most importantly the number of streams received by the server and multiplexed towards receiving clients. Based on these perturbations, each server can decide if it should receive more clients or not, independent of any decision made by another server. On top of the server self-organization with relation to accepting new clients, the system also needs an approach to determine when the cluster's SLA will be breached and take reactive action by adding or removing servers from the cluster. 
+
+The reason to use a self-organizing systems for the adaptation is due to the intrinsic properties that self-organizing systems poses:
+\begin{enumerate}
+	\item Adaptable - the ability to deal with changes in the environment which were not predicted at design time. This is important for the system developed for the thesis as we do not know the bounds of how many servers could be in a cluster at one time or the maximum peak demand for the service and as such we want a system which is able to adapt the control law dynamically.
+	\item Resilient - parts of the system can die or be lost but the remaining still perform their goal. In a cloud environment this is desired, as servers can come up an down at any time, and even network connectivity could be lost between servers or between data centres.
+	\item Emergent - the complex behaviour arises from the properties and behaviour of the simple parts. As a cloud of servers increases in size it becomes more complicated for a single controller to manage the entire system. As such a system where the control emerges from the interactions of a lot of small parts is desired as it decreases complexity and can scale much more, at the cost of overall resource utilization.
+	\item Anticipation - the system can anticipate problems and solve them before they impact the whole system. This is obviously desired, as we wish to detect SLA breaches before they happen, such that corrective actions can be taken and the breach can be avoided.
+\end{enumerate}
+
+\section{Server self-optimization}
+
+The first level of self-optimization for the system under control is each server's self-optimization. For the purpose of this thesis, the server self-optimization is quite simple: each server decides when to accept clients and when not to accept clients based on it's local knowledge and local control system. The control system used for each server is a fuzzy system which predicts the load on the server and based on the predicted load either stops accepting clients or starts accepting clients again if it had stopped before. For this purpose, each server has its own control loop, similar to the one developed in \ref{bogdan:seams07}. The architecture can be seen in Figure \ref{fig:selfopt-archi}. More complex control systems based on control theory can be used, however the control system for one server is not the main purpose of this thesis.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.9\linewidth]{Self-optimizingControlLoop_full}
+	\caption{Self-Optimizing Control Loop Architecture}
+	\label{fig:selfopt-archi}
+\end{figure}
+
+In the case of the geographically distributed cloud each server can be seen as having one perturbation signal which is the arrival of requests from clients connected to the server. Some requests, like video streaming, are more demanding on the server than others. As requests are processed, the CPU usage and response time of the server will change. More requests or more demanding requests will lead to higher CPU usage and an increase in response time. As the number of requests decreases, the CPU usage and response time will also decrease. Based on the measured sensor data, the control loop uses a fuzzy model and estimator to predict the response time for the next sampling period. This prediction is used in order to decide if the server should accept connections or not. The block diagram can be mapped to the eight component based architecture through the following steps:
+
+\begin{enumerate}
+	\item Implement a sensor which measures the desired data from the media server. The measured data includes:
+	\begin{enumerate}
+		\item CPU usage
+		\item Number of connected clients
+		\item Number of collaborative rooms
+		\item Number of clients connected to all media servers in the cloud
+		\item Network latency
+		\item Bandwidth up/down
+		\item Number of streams incoming/outgoing from server
+	\end{enumerate}
+	\item Add a filter which computes the numbers of packets in and out from the bandwidth up/down
+	\item Add a fuzzy model which calculates the confidence that the server is overloaded. The fuzzy model computes two fuzzy functions:
+	\begin{enumerate}
+		\item Compute confidence1 based on number of clients, packets out, packets in and number of incoming streams.
+		\item Compute confidence2 based on packets in and CPU usage
+		\item Take the maximum value of the two confidences
+	\end{enumerate}
+	\item Add an estimator which compares the confidence from the model with two given thresholds. If the confidence is above the higher threshold increment a counter of how many times the system was above the higher threshold. Similarly if the confidence is bellow the threshold increment a counter of how many time the system was bellow the lower threshold.
+	\item Add a decision maker which uses the count of how many times the system was above/bellow the thresholds in the estimator to decide if the server should accept or reject connections. If the server is above the higher threshold for more than a given count, then the server stops accepting new clients. If the server is bellow the lower threshold for a given amount of time and is not accepting clients, then it starts accepting clients.
+	\item Add an actuator which communicates with the cloud load balancer. If the server should not accept connections then the actuator sends a message to the load balancer that it should stop redirecting new clients to it. Conversely, if the server should start accepting clients again, then it sends a message that the load balancer can start redirecting clients to it.
+	\item The coordinator simply coordinates the control loop and passes messages between model, controller, decision maker and actuator.
+\end{enumerate}
+
+The control system for each media server is an application separated from the media server and deployed in a separate container from the media server. It can connect to the media server to retrieve sensor data but has no other interactions with the media server. The control system can also act on behalf of the media server to ask the load balancer to redirect or stop redirecting new clients to the media server. The overall control architecture looks as Figure \ref{fig:control-containers}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.9\linewidth]{Control_system_containers}
+	\caption{Control System}
+	\label{fig:control-containers}
+\end{figure}
+
+\section{SLA breach detection: Ant Colony Optimization}
+
+The ant colony optimization (ACO) algorithm \cite{antalgorithm}, \cite{antalgofood} is best known for load balancing clouds or finding the best route in a network. The algorithm has received a lot of attention and work in academia and was presented in chapter \ref{Chapter2}. At a high level the algorithm uses a number of simple agents called ants which traverse the network and leave a trail of pheromones which other ants can then follow. Good paths or solutions are reinforced by having more ants traverse them and leaving more pheromones. Once a path or solution is no longer good, less ants travel it and another path is reinforced as more ants travel that path. In networking optimization ants behave as normal packets and travel the network from router to router. When an ant reaches a router it can look at how long the arrival router's buffer queue is for the router the ant came from and then reinforce that route based on latency, buffer sizes, etc. as shown in Figure \ref{fig:aco}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.9\linewidth]{ACO}
+	\caption{Ant Colony Optimization}
+	\label{fig:aco}
+\end{figure}
+
+For the self-organizing self-optimizing control system for the collaborative media application cloud presented in this thesis, the pheromone level in the network of servers is used as a proxy for how overloaded the entire cloud of servers is and used to decide when to add or remove servers. Whenever a media server starts, the media server's control system creates a new ant and sends it through the network of servers. If the server is the first server and has no knowledge of other servers it sends no ant. Thus the total number of ants is equal to $N - 1$ where $N$ is the number of servers. When an ant is first created, because it has no prior knowledge, it is sent to another server randomly.
+
+As ants reach other servers they deposit pheromone at the server they arrive at, at a rate inversely proportional to the load of the server. At the same time ants wait at the server a time proportional to the load of the server. Thus overloaded servers will have less pheromone deposited when compared to an under-loaded server. By having ants wait a longer time at overloaded servers, the overall amount of pheromone in the network will further decrease. With this approach, less pheromone in the network means that the cloud has more load as more servers have low pheromone levels because of being overloaded.
+
+Assume that an ant $k_{1}$ deposits an amount of pheromone $\tau_{k1}$ when it reaches a node which has 0 load - represented by a high fuzzy confidence value, and waits at an under-loaded node $15s$. Another ant $k_{2}$ which reaches a node where the confidence value is $50\%$ of the higher threshold will deposit only $\tau_{k} * (1 - p)$ where $p$ is the fuzzy confidence as a percentage and waits at the node a time of $15s/(1-p)$ with a maximum wait time of $60s$ to avoid waiting an infinite time when $p$ approaches $100\%$. At the same time, the pheromone left by the ants decays at a rate of $\rho$ every $15s$. As such, the amount of pheromone at any node can be seen as:
+
+\begin{equation}
+p^{t}_{n} = p^{t-1}_{n} + \sum_{i=1}^{K}(\tau * (1 - p)) - \rho
+\end{equation}
+
+where $p^{t}_{n}$ is the amount of pheromone at node $n$ at time $t$ where $t$ can be considered discrete in $15s$ increments and $K$ is the amount of ants arriving at the node in the time frame between $t-1$ and $t$.
+
+At the same time, ants store information about which servers they have visited and time passed since the last visit. When an ant decides which server to go to, it uses a random function which is proportional to the time since it has not visited a server combined with the pheromone level of the destination server. Thus the ant will give preference to the servers it has not visited in a long time, and especially the servers it has never visited. Because the server structure is not stable and servers can join and leave at any time, ants decide the next server to visit based on the servers known by the current server the ant is at.  Assume a cloud with 5 servers and an ant which has the following information in it's visit history table and which reaches Server 5.
+
+\begin{table}[]
+\centering
+\begin{tabular}{c|c}
+Server & Time since last visit (s) & Pheromone Level \\
+Server 1 & 15 & 10 \\ 
+Server 2 & 20 & 5 \\
+Server 3 & 5 & 8 \\
+Server 4 & 35 & 5.5 \\
+Server 5 & 0 & 10 \\
+\end{tabular}
+\caption{Ant routing knowledge prior}
+\label{tab:ant_prio}
+\end{table}
+
+Based on the table, the ant computes the probability of visiting each server as:
+
+\begin{equation}
+P_s = (t_s / \sum_{i=1}^{N} t_i + p_{s} / \sum_{i=1}^{N} p_i) / 2
+\end{equation}
+
+where $P_s$ is the probability of visiting server $s$, $t_s$ is the time since it has visited server $s$ last time and $p_{s}$ is the pheromone at server $s$. These probabilities are computed only on the servers known as being up by the server the ant is at. The server the ant is currently at has to be excluded from the calculations, and it's probability will be 0. Let us assume also that Server 5, which is the server the ant is at currently does not yet know about server 3. As such, the visit probability table looks as follows:
+
+\begin{table}[]
+\centering
+\begin{tabular}{c|c}
+Server & Probability (\%) \\
+Server 1 & 35.10 \\
+Server 2 & 26.48 \\
+Server 4 & 38.42 \\
+Server 5 & 0 \\
+\end{tabular}
+\caption{Ant routing probability}
+\label{tab:ant_prob}
+\end{table}
+
+As such, the ant will roll a random value between 0 and 1, and choose which server to go to. A value between 0 and 0.3842 means Server 4, between 0.3842 and 0.7352 means Server 1 and between 0.7352 and 1 means Server 2. Assuming the value the ant rolls is 0.7, and that the ant waits at Server 5 for 5s, the routing table after the ant moves to the next server will be:
+
+\begin{table}[]
+\centering
+\begin{tabular}{c|c}
+Server & Time since last visit (s) & Pheromone Level \\
+Server 1 & 0 & 8 \\
+Server 2 & 25 & 5 \\
+Server 3 & 10 & 8 \\
+Server 4 & 40 & 5.5 \\
+Server 5 & 5 & 10 \\
+\end{tabular}
+\caption{Ant routing knowledge posterior}
+\label{tab:ant_post}
+\end{table}
+
+In order to avoid having all ants visit a new node at the same time, whenever an ant discovers a new server it initializes the time since it visited the server with a random value. Assume that after the ant reaches Server 1, it discovers a new server which was unknown before - Server 6. The time since last visiting Server 6 will be initialized with a random value between 0 and the maximum time since last visiting a server which is known to be alive as in Equation \ref{eq:randomnew}. Furthermore the known pheromone level of the new server will be 0. If Server 1 only knows Server 2, 5 and 6 then the random value will be between 0 and 25s.
+
+\begin{equation}
+t_{new} = random(0, max(t_{known}))
+\label{eq:randomnew}
+\end{equation}
+
+The ACO algorithm is used in order to decide when the system is about to breach its SLAs. Once the ACO algorithm detects that the system's SLA is about to be breached the ant relocation algorithm starts in order to find how many servers should be started or removed. As such, each ant is also responsible for measuring the pheromone level at each node it visits. Ants store a history of the last $N$ nodes that they visited and the pheronomone level at each of these nodes. Every time an ant moves to a new server, it removes the oldest pheronomone value from this list and adds the pheronomone at the current node. It then computes an aggregate metric of the pheronomone at the last $N$ nodes visited, which is a simple average:
+
+\begin{equation}
+p_{ant} = \sum_{i=1}^{N} p_{N} / N
+\end{equation}
+
+where $p_{N}$ is the pheromone at server $N$. Once the pheromone level of an ant goes under a predefined value, the ant morphs into an ant relocator which searches for the new count of servers which should be added to the cloud. Similarly, if the pheromone level of an ant becomes too high, the ant morphs and starts searching for the number of servers which should be removed from the cloud.
+
+When an ant reaches a new control node it is processed by the controller as shown in Figure \ref{ant:pseudocode}
+
+\begin{algorithm}
+	Calculate pheromone at current node
+	Update ant's server tables
+	\eIf{Ant should morph}{Morph ant}
+	{
+		Calculate next server for ant
+		Send ant to next server
+	}
+\caption{Ant Colony Optimization Pseudocode}\label{ant:pseudocode}
+\end{algorithm}
+
+For example, for a network of five servers figure \ref{fig:antnetwork} shows the behaviour of the ant algorithm.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.9\linewidth]{AntNetwork}
+	\caption{Ant Colony Optimization Network}
+	\label{fig:antnetwork}
+\end{figure}
+
+\subsection{Ant house hunting}
+
+The ant house hunting algorithm can be used in order to optimize the number of servers in the cloud by having ants search for the optimal number of servers which should be up in the cloud. This algorithm works by having each ant search for a new nest, where a nest is represented by a new optimum number of servers in the cloud. Once more than half of the ants have agreed on the same optimum value, the servers are added or removed as desired and all ants are morphed back into food foraging ants for the ACO algorithm.
+
+When an ant morphs into a house hunting ant it initializes itself with a range of possible solutions for the new size of the cloud. These possible solutions are computed as permutations of the current size of the cloud as known by the server the ant is at. If the ant was morphed because of lack of pheromone, then the ant generates a random value which would represent the number of servers to be added. Each random value is proportional to the size of the cloud and the pheromone level across the last $N$ servers known by the ant. For example, if the cloud contains only 2 servers, then the ant is initialized with a random value between 1 and 2. However, if the cloud contains 100 servers, then the ant would be initialized with a random values, which is defined as:
+
+\begin{equation}
+ServerCount_{add} = 1 + rand * N / (p_{ant})
+\end{equation}
+
+such that the lower the pheronomone value, the higher the probability of more servers being added. The random value has the effect of generating multiple possible solutions across different ants.
+
+If however the ant was morphed because of too much pheromone, then it does a similar initialization, but in this case it randomly chooses $X$ servers and hides them from its knowledge of the cloud. The servers are still in the ants history but it does not consider them. Each ant will create a different such permutation of servers which are hidden.
+
+The ant relocation algorithm is performed in rounds. In the first round all relocator ants search for a new nest by searching their solution space. This is achieved by having each ant choose one solution and simulating its effect on the pheromone level. If the ant is a server adder then the ant simulates that the $ServerCount_{add}$ servers are up and with no load. It picks $K$ servers from the list of the last $N$ servers it has visited and hides them, and replaces them with servers with no load. It then uses this information in order to simulate the pheromone level. If the ant is a subtractor, it hides $K$ servers where $K$ is defined as part of its random solution and simulates the effect this would have on its pheromone level.
+
+In the second round, all ants meet at the home nest and compare their solutions. The ants with the worst $i$ solutions give up their solutions and stay at the home nest to be recruited by other ants. Ants which have valid solutions recruit from the ants which are waiting to be recruited. The recruitment process is completely random, and ants then go together to a new nest in a round similar to round one. While two ants can go together to the same 'nest' and simulate the same number of servers, the hidden servers will be different so the ants will have different pheronome levels. The ants will then return to the home nest again and try to recruit from the ants which are at home. After the second round, when ants reach a new nest they look at how many ants are at the new nest. If the number of ants has decreased, then they give up and return home to be recruited to other nests.
