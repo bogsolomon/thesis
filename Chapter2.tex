@@ -212,19 +212,21 @@ In \cite{Intelligent cloud algorithms for load balancing problems: A survey}, th
 One of the oldest approaches for self-organizing systems is based on mutating solutions and maintaining only the fittest solutions to continue mutating in the future. The optimization usually starts with a random solution which is encoded in some form of digital representation - usually a binary string. There also exists some form of fitness function which decides how good a solution is. Solutions are chosen in pairs and they exchange part of the solution to form two children. Mutations can also be introduced by randomly changing part of a child. After the population of children is obtained, the children are measured using the fitness function and unfit children are removed from the population. The surviving children become the new parents and the loop is repeated either for a given number of iterations or until a certain fitness value is passed. The final solution is the one with the best fitness of the entire population. The pseudocode in \ref{algo:ga} shows the behaviour of GA algorithms.
 
 \begin{algorithm}
-Random generation of initial parents
-\While{end criteria not met}{
-	Select parent pairs and cross over chromosomes
-	Randomly mutate children
-	Compute children fitness
-	\eIf{child is fit}{
-		keep child in population
-	}{
-		remove child
-	}
-	replace parents with children population
-}
-return best fit child
+\begin{algorithmic}
+\State Random generation of initial parents
+\While{end criteria not met}
+	\State Select parent pairs and cross over chromosomes
+	\State Randomly mutate children
+	\State Compute children fitness
+	\If{child is fit}
+		\State keep child in population
+	\Else
+		\State remove child
+	\EndIf
+	\State replace parents with children population
+\EndWhile
+\State return best fit child
+\end{algorithmic}
 \caption{Genetic Algorithm Pseudocode}\label{algo:ga}
 \end{algorithm}
 
@@ -232,23 +234,31 @@ In the case of the problem presented in this thesis - that of optimizing the siz
 
 \subsubsection{Particle Swarm Optimization (PSO)}
 
-Particle swarm optimization uses as inspiration the behaviour of flocks of birds or swarms of fish looking for food. Each possible solution represents a particle in the search space with a position, and the particles move based on their own speed and the best known position. At the same time, there exists an optimization function $f$ which takes as value the position of a particle and returns a value representing how good that solution is. As such, each particle is initialized with a random position and speed. Each of the position computes it's $f$ function and save it as the position's best solution. The best of the $f$ values is stored as the swarms best solution. At each step of the iteration, each of the particles computes a new speed and a new position based on the previous position and speed, such that each particle's movement is guided by it's own best solution and the swarms best solution. Once an exit criteria is reached - either number of iterations or the desired function is sufficiently improved, the algorithm exits and the best swarm position is used as the solution of the optimization problem. The pseudocode in \ref{algo:pso} shows the behaviour of PSO algorithms. $f{swarm)$ is defined as the best solution for the swarm.
+Particle swarm optimization uses as inspiration the behaviour of flocks of birds or swarms of fish looking for food. Each possible solution represents a particle in the search space with a position, and the particles move based on their own speed and the best known position. At the same time, there exists an optimization function $f$ which takes as value the position of a particle and returns a value representing how good that solution is. As such, each particle is initialized with a random position and speed. Each of the position computes it's $f$ function and save it as the position's best solution. The best of the $f$ values is stored as the swarms best solution. At each step of the iteration, each of the particles computes a new speed and a new position based on the previous position and speed, such that each particle's movement is guided by it's own best solution and the swarms best solution. Once an exit criteria is reached - either number of iterations or the desired function is sufficiently improved, the algorithm exits and the best swarm position is used as the solution of the optimization problem. The pseudocode in \ref{algo:pso} shows the behaviour of PSO algorithms. $f(swarm)$ is defined as the best solution for the swarm.
 
 \begin{algorithm}
-Random uniform generation of initial positions and velocities in search space
+\begin{algorithmic}
+\State Random uniform generation of initial positions and velocities in search space
 \ForAll{Particles} 
-	Compute particle's position and save as best position
-	\eIf{$f(particle)$ > $f(swarm)$}{update $best{swarm)$ = particle}
+	\State Compute particle's position and save as best position
+	\If{$f(particle) > f(swarm)$} 
+		\State update $best(swarm)$ = particle
+	\EndIf
 \EndFor
-\While{end criteria not met}{
+\While{end criteria not met}
 	\ForAll{Particles} 
-		Compute particle's new speed
-		Compute particle's new position
-		\eIf{$f(particle_{new})$ > $f(particle_{best})$}{update particle_best = particle_new}
-		\eIf{$f(particle_new)$ > $f(swarm)$}{update $best{swarm)$ = particle_{new}}
+		\State Compute particle's new speed
+		\State Compute particle's new position
+		\If{ $f(particle_{new}) > f(particle_{best})$ } 
+			\State update $particle_{best}$ = $particle_{new}$ 
+		\EndIf
+		\If{ $f(particle_new) > f(swarm)$ } 
+			\State update $best(swarm)$ = $particle_{new}$
+		\EndIf
 	\EndFor
-}
-return $best{swarm)$
+\EndWhile
+\State return $best(swarm)$
+\end{algorithmic}
 \caption{Particle Swarm Optimization}\label{algo:pso}
 \end{algorithm}
 
@@ -265,14 +275,16 @@ Algorithmically, this behaviour is represented by an iterative loop over three p
 The pseudocode in \ref{algo:abc} shows the behaviour of ABC algorithms.
 
 \begin{algorithm}
-Initialize solutions randomly using scout bees
-\While{end criteria not met}{
-	Employed bee phase
-	Onlooker bee phase
-	Scout bee phase
-	Store best solution up to now
-}
-return $best{solution)$
+\begin{algorithmic}
+\State Initialize solutions randomly using scout bees
+\While{end criteria not met}
+	\State Employed bee phase
+	\State Onlooker bee phase
+	\State Scout bee phase
+	\State Store best solution up to now
+\EndWhile
+\State return $best(solution)$
+\end{algorithmic}
 \caption{Artificial Bee Colony}\label{algo:abc}
 \end{algorithm}
 
@@ -289,26 +301,30 @@ In the case of routing in a network, the nodes are the routers and the edges are
 The pseudocode in \ref{algo:aco} shows the behaviour of ACO algorithm from the perspective of an ant.
 
 \begin{algorithm}
-\While{end criteria not met}{
-	Find next node based on pheromones/random
-	Go to next node
-	Update pheromones for the edge just traversed
-}
-return $best{solution) based on pheromones$
+\begin{algorithmic}
+\While{end criteria not met}
+	\State Find next node based on pheromones/random
+	\State Go to next node
+	\State Update pheromones for the edge just traversed
+\EndWhile
+\State return $best(solution) based on pheromones$
+\end{algorithmic}
 \caption{Ant Colony Optimization}\label{algo:aco}
 \end{algorithm}
 
 Another self-organizing algorithm is based on the behaviour of ants when relocating to a new nest in the case when the old nest was destroyed. This behaviour is similar to that of honey bees when relocating \cite{consensus decision making in the ant ...}. When their nest is destroyed, ants start looking for a new nest by doing tandem runs. In such a case, there are two types of ants - scouts and non scouts. Scouts start to search for new nests randomly and upon finding a new possible nest they determine how viable the new nest is and return home. Upon coming back home ants recruit from the non-scout ants and do tandem runs together. At the same time scout ants can be recruited by other scouts who have a better nest as their new nest. This process is repeated until a quorum of ants has chosen a new site for the nest. Ants can give up on their possible new nest if the population of the new nest starts decreasing - suggesting that ants from this new nest have been successfully recruited by a better nest. The pseudocode in \ref{algo:antreloc} shows the behaviour of the ant relocation algorithm.
 
 \begin{algorithm}
-Round 1: Ants find new nests
-\While{more than one nest}{
-	Round 2: Viable ants return home and recruit from the other ants
-	Round 2: Not viable ants wait one turn
-	Round 3: Tandem runs to new nest. Upon arrival at new nest ants compare previous and new nest size. Nest with decreasing pop become not viable. 
-	Round 3: Not viable ants return home
-}
-return $single nest$
+\begin{algorithmic}
+\State Round 1: Ants find new nests
+\While{more than one nest}
+	\State Round 2: Viable ants return home and recruit from the other ants
+	\State Round 2: Not viable ants wait one turn
+	\State Round 3: Tandem runs to new nest. Upon arrival at new nest ants compare previous and new nest size. Nest with decreasing pop become not viable. 
+	\State Round 3: Not viable ants return home
+\EndWhile
+\State return $single nest$
+\end{algorithmic}
 \caption{Ant Colony Relocation}\label{algo:antreloc}
 \end{algorithm}
 

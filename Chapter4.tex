@@ -89,7 +89,7 @@ At the same time, ants store information about which servers they have visited a
 
 \begin{table}[]
 \centering
-\begin{tabular}{c|c}
+\begin{tabular}{c|c|c}
 Server & Time since last visit (s) & Pheromone Level \\
 Server 1 & 15 & 10 \\ 
 Server 2 & 20 & 5 \\
@@ -126,7 +126,7 @@ As such, the ant will roll a random value between 0 and 1, and choose which serv
 
 \begin{table}[]
 \centering
-\begin{tabular}{c|c}
+\begin{tabular}{c|c|c}
 Server & Time since last visit (s) & Pheromone Level \\
 Server 1 & 0 & 8 \\
 Server 2 & 25 & 5 \\
@@ -156,13 +156,16 @@ where $p_{N}$ is the pheromone at server $N$. Once the pheromone level of an ant
 When an ant reaches a new control node it is processed by the controller as shown in Figure \ref{ant:pseudocode}
 
 \begin{algorithm}
-	Calculate pheromone at current node
-	Update ant's server tables
-	\eIf{Ant should morph}{Morph ant}
-	{
-		Calculate next server for ant
-		Send ant to next server
-	}
+\begin{algorithmic}
+	\State Calculate pheromone at current node
+	\State Update ant's server tables
+	\If{Ant should morph}
+		\State Morph ant
+	\Else
+		\State Calculate next server for ant
+		\State Send ant to next server
+	\EndIf
+\end{algorithmic}
 \caption{Ant Colony Optimization Pseudocode}\label{ant:pseudocode}
 \end{algorithm}
 
@@ -222,48 +225,38 @@ When reaching a new nest, active ants count the number of ants at the nest and c
 The above algorithm can be described as follows in pseudo-code in Figure \ref{ant:pseudocodeHouseHunting}. $R_{x}$ represents round x.
 
 \begin{algorithm}
-	$R_{1}$: Go to new nest
-	Compute suitability of new nest
-	\eIf{Suitability < threshold}
-	{
+\begin{algorithmic}
+	\State $R_{1}$: Go to new nest
+	\State Compute suitability of new nest
+	\If{Suitability < threshold}
 		Switch to passive
-	}
-	$R_{2}$: Go to home nest
-	\eIf{Ant is active && Ant is not recruited}
-	{
-		Recruit another ant
-		Go to new nest
-	}
-	\uElseIf{Ant is recruited}
-	{
-		Go to new nest
-	}
-	$R_{3}$: Count number of ants at new nest = $count_{new}$
-	\eIf{Nest is same and $count_{new} >= count_{old}$}
-	{
-		Wait round
-	}
-	\uElseIf{Nest is same and $count_{new} < count_{old}$}
-	{
-		Switch to passive
-		Go to home nest
-	}
-	\uElseIf{Nest is different}
-	{
-		Wait round
-	}
-	$R_{4}$: Count number of ants at new nest $count_{new}$
-	\eIf{$count_{new} == count_{home}$}
-	{
-		Switch to final state
-	}
-	\uElseIf{$count_{new} < count_{old}$}
-	{
-		Switch to passive
-		Go to $R_{2}$
-	}
-	Return final state
-	Switch ants to ACO ants
+	\EndIf
+	\State $R_{2}$: Go to home nest
+	\If{Ant is active \&\& Ant is not recruited}
+		\State Recruit another ant
+		\State Go to new nest
+	\ElsIf{Ant is recruited}
+		\State Go to new nest
+	\EndIf
+	\State $R_{3}$: Count number of ants at new nest = $count_{new}$
+	\If{Nest is same and $count_{new} >= count_{old}$}
+		\State Wait round
+	\ElsIf{Nest is same and $count_{new} < count_{old}$}
+		\State Switch to passive
+		\State Go to home nest
+	\ElsIf{Nest is different}
+		\State Wait round
+	\EndIf
+	\State $R_{4}$: Count number of ants at new nest $count_{new}$
+	\If{$count_{new} == count_{home}$}
+		\State Switch to final state
+	\ElsIf{$count_{new} < count_{old}$}
+		\State Switch to passive
+		\State Go to $R_{2}$
+	\EndIf
+	\State Return final state
+	\State Switch ants to ACO ants
+\end{algorithmic}
 \caption{Ant House Hunting Pseudocode}\label{ant:pseudocodeHouseHunting}
 \end{algorithm}
 
