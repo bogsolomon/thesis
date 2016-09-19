@@ -151,7 +151,7 @@ The ACO algorithm is used in order to decide when the system is about to breach 
 p_{ant} = \sum_{i=1}^{N} p_{N} / N
 \end{equation}
 
-where $p_{N}$ is the pheromone at server $N$. Once the pheromone level of an ant goes under a predefined value, the ant morphs into a house hunting ant which searches for the new count of servers which should be added to the cloud. Similarly, if the pheromone level of an ant becomes too high, the ant morphs and starts searching for the number of servers which should be removed from the cloud.
+where $p_{N}$ is the pheromone at server $N$. Once the pheromone level of an ant goes under a predefined value, the ant morphs into a house hunting ant which searches for the new count of servers which should be added to the cloud. Similarly, if the pheromone level of an ant becomes too high, the ant morphs and starts searching for the number of servers which should be removed from the cloud. The house hunting algorithm used to optimize the number of servers in the cloud does not start until enough of the ants have morphed into house hunting ants. Until enough ants have morphed for the house hunting algorithm to start, the morphed ants continue behaving as ACO ants. Once more than half of the ants morph all ants go to one node and the house hunting algorithm starts.
 
 When an ant reaches a new control node it is processed by the controller as shown in Figure \ref{ant:pseudocode}
 
