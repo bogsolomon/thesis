@@ -18,7 +18,7 @@ The reason to use a self-organizing systems for the adaptation is due to the int
 
 \section{Server self-optimization}
 
-The first level of self-optimization for the system under control is each server's self-optimization. For the purpose of this thesis, the server self-optimization is quite simple: each server decides when to accept clients and when not to accept clients based on it's local knowledge and local control system. The control system used for each server is a fuzzy system which predicts the load on the server and based on the predicted load either stops accepting clients or starts accepting clients again if it had stopped before. For this purpose, each server has its own control loop, similar to the one developed in \ref{bogdan:seams07}. The architecture can be seen in Figure \ref{fig:selfopt-archi}. More complex control systems based on control theory can be used, however the control system for one server is not the main purpose of this thesis.
+The first level of self-optimization for the system under control is each server's self-optimization. For the purpose of this thesis, the server self-optimization is quite simple: each server decides when to accept clients and when not to accept clients based on it's local knowledge and local control system. The control system used for each server is a fuzzy system which predicts the load on the server and based on the predicted load either stops accepting clients or starts accepting clients again if it had stopped before. For this purpose, each server has its own control loop, similar to the one developed in \cite{bogdan:seams07}. The architecture can be seen in Figure \ref{fig:selfopt-archi}. More complex control systems based on control theory can be used, however the control system for one server is not the main purpose of this thesis.
 
 \begin{figure}
 	\centering
@@ -64,7 +64,7 @@ The control system for each media server is an application separated from the me
 
 \section{SLA breach detection: Ant Colony Optimization}
 
-The ant colony optimization (ACO) algorithm \cite{antalgorithm}, \cite{antalgofood} is best known for load balancing clouds or finding the best route in a network. The algorithm has received a lot of attention and work in academia and was presented in chapter \ref{Chapter2}. At a high level the algorithm uses a number of simple agents called ants which traverse the network and leave a trail of pheromones which other ants can then follow. Good paths or solutions are reinforced by having more ants traverse them and leaving more pheromones. Once a path or solution is no longer good, less ants travel it and another path is reinforced as more ants travel that path. In networking optimization ants behave as normal packets and travel the network from router to router. When an ant reaches a router it can look at how long the arrival router's buffer queue is for the router the ant came from and then reinforce that route based on latency, buffer sizes, etc. as shown in Figure \ref{fig:aco}
+The ant colony optimization (ACO) algorithm \cite{antalgorithm}, \cite{selforg:aco} is best known for load balancing clouds or finding the best route in a network. The algorithm has received a lot of attention and work in academia and was presented in chapter \ref{Chapter2}. At a high level the algorithm uses a number of simple agents called ants which traverse the network and leave a trail of pheromones which other ants can then follow. Good paths or solutions are reinforced by having more ants traverse them and leaving more pheromones. Once a path or solution is no longer good, less ants travel it and another path is reinforced as more ants travel that path. In networking optimization ants behave as normal packets and travel the network from router to router. When an ant reaches a router it can look at how long the arrival router's buffer queue is for the router the ant came from and then reinforce that route based on latency, buffer sizes, etc. as shown in Figure \ref{fig:aco}
 
 \begin{figure}
 	\centering
@@ -107,7 +107,7 @@ Based on the table, the ant computes the probability of visiting each server as:
 P_s = (t_s / \sum_{i=1}^{N} t_i + p_{s} / \sum_{i=1}^{N} p_i) / 2
 \end{equation}
 
-where $P_s$ is the probability of visiting server $s$, $t_s$ is the time since it has visited server $s$ last time and $p_{s}$ is the pheromone at server $s$. These probabilities are computed only on the servers known as being up by the server the ant is at. The server the ant is currently at has to be excluded from the calculations, and it's probability will be 0. Let us assume also that Server 5, which is the server the ant is at currently does not yet know about server 3. As such, the visit probability table looks as follows:
+where $P_s$ is the probability of visiting server $s$, $t_s$ is the time since it has visited server $s$ last time and $p_{s}$ is the pheromone at server $s$. These probabilities are computed only on the servers known as being up by the server the ant is at. The server the ant is currently at has to be excluded from the calculations, and it's probability will be 0. Let us assume also that Server 5, which is the server the ant is at currently does not yet know about server 3. As such, the visit probability table looks as in Table \ref{tab:ant_prob}.
 
 \begin{table}[]
 \centering
@@ -122,7 +122,7 @@ Server 5 & 0 \\
 \label{tab:ant_prob}
 \end{table}
 
-As such, the ant will roll a random value between 0 and 1, and choose which server to go to. A value between 0 and 0.3842 means Server 4, between 0.3842 and 0.7352 means Server 1 and between 0.7352 and 1 means Server 2. Assuming the value the ant rolls is 0.7, and that the ant waits at Server 5 for 5s, the routing table after the ant moves to the next server will be:
+As such, the ant will roll a random value between 0 and 1, and choose which server to go to. A value between 0 and 0.3842 means Server 4, between 0.3842 and 0.7352 means Server 1 and between 0.7352 and 1 means Server 2. Assuming the value the ant rolls is 0.7, and that the ant waits at Server 5 for 5s, the routing table after the ant moves to the next server will be as the one in Table \ref{tab:ant_post}.
 
 \begin{table}[]
 \centering
@@ -145,7 +145,7 @@ t_{new} = random(0, max(t_{known}))
 \label{eq:randomnew}
 \end{equation}
 
-The ACO algorithm is used in order to decide when the system is about to breach its SLAs. Once the ACO algorithm detects that the system's SLA is about to be breached the ant relocation algorithm starts in order to find how many servers should be started or removed. As such, each ant is also responsible for measuring the pheromone level at each node it visits. Ants store a history of the last $N$ nodes that they visited and the pheronomone level at each of these nodes. Every time an ant moves to a new server, it removes the oldest pheronomone value from this list and adds the pheronomone at the current node. It then computes an aggregate metric of the pheronomone at the last $N$ nodes visited, which is a simple average:
+The ACO algorithm is used in order to decide when the system is about to breach its SLAs. Once the ACO algorithm detects that the system's SLA is about to be breached the ant house hunting algorithm starts in order to find how many servers should be started or removed. As such, each ant is also responsible for measuring the pheromone level at each node it visits. Ants store a history of the last $N$ nodes that they visited and the pheronomone level at each of these nodes. Every time an ant moves to a new server, it removes the oldest pheronomone value from this list and adds the pheronomone at the current node. It then computes an aggregate metric of the pheronomone at the last $N$ nodes visited, which is a simple average:
 
 \begin{equation}
 p_{ant} = \sum_{i=1}^{N} p_{N} / N
@@ -153,7 +153,7 @@ p_{ant} = \sum_{i=1}^{N} p_{N} / N
 
 where $p_{N}$ is the pheromone at server $N$. Once the pheromone level of an ant goes under a predefined value, the ant morphs into a house hunting ant which searches for the new count of servers which should be added to the cloud. Similarly, if the pheromone level of an ant becomes too high, the ant morphs and starts searching for the number of servers which should be removed from the cloud. The house hunting algorithm used to optimize the number of servers in the cloud does not start until enough of the ants have morphed into house hunting ants. Until enough ants have morphed for the house hunting algorithm to start, the morphed ants continue behaving as ACO ants. Once more than half of the ants morph all ants go to one node and the house hunting algorithm starts.
 
-When an ant reaches a new control node it is processed by the controller as shown in Figure \ref{ant:pseudocode}
+When an ant reaches a new control node it is processed by the controller as shown in Algorithm \ref{ant:pseudocode}
 
 \begin{algorithm}
 \begin{algorithmic}
@@ -169,7 +169,7 @@ When an ant reaches a new control node it is processed by the controller as show
 \caption{Ant Colony Optimization Pseudocode}\label{ant:pseudocode}
 \end{algorithm}
 
-For example, for a network of five servers figure \ref{fig:antnetwork} shows the behaviour of the ant algorithm.
+For example, for a network of five servers Figure \ref{fig:antnetwork} shows the behaviour of the ant algorithm.
 
 \begin{figure}
 	\centering
@@ -180,7 +180,7 @@ For example, for a network of five servers figure \ref{fig:antnetwork} shows the
 
 \subsection{Cluster optimization: Ant house hunting}
 
-The ant house hunting algorithm can be used in order to optimize the number of servers in the cloud by having ants search for the optimal number of servers which should be up in the cloud. This algorithm works by having each ant search for a new nest, where a nest is represented by a new optimum number of servers in the cloud. The algorithm assumes that there is a home nest where the ants can meet after searching for a new nest. Once more than half of the ants have agreed on the same optimum value, the servers are added or removed as desired and all ants are morphed back into food foraging ants for the ACO algorithm. \cite{Distributed House-Hunting in Ant Colonies}
+The ant house hunting algorithm can be used in order to optimize the number of servers in the cloud by having ants search for the optimal number of servers which should be up in the cloud. This algorithm works by having each ant search for a new nest, where a nest is represented by a new optimum number of servers in the cloud. The algorithm assumes that there is a home nest where the ants can meet after searching for a new nest. Once more than half of the ants have agreed on the same optimum value, the servers are added or removed as desired and all ants are morphed back into food foraging ants for the ACO algorithm. \cite{selforg:antreloc}
 
 When an ant morphs into a house hunting ant it initializes itself with a range of possible solutions for the new size of the cloud. These possible solutions are computed as permutations of the current size of the cloud as known by the server the ant is at. If the ant was morphed because of lack of pheromone, then the ant generates a random value which would represent the number of servers to be added. Each random value is proportional to the size of the cloud and the pheromone level across the last $N$ servers known by the ant. For example, if the cloud contains only 2 servers, then the ant is initialized with a random value between 1 and 2. However, if the cloud contains 100 servers, then the ant would be initialized with a random values, which is defined as:
 
@@ -219,7 +219,7 @@ When reaching a new nest, active ants count the number of ants at the nest and c
 \begin{enumerate}
 	\item If the nest is the same nest that the ant went to before and the number of ants has increased or remained the same then the nest is still a possible solution so the ant updates the count and waits an extra round at the nest. After waiting a round, the ant checks if the number of ants at the home nest is the same as that at it's current nest. If they are the same then the ant goes to the final state, new servers are added or removed and all ants morph back to ACO ants.
 	\item If the nest is the same nest that the ant went to before and the number of ants has decreased then the ant becomes passive because the nest is in the process of being dropped out, and returns home in the same round that active ants wait at the new nest.
-	\item If the nest is different then the nest the ant was committed to then it checks to see if the number of ants at it's new nest has decreased or not. If the number has decreased, then this nest is dropping out as the ants already committed to it have gone to the home nest and the ant becomes passive. Otherwise, the ant commits to it's new nest and goes home to recruit other ants.
+	\item If the nest is different then the nest the ant was committed to then the ant waits a round and then it checks to see if the number of ants at it's new nest has decreased or not. If the number has decreased, then this nest is dropping out as the ants already committed to it have gone to the home nest and the ant becomes passive. Otherwise, the ant commits to it's new nest and goes home to recruit other ants.
 \end{enumerate}
 
 The above algorithm can be described as follows in pseudo-code in Figure \ref{ant:pseudocodeHouseHunting}. $R_{x}$ represents round x.
@@ -228,7 +228,7 @@ The above algorithm can be described as follows in pseudo-code in Figure \ref{an
 \begin{algorithmic}
 	\State $R_{1}$: Go to new nest
 	\State Compute suitability of new nest
-	\If{Suitability < threshold}
+	\If{Suitability $<$ threshold}
 		Switch to passive
 	\EndIf
 	\State $R_{2}$: Go to home nest
