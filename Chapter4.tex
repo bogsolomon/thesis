@@ -178,6 +178,106 @@ For example, for a network of five servers Figure \ref{fig:antnetwork} shows the
 	\label{fig:antnetwork}
 \end{figure}
 
+\subsubsection{ACO Parameter Identification}
+
+There are a number of parameters that are used in order to tune the ACO algorithm for the self-optimization of the media cloud:
+
+\begin{enumerate}
+	\item Decay amount - the amount that the pheromone level decreases at each server: $\rho$
+	\item Decay rate - how often does the pheromone level decay at each server: $T_{decay}$
+	\item Ant wait time - the minimum wait time for an ant at a server: $T_{minwait}$
+	\item Ant pheromone level - the maximum amount of pheromone deposited by an ant at a server: $\tau_{max}$
+	\item Ant history size - how many servers an ant should store in it's history
+	\item Minimum/maximum morph level - the minimum/maximum pheromone level across the last $x$ servers visited by the ant required for the ant to morph: $Pt_{max}$/$Pt_{min}$
+\end{enumerate}
+
+\section{Under-loaded server}
+
+If an under-loaded server is considered where the ant waits the minimum time and deposits the maximum amount of pheromone and we set $T_{decay} = T_{minwait}$ then in each time period the amount of pheromone at the server can be defined as:
+
+\begin{equation}
+\begin{aligned}
+p^{t}_{n} &= p^{t-1}_{n} + (\tau_{max} - \rho) \\
+p^{t}_{n} &= (n - 1) * (\tau_{max} - \rho)
+\end{aligned}
+\end{equation}
+
+At the same time the ant will make a decision when $p^{t}_{n} > Pt_{max}$ or $p^{t}_{n} < Pt_{max}$. Because the server is under-loaded we expect that the amount of pheromone will continuously increase since the ant's goal should be to remove servers due to over-provisioning. The ant will make a decision when:
+
+\begin{equation}
+\begin{aligned}
+p^{t}_{n} $= Pt_{max}
+(n - 1) * (\tau_{max} - \rho) $= Pt_{max}
+(n - 1) $= Pt_{max}/(\tau_{max} - \rho)
+\end{aligned}
+\end{equation}
+
+As such it can be determined that:
+
+\begin{enumerate}
+	\item $\tau_{max}$ must be greater than $\rho$
+	\item The time to wait before the ant makes a decision can be defined by $Pt_{max}$ and $(\tau_{max} - \rho)$. A smaller difference between $\tau_{max}$ and $\rho$ will lead to slower decisions, while a smaller $Pt_{max}$ will lead to quicker decisions.
+\end{enumerate}
+
+\section{Balanced server}
+
+If a balanced server is considered - that is a server where the fuzzy function shows that the server is well balanced and neither under-loaded, nor overloaded then both the amount of pheromone and the wait time of the ant change. Define $T_{b}$ as the time for the ant to wait at a balanced server and $\tau_{b}$ as the amount of pheromone deposited at a balanced server. Both $T_{b}$ and $\tau_{b}$ are defined in terms of the fuzzy function, where $T_{b} = T_{minwait} / (1 - p)$ and $\tau_{b} = \tau_{max} * (1 - p)$
+
+\begin{equation}
+\begin{aligned}
+p^{t}_{n} &= \frac{t *  \tau_{b}}{T_{b}} - \frac{t *  \rho}{T_{decay}}
+p^{t}_{n} &= \frac{t *  \tau_{max}(1 - p)}{frac{T_{minwait}}{1 - p}} - \frac{t *  \rho}{T_{decay}}
+\end{aligned}
+\end{equation}
+
+The goal of the ant system in such a case is to maintain the level of the pheromone such that servers are not added or removed. As such it can be determined that:
+
+\begin{equation}
+\frac{t *  \tau_{max}(1 - p)}{frac{T_{minwait}}{1 - p}} = \frac{t *  \rho}{T_{decay}}
+\end{equation}
+
+which means that the amount of decay equals the amount of pheromone deposited over long periods of time.
+
+\begin{equation}
+\begin{aligned}
+t *  \tau_{max} * (1 - p) * T_{decay} &= t *  \rho * frac{T_{minwait}}{1 - p}
+\tau_{max} * (1 - p)^2 * T_{decay} &= \rho * T_{minwait}
+\frac{\tau_{max} * (1 - p)^2}{\rho} &= \frac{T_{minwait}}{T_{decay}}
+\end{aligned}
+\end{equation}
+
+If as in the previous case for an under-loaded server $T_{minwait} = T_{decay}$, then the equation becomes:
+
+\begin{equation}
+\begin{aligned}
+\tau_{max} * (1 - p)^2 &= \rho
+\end{aligned}
+\end{equation}
+
+This equation allows the user to set the relation between $\tau_{max}$ and $\rho$ for a given $p$ where the cluster size should be stable. For example, if a cluster size should be stable when $p = 50\%$ then
+
+\begin{equation}
+\begin{aligned}
+\tau_{max} * (0.5)^2 &= \rho
+\tau_{max} * 0.25 &= \rho
+\end{aligned}
+\end{equation}
+
+\section{Over-loaded server}
+
+The previous equation holds for an over-loaded server as well. If we take the same example as before where the system is set to be balanced for $p = 50\%$, if $p$ goes up to $90\%$ then the previous equation becomes:
+
+\begin{equation}
+\begin{aligned}
+p^{t}_{n} &= \frac{t *  \frac{\rho}{0.25} * 0.1}{frac{T_{decay}}{0.1}} - \frac{t *  \rho}{T_{decay}}
+p^{t}_{n} &= \frac{t *  \frac{\rho}{0.25} * 0.1}{frac{T_{decay}}{0.1}} - \frac{t *  \rho}{T_{decay}}
+p^{t}_{n} &= \frac{t * \rho}{T_{decay}} * (0.04 - 1)
+p^{t}_{n} &= \frac{t * \rho}{T_{decay}} * -0.96
+\end{aligned}
+\end{equation}
+
+This equation means that the pheromone rate at the node will decrease by $\rho * -0.96$ every decay period.
+
 \subsection{Cluster optimization: Ant house hunting}
 
 The ant house hunting algorithm can be used in order to optimize the number of servers in the cloud by having ants search for the optimal number of servers which should be up in the cloud. This algorithm works by having each ant search for a new nest, where a nest is represented by a new optimum number of servers in the cloud. The algorithm assumes that there is a home nest where the ants can meet after searching for a new nest. Once more than half of the ants have agreed on the same optimum value, the servers are added or removed as desired and all ants are morphed back into food foraging ants for the ACO algorithm. \cite{selforg:antreloc}
