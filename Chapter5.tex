@@ -4,7 +4,7 @@
 
 In order to test the performance of the self-organizing system previously described, a test bed was developed and deployed to simulate a small cloud of servers. For the self-optimization tests, the testing is done with one cloud only as the self-organizing self-optimizing system works at the level of a cloud and not at the level of multi clouds as in the case of the geographically distributed cloud. For the geographically distributed cloud, each of the clouds will have it's own optimization.
 
-\subsection{Cloud Test Bed}
+\section{Cloud Test Bed}
 
 A small test bed was used where various loads were applied to a cloud of media servers and the required data was measured from the servers. All servers are currently located in the same location on the same LAN and VLANs are used in order to separate servers into different logical networks. This is done in order to be able to simulate multiple datacenters (clouds) and be able to simulate network load on the connections between datacenters to test the geographically distributed cloud. Each of the hardware servers in the cluster run Docker \cite{cloud:docker}. Each docker container runs the Ubuntu OS and the required software for the container. A number of containers are used by the application:
 
@@ -627,6 +627,91 @@ Using the data obtained from the tests an average value for packet sizes can be 
 	\label{fig:1serv1streampacketsizes}
 \end{figure}
 
-\subsection{Autonomic Computing Performance Tests}
+\section{Autonomic Computing Performance Tests}
 
 This section will present the performance of the autonomic system presented in this thesis proposal. The system will be run on top of the test bed under various loads in order to determine how the system behaves when being overloaded or underloaded.
+
+The tests are split such that the same scenario is tested with various numbers of starting servers in the cluster and various loads such that up scaling, down scaling and no scaling are all tested.
+
+\subsection{Single server start}
+
+The first set of tests starts with a single server in the cloud. In this case, if the cloud is underloaded the server will not be removed from the cloud as that will leave no servers servicing user requests.
+
+\subsubsection{Under-load cloud}
+
+This test case tests the base case of an under-loaded cloud, where the cloud contains a single server and the number of clients and streams can be easily handled by the single server.
+
+Figure \ref{fig:1serv-ant} shows the pheromone level as seen by the ant. The top and bottom dotted red lines represent the thresholds for adding/removing servers to/from the cloud. The middle dotted blue line represents the starting pheromone level. When the pheromone passes the higher threshold servers are removed and when the pheromone passes the lower threshold servers are added to the cloud. Once the threshold is passed the ant goes to the manager which attempts to optimize the cloud's server count - this can be observed at the top of the graph where it plateaus as that is time when the ant is at the manager. In this case the optimization will result in no change as this is the only server in the cloud and it can not be removed. After optimization the ant returns to the server and restarts the process from the base state of the system. Figure \ref{fig:1serv-pher} shows the pheromone as seen at the server. Since there is one server and one ant the values are very close, however in the server figure the pheromone decay can also be observed. 
+
+Finally, figure \ref{fig:1serv-perf} shows the performance of the server. The optimization of the system starts at the same time the first stream begins seen on the bandwidth graph when the bandwidth value goes up. In this case it can be seen that the CPU is barely used and also latencies are low and bandwidth is not high, as such the system wishes to remove servers from the cloud.
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-1-low/ant-1.png}
+	\caption{Pheromone as seen by Ant 1}
+	\label{fig:1serv-ant}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-1-low/server-1.png}
+	\caption{Pheromone as seen by Server 1}
+	\label{fig:1serv-pher}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-1-low/perf-1.png}
+	\caption{Server 1 performance}
+	\label{fig:1serv-perf}
+\end{figure}
+
+\subsubsection{Medium/low loaded cloud}
+
+In this test case the cloud is still underloaded but the load is closer to what a single server can support. As such it can be seen that in figure \ref{{fig:1serv-ant-lowmed}} the pheromone level increases slower than in figure \ref{fig:1serv-ant} and similarly for figures \ref{fig:1serv-pher-lowmed} and figure {fig:1serv-pher-low}. At the same time figure  \ref{fig:1serv-perf-lowmed} shows that the CPU usage is higher than in the previous test case, while bandwidth usage and latencies are also higher.
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-1-lowmed/ant-1.png}
+	\caption{Pheromone as seen by Ant 1}
+	\label{fig:1serv-ant-lowmed}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-1-lowmed/server-1.png}
+	\caption{Pheromone as seen by Server 1}
+	\label{fig:1serv-pher-lowmed}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-1-lowmed/perf-1.png}
+	\caption{Server 1 performance}
+	\label{fig:1serv-perf-lowmed}
+\end{figure}
+
+\subsubsection{Medium loaded cloud}
+
+This test case tests a server which is neither overloaded nor underloaded. As such, the pheromone level should stay stable such that servers are not added or removed from the cloud. As seen in graphs \ref{fig:1serv-ant-med} and \ref{fig:1serv-pher-med} the pheromone level is largely stable except for two spikes around 14 and 29 minutes in. The two spikes coincide with the streams stopping and in figure \ref{results/Run-1-med/perf-1.png} it can be noticed that at those times the CPU usage and latency drops down, resulting in the server being underloaded for a brief period of time.
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-1-med/ant-1.png}
+	\caption{Pheromone as seen by Ant 1}
+	\label{fig:1serv-ant-med}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-1-med/server-1.png}
+	\caption{Pheromone as seen by Server 1}
+	\label{fig:1serv-pher-med}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-1-med/perf-1.png}
+	\caption{Server 1 performance}
+	\label{fig:1serv-perf-med}
+\end{figure}
