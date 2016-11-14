@@ -1,10 +1,10 @@
-\chapter{Design and Implementation of a Test-Bed for the Self-Organizing Control of a Cloud Based Autonomic System} % Write in your own chapter title
+\chapter{Performance tests for self-optimizing cloud} % Write in your own chapter title
 \label{Chapter5}
 \lhead{Chapter \ref{Chapter5}. \emph{Design and Implementation of a Test-Bed for the Self-Organizing Control of a Cloud Based Autonomic System}} % Write in your own chapter title to set the page header
 
 In order to test the performance of the self-organizing system previously described, a test bed was developed and deployed to simulate a small cloud of servers. For the self-optimization tests, the testing is done with one cloud only as the self-organizing self-optimizing system works at the level of a cloud and not at the level of multi clouds as in the case of the geographically distributed cloud. For the geographically distributed cloud, each of the clouds will have it's own optimization.
 
-\section{Cloud Test Bed}
+\section{Design and Implementation of a Test-Bed for the Self-Organizing Control of a Cloud Based Autonomic System}
 
 A small test bed was used where various loads were applied to a cloud of media servers and the required data was measured from the servers. All servers are currently located in the same location on the same LAN and VLANs are used in order to separate servers into different logical networks. This is done in order to be able to simulate multiple datacenters (clouds) and be able to simulate network load on the connections between datacenters to test the geographically distributed cloud. Each of the hardware servers in the cluster run Docker \cite{cloud:docker}. Each docker container runs the Ubuntu OS and the required software for the container. A number of containers are used by the application:
 
@@ -58,7 +58,7 @@ The data is measured from all the servers every 30 seconds, and is composed of: 
 
 The expectations are that as the number of servers increases for a given number of clients, sessions and streams the bandwidth and latency will decrease proportionally. Similar, as the number of collaborative sessions increases, with all other variables kept constant bandwidth and latency will decrease as the 1:N proportion, where N is how many clients receive the stream decreases. When the number of clients in a session increases bandwidth and latency should increase in a reverse fashion. Finally, when the number of streaming clients increases bandwidth and latency should increase similarly.
 
-The graphs for the performance tests can be found in Appendix \ref{appendix:modelidentifperfresults}. In order to make the results more visible, the tests are grouped on the graphs 3 by 3, with the lowest test on one graph being the highest test on another graph. The following sections will present the results in tabular form.
+The graphs for the performance tests can be found online as they would take too much space. In order to make the results more visible, the tests are grouped on the graphs 3 by 3, with the lowest test on one graph being the highest test on another graph. The following sections will present the results in tabular form.
 
 In order to simplify notations, test will be abbreviated in the form clouds/servers/sessions/incoming streams per session. For a single cloud, the clouds part will be missing. For example, the test 2/3/1/4 refers to a test with 2 clouds, 3 servers, 1 session across all servers and 4 incoming streams from clients. Also, some of the test results will be skipped to preserve space.
 
@@ -169,7 +169,7 @@ Number of Users/Session & Median Latency (ms) & Mean Latency (ms) & Median Messa
 \clearpage\subsubsection{1 Server, 3 Collaborative Sessions, 3 Streams}
 \label{sec:1serv_3sess_3str}
 
-Comparing this test results with the results from Table \ref{table:1serv_1sess_3str} and Table \ref{table:1serv_2sess_3str}, for the same number of outgoing streams, CPU usage is very similar, while latencies are higher for this test. The reason for this, is that a similar number of outgoing streams for this case has more total users across the server.
+Comparing this test results with the results for 1 Server, 2 Collaborative Sessions, 3 Streams, for the same number of outgoing streams, CPU usage is very similar, while latencies are higher for this test. The reason for this, is that a similar number of outgoing streams for this case has more total users across the server.
 
 \begin{table}
 \caption{Median and Mean CPU, Latencies for 1 Server, 3 Session, 3 Stream}
@@ -239,15 +239,15 @@ Comparing this test with \ref{sec:1serv_4sess_4str}, it can be seen that for sim
 
 In order to test the behaviour when multiple servers are present, sessions were created with a number of clients which is a multiple of the number of servers, such that the servers have the same number of clients due to the fact that clients are distributed to the servers in a Round Robin fashion. Only one of the two servers is shown in these tests, as the results are similar.
 
-Comparing these results with those of \ref{table:1serv_1sess_1str}, it can be seen that the results are very similar for similar numbers of users and outgoing streams for both latencies and CPU usage. Due to the proxy stream between servers, an equal number of clients per server will have more outgoing streams.
+Comparing these results with those similar of 1 server, it can be seen that the results are very similar for similar numbers of users and outgoing streams for both latencies and CPU usage. Due to the proxy stream between servers, an equal number of clients per server will have more outgoing streams.
 
 \subsubsection{2 Servers, 1 Collaborative Session, 2 Streams}
 
-Comparing this test with the test in \ref{table:1serv_1sess_2str} and the test in \ref{table:1serv_2sess_2str}, for a similar number of outgoing streams, the 1/1/2 test shows very similar results, while the 1/2/2 test shows worse results.
+Comparing this test with the test in for 1 Servers, 1 Collaborative Session, 2 Streams and the test for 1 Servers, 2 Collaborative Session, 2 Streams, for a similar number of outgoing streams, the 1/1/2 test shows very similar results, while the 1/2/2 test shows worse results.
 
 \subsubsection{2 Servers, 1 Collaborative Session, 3 Streams}
 
-Comparing this test with the test in \ref{table:1serv_1sess_3str}, the latency and CPU usage are similar for an equal number of outgoing streams. Doing the same comparison with the test in \ref{table:1serv_2sess_3str}, the results are better for this result.
+Comparing this test with the test for 1 Servers, 1 Collaborative Session, 3 Streams, the latency and CPU usage are similar for an equal number of outgoing streams. Doing the same comparison with the test for for 1 Server, 2 Collaborative Sessions, 3 Streams, the results are better for this result.
 
 \begin{table}
 \caption{Median and Mean CPU, Latencies for 2 Server, 1 Session, 3 Stream}
@@ -274,7 +274,7 @@ Number of Users/Server & Median Latency (ms) & Mean Latency (ms) & Median Messag
 
 \clearpage\subsubsection{2 Servers, 1 Collaborative Session, 4 Streams}
 
-Comparing this result, with the result of the test \ref{sec:1serv_1sess_4str}, while the outgoing number of streams can not be matched, the results look similar for similar numbers of outgoing streams.
+Comparing this result, with the result of the test for 1 Servers, 1 Collaborative Session, 4 Streams, while the outgoing number of streams can not be matched, the results look similar for similar numbers of outgoing streams.
 
 \begin{table}
 \caption{Median and Mean CPU, Latencies for 2 Server, 1 Session, 4 Stream}
@@ -295,22 +295,6 @@ Number of Users/Server & Median Latency (ms) & Mean Latency (ms) & Median Messag
 10 & 60.4 & 103.87 & 51.5 & 79.08 & 38.15 & 31.1 & 38 \\
 \end{tabu}
 \end{table}
-
-\clearpage\subsubsection{2 Servers, 2 Collaborative Session, 1 Streams}
-
-Comparing this result, with the result of the test \ref{sec:1serv_2sess_1str}, for equal numbers of outgoing streams the results are similar for both tests.
-
-\subsubsection{2 Servers, 2 Collaborative Sessions, 2 Streams}
-
-Comparing the results in this test with those shown in Table \ref{table:1serv_2sess_2str}, this test shows similar results.
-
-\subsubsection{2 Servers, 2 Collaborative Sessions, 3 Streams}
-
-Comparing the results in this test with those shown in Table \ref{table:1serv_2sess_3str}, this test shows similar results.
-
-\subsubsection{2 Servers, 2 Collaborative Sessions, 4 Streams}
-
-Comparing this test result with the results in Table \ref{table:1serv_2sess_4str}, median latencies and CPU usage are similar for the two tests.
 
 \begin{table}
 \caption{Median and Mean CPU, Latencies for 2 Server, 2 Session, 4 Stream}
@@ -627,11 +611,13 @@ Using the data obtained from the tests an average value for packet sizes can be 
 	\label{fig:1serv1streampacketsizes}
 \end{figure}
 
+\clearpage
+
 \section{Autonomic Computing Performance Tests}
 
 This section will present the performance of the autonomic system presented in this thesis proposal. The system will be run on top of the test bed under various loads in order to determine how the system behaves when being overloaded or underloaded.
 
-The tests are split such that the same scenario is tested with various numbers of starting servers in the cluster and various loads such that up scaling, down scaling and no scaling are all tested.
+The tests are split such that the same scenario is tested with various numbers of starting servers in the cluster and various loads such that up scaling, down scaling and no scaling are all tested. Some of the tests run for 30 minutes, while longer tests where servers are added due to the cloud being over-loaded are run for 60 minutes.
 
 \subsection{Single server start}
 
@@ -648,70 +634,724 @@ Finally, figure \ref{fig:1serv-perf} shows the performance of the server. The op
 \begin{figure}
 	\centering
 		\includegraphics[width=0.95\columnwidth]{results/Run-1-low/ant-1.png}
-	\caption{Pheromone as seen by Ant 1}
+	\caption{Under-loaded cloud - Pheromone as seen by Ant 1}
 	\label{fig:1serv-ant}
 \end{figure}
 
 \begin{figure}
 	\centering
 		\includegraphics[width=0.95\columnwidth]{results/Run-1-low/server-1.png}
-	\caption{Pheromone as seen by Server 1}
+	\caption{Under-loaded cloud - Pheromone as seen by Server 1}
 	\label{fig:1serv-pher}
 \end{figure}
 
 \begin{figure}
 	\centering
 		\includegraphics[width=0.95\columnwidth]{results/Run-1-low/perf-1.png}
-	\caption{Server 1 performance}
+	\caption{Under-loaded cloud - Server 1 performance}
 	\label{fig:1serv-perf}
 \end{figure}
 
 \subsubsection{Medium/low loaded cloud}
 
-In this test case the cloud is still underloaded but the load is closer to what a single server can support. As such it can be seen that in figure \ref{{fig:1serv-ant-lowmed}} the pheromone level increases slower than in figure \ref{fig:1serv-ant} and similarly for figures \ref{fig:1serv-pher-lowmed} and figure {fig:1serv-pher-low}. At the same time figure  \ref{fig:1serv-perf-lowmed} shows that the CPU usage is higher than in the previous test case, while bandwidth usage and latencies are also higher.
+In this test case the cloud is still underloaded but the load is closer to what a single server can support. As such it can be seen that in figure \ref{fig:1serv-ant-lowmed} the pheromone level increases slower than in figure \ref{fig:1serv-ant} and similarly for figures \ref{fig:1serv-pher-lowmed} and figure {fig:1serv-pher-low}. At the same time figure  \ref{fig:1serv-perf-lowmed} shows that the CPU usage is higher than in the previous test case, while bandwidth usage and latencies are also higher.
 
-\begin{figure}
+\begin{figure}[!h]
 	\centering
 		\includegraphics[width=0.95\columnwidth]{results/Run-1-lowmed/ant-1.png}
-	\caption{Pheromone as seen by Ant 1}
+	\caption{Medium/low loaded cloud - Pheromone as seen by Ant 1}
 	\label{fig:1serv-ant-lowmed}
 \end{figure}
 
 \begin{figure}
 	\centering
 		\includegraphics[width=0.95\columnwidth]{results/Run-1-lowmed/server-1.png}
-	\caption{Pheromone as seen by Server 1}
+	\caption{Medium/low loaded cloud - Pheromone as seen by Server 1}
 	\label{fig:1serv-pher-lowmed}
 \end{figure}
 
 \begin{figure}
 	\centering
 		\includegraphics[width=0.95\columnwidth]{results/Run-1-lowmed/perf-1.png}
-	\caption{Server 1 performance}
+	\caption{Medium/low loaded cloud - Server 1 performance}
 	\label{fig:1serv-perf-lowmed}
 \end{figure}
 
 \subsubsection{Medium loaded cloud}
 
-This test case tests a server which is neither overloaded nor underloaded. As such, the pheromone level should stay stable such that servers are not added or removed from the cloud. As seen in graphs \ref{fig:1serv-ant-med} and \ref{fig:1serv-pher-med} the pheromone level is largely stable except for two spikes around 14 and 29 minutes in. The two spikes coincide with the streams stopping and in figure \ref{results/Run-1-med/perf-1.png} it can be noticed that at those times the CPU usage and latency drops down, resulting in the server being underloaded for a brief period of time.
+This test case tests a server which is neither overloaded nor underloaded. As such, the pheromone level should stay stable such that servers are not added or removed from the cloud. As seen in graphs \ref{fig:1serv-ant-med} and \ref{fig:1serv-pher-med} the pheromone level is largely stable except for two spikes around 14 and 29 minutes in. The two spikes coincide with the streams stopping and in figure \ref{fig:1serv-perf-med} it can be noticed that at those times the CPU usage and latency drops down, resulting in the server being underloaded for a brief period of time.
 
-\begin{figure}
+\begin{figure}[!h]
 	\centering
 		\includegraphics[width=0.95\columnwidth]{results/Run-1-med/ant-1.png}
-	\caption{Pheromone as seen by Ant 1}
+	\caption{Medium loaded cloud - Pheromone as seen by Ant 1}
 	\label{fig:1serv-ant-med}
 \end{figure}
 
 \begin{figure}
 	\centering
 		\includegraphics[width=0.95\columnwidth]{results/Run-1-med/server-1.png}
-	\caption{Pheromone as seen by Server 1}
+	\caption{Medium loaded cloud - Pheromone as seen by Server 1}
 	\label{fig:1serv-pher-med}
 \end{figure}
 
 \begin{figure}
 	\centering
 		\includegraphics[width=0.95\columnwidth]{results/Run-1-med/perf-1.png}
-	\caption{Server 1 performance}
+	\caption{Medium loaded cloud - Server 1 performance}
 	\label{fig:1serv-perf-med}
 \end{figure}
+
+\subsubsection{Medium/high loaded cloud}
+
+In this test case the cloud is overloaded but barely above what a single server can accommodate. Looking at graph \ref{fig:1serv-ant1-medhigh} it can be noticed that the pheromone level drops for the first 12 - 13 minutes after which a second server is added, which can be noticed by the second ant appearing on the graph. From this time, the two ants see almost the same pheromone level for the two servers. Figure \ref{fig:1serv-ant3-medhigh} shows the pheromone at the second server. Note that time 0 in this graph is the time when the server starts and does not match time 0 in figure \ref{fig:1serv-ant1-medhigh}. Because two servers are two much for this load the pheromone level increases until the thresholds are breached again and one of the servers is stopped. This can be seen by Ant 1 disappearing from the graphs. Figure \ref{fig:1serv-pher-medhigh} shows the pheromone at the two servers and matches what the ants see as well.
+
+The performance graphs show high bandwidth and high CPU usage until the second server is added, at which time the cloud is rebalanced and the bandwdith and CPU are lower for each of the two servers. Average latency for the clients also drops when the second server is added.
+
+Figure \ref{fig:1serv-antloc-medhigh} shows the location of the ants at the servers. Because there are only two servers the ants keep switching between the two servers.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-1-medhigh/ant-1.png}
+	\caption{Medium/high loaded cloud - Pheromone at Server 1 as seen by ants}
+	\label{fig:1serv-ant1-medhigh}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-1-medhigh/ant-3.png}
+	\caption{Medium/high loaded cloud - Pheromone at Server 2 as seen by ants}
+	\label{fig:1serv-ant3-medhigh}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-1-medhigh/server-1.png}
+	\caption{Medium/high loaded cloud - Pheromone as seen by servers}
+	\label{fig:1serv-pher-medhigh}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-1-medhigh/perf-1.png}
+	\caption{Medium/high loaded cloud - Server performance}
+	\label{fig:1serv-perf-medhigh}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-1-medhigh/antLoc-1.png}
+	\caption{Medium/high loaded cloud - Ant location}
+	\label{fig:1serv-antloc-medhigh}
+\end{figure}
+
+In terms of optimization by the house hunting algorithm the up scaling of the cloud is trivial as there is a single ant so there is no recruitment needed. When the cloud is down scaled however the house hunting algorithm runs. In the first round each of the two ants chooses a new server count - in this case both choose to remove one server and then they simulate the solution. One ant's solution fitness is 0.519 while the other ant's is 0.497. The ants then go through recruitment and the ant with fitness 0.497 recruits the other ant to it's nest. Because all ants at this point go to the same nest, this is the solution of the optimization and one of the servers is removed.
+
+\subsubsection{Over-loaded cloud}
+
+This test is set up such that a single server can not handle by itself the requests sent by clients, and as such it is expected that a second server will be added to the cloud and not be removed. This can be seen in figures \ref{fig:1serv-ant1-high} and \ref{fig:1serv-ant3-high} as the pheromone level drops initially very fast until a second server is added. After the second server is added the pheromone level increases for some time but stabilizes after that. While server two has a pheromone level higher than the upper threshold, the average pheromone across the cloud is bellow the thresholds. Figure \ref{fig:1serv-pher-high} shows the same behaviour but from the point of view of the servers. The drop in figure \ref{fig:1serv-ant3-high} at the end is because of the test finishing.
+
+The performance graphs show high CPU, bandwidth and latency before the second server is added. After the second server is added the performance metrics stabilize at good values. Similarly to the previous test figure \ref{fig:1serv-antloc-high} shows the ants moving from one server to the other. The optimization by the house hunting algorithm is also trivial as there is a single ant to begin with, so no recruitment can happen.
+
+\begin{figure}[!h]
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-1-high/ant-1.png}
+	\caption{Over-loaded cloud - Pheromone at Server 1 as seen by ants}
+	\label{fig:1serv-ant1-high}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-1-high/ant-3.png}
+	\caption{Over-loaded cloud - Pheromone at Server 2 as seen by ants}
+	\label{fig:1serv-ant3-high}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-1-high/server-1.png}
+	\caption{Over-loaded cloud - Pheromone as seen by servers}
+	\label{fig:1serv-pher-high}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-1-high/perf-1.png}
+	\caption{Over-loaded cloud - Server performance}
+	\label{fig:1serv-perf-high}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-1-high/antLoc-1.png}
+	\caption{Over-loaded cloud - Ant location}
+	\label{fig:1serv-antloc-high}
+\end{figure}
+
+\subsection{Two server start}
+
+This set of tests start with two servers in the cloud and different loads.
+
+\subsubsection{Under-load cloud}
+
+This test case tests the base case of an under-loaded cloud, where the cloud starts with two servers but the number of clients and streams can be easily handled by a single server. Figures \ref{fig:2serv-ant1-low} and \ref{fig:2serv-ant3-low} show the pheromone as seen by the ants. The pheromone goes up at both servers and after the threshold is reached one of the two servers is removed. After the removal the load is still too low for the single server and the pheromone level continues increasing. Figure \ref{fig:2serv-pher-low} shows the same view but from the server's perspective.
+
+The server performance graphs show that the servers are under-loaded and even after the server is removed the load on the single remaining server is low enough not to cause a breach of SLA.
+
+\begin{figure}[!h]
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-2-low/ant-1.png}
+	\caption{Under-loaded cloud - Pheromone at Server 1 as seen by ants}
+	\label{fig:2serv-ant1-low}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-2-low/ant-3.png}
+	\caption{Under-loaded cloud - Pheromone at Server 2 as seen by ants}
+	\label{fig:2serv-ant3-low}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-2-low/server-1.png}
+	\caption{Under-loaded cloud - Pheromone as seen by servers}
+	\label{fig:2serv-pher-low}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-2-low/perf-1.png}
+	\caption{Under-loaded cloud - Server performance}
+	\label{fig:2serv-perf-low}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-2-low/antLoc-1.png}
+	\caption{Under-loaded cloud - Ant location}
+	\label{fig:2serv-antloc-low}
+\end{figure}
+
+\subsubsection{Medium/low loaded cloud}
+
+Similarly to the previous test, this test does not generate enough load for both servers. Unlike the previous test, which has a very low load, the load in this test is closer to the load of a well balanced cloud. Figures \ref{fig:2serv-ant1-medlow} and \ref{fig:2serv-ant3-medlow} show the pheromone level as seen by the ants and figure \ref{fig:2serv-pher-medlow} shows the pheromone as seen by the server. The pheromone increases similar to the previous test but at a lower rate. As before, the load is quite low on the two servers and once one of the two servers is removed the other server can take the load without problems.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-2-lowmed/ant-1.png}
+	\caption{Medium/low loaded cloud - Pheromone at Server 1 as seen by ants}
+	\label{fig:2serv-ant1-medlow}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-2-lowmed/ant-3.png}
+	\caption{Medium/low loaded cloud - Pheromone at Server 2 as seen by ants}
+	\label{fig:2serv-ant3-medlow}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-2-lowmed/server-1.png}
+	\caption{Medium/low loaded cloud - Pheromone as seen by servers}
+	\label{fig:2serv-pher-medlow}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-2-lowmed/perf-1.png}
+	\caption{Medium/low loaded cloud - Server performance}
+	\label{fig:2serv-perf-medlow}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-2-lowmed/antLoc-1.png}
+	\caption{Medium/low loaded cloud - Ant location}
+	\label{fig:2serv-antloc-medlow}
+\end{figure}
+
+\subsubsection{Medium loaded cloud}
+
+This test case puts enough load on the cloud to require two servers to provide good QoS to the clients. Figures \ref{fig:2serv-ant1-med} and \ref{fig:2serv-ant3-med} show the pheromone level at the two servers as seen by the ants while figure \ref{fig:2serv-pher-med} shows the pheromone levels as seen at the servers. Looking at the performance graphs in figure \ref{fig:2serv-perf-med} it can be noticed that the two servers are not perfectly balanced as server 2 has a lower load than server 1 as seen by CPU utilization, bandwidth and latency. As such, the pheromone level at server 2 increases while the pheromone level at server 1 stays stable. Even though one server has increasing pheromone values no servers are removed because the ants history has a lower average pheromone than the threshold.
+
+Looking at figure \ref{fig:2serv-antloc-med} it can also be noticed that the ants do not spend the same time at the two servers before going to the other server, this is also because of the difference in load for the two servers.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-2-med/ant-1.png}
+	\caption{Medium loaded cloud - Pheromone at Server 1 as seen by ants}
+	\label{fig:2serv-ant1-med}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-2-med/ant-3.png}
+	\caption{Medium loaded cloud - Pheromone at Server 2 as seen by ants}
+	\label{fig:2serv-ant3-med}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-2-med/server-1.png}
+	\caption{Medium loaded cloud - Pheromone as seen by servers}
+	\label{fig:2serv-pher-med}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-2-med/perf-1.png}
+	\caption{Medium loaded cloud - Server performance}
+	\label{fig:2serv-perf-med}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-2-med/antLoc-1.png}
+	\caption{Medium loaded cloud - Ant location}
+	\label{fig:2serv-antloc-med}
+\end{figure}
+
+\subsubsection{Medium/high loaded cloud}
+
+In this test the load is higher than what two servers can support but not by a significant amount. Initially in figures \ref{fig:2serv-ant1-medhigh}, \ref{fig:2serv-ant5-medhigh} and \ref{fig:2serv-pher-medhigh} the pheromone level drops at the beginning of the test. After the threshold is breached one new server is added. After the server is added the system is largely stable, however due to the servers not being balanced server 1 sees an increase in pheromone levels. This increase however is not enough to cause a SLA breach as the other two servers are within proper bounds.
+
+Performance graphs show that the two servers are overloaded in the beginning and after the addition of the new servers, the system becomes stable until the end of the test.
+
+When the system detects the SLA breach, the two ants meet and start the house hunting optimization. In this case, one ant choose to add 2 more servers to the cloud, while the other ant chooses to add a single server. After the recruitment phase, the ant which chooses a single new server recruits the other ant and the solution is to add a single new server.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-2-medhigh/ant-1.png}
+	\caption{Medium/high loaded cloud - Pheromone at Server 1 as seen by ants}
+	\label{fig:2serv-ant1-medhigh}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-2-medhigh/ant-4.png}
+	\caption{Medium/high loaded cloud - Pheromone at Server 2 as seen by ants}
+	\label{fig:2serv-ant5-medhigh}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-2-medhigh/ant-7.png}
+	\caption{Medium/high loaded cloud - Pheromone at Server 3 as seen by ants}
+	\label{fig:2serv-ant9-medhigh}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-2-medhigh/server-1.png}
+	\caption{Medium/high loaded cloud - Pheromone as seen by servers}
+	\label{fig:2serv-pher-medhigh}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-2-medhigh/perf-1.png}
+	\caption{Medium/high loaded cloud - Server performance}
+	\label{fig:2serv-perf-medhigh}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-2-medhigh/antLoc-1.png}
+	\caption{Medium/high loaded cloud - Ant location}
+	\label{fig:2serv-antloc-medhigh}
+\end{figure}
+
+\subsubsection{Over loaded cloud}
+
+Finally a test was run where the cloud is overloaded significantly for two servers. This can be seen in figures \ref{fig:2serv-ant1-high}, \ref{fig:2serv-ant5-high} and \ref{fig:2serv-pher-high} as the pheromone level drops at the beginning of the test. After the threshold is breached two new servers are added. Because after the two servers are added the cloud is not well balanced server 1 sees an increase in pheromone, while servers 3 and 4 see a decrease with server 2 being stable. Once server 1 stabilizes however, there are too many servers in the cloud due to the fact that the clients stop streaming. As such the servers are removed until one server remains in the cloud.
+
+Performance graphs show that the two servers are overloaded in the beginning and after the addition of the two new servers, the system becomes stable until the end of the test.
+
+When the system detects the SLA breach, the two ants meet and start the house hunting optimization. In this case, both ants choose to add 2 more servers to the cloud, and as such after the recruitment the solution is to add two more servers to the cloud.
+
+\begin{figure}[!h]
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-2-high/ant-1.png}
+	\caption{Over-loaded cloud - Pheromone at Server 1 as seen by ants}
+	\label{fig:2serv-ant1-high}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-2-high/ant-5.png}
+	\caption{Over-loaded cloud - Pheromone at Server 2 as seen by ants}
+	\label{fig:2serv-ant5-high}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-2-high/ant-9.png}
+	\caption{Over-loaded cloud - Pheromone at Server 3 as seen by ants}
+	\label{fig:2serv-ant9-high}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-2-high/ant-13.png}
+	\caption{Over-loaded cloud - Pheromone at Server 4 as seen by ants}
+	\label{fig:2serv-ant13-high}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-2-high/server-1.png}
+	\caption{Over-loaded cloud - Pheromone as seen by servers}
+	\label{fig:2serv-pher-high}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-2-high/perf-1.png}
+	\caption{Over-loaded cloud - Server performance}
+	\label{fig:2serv-perf-high}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-2-high/antLoc-1.png}
+	\caption{Over-loaded cloud - Ant location}
+	\label{fig:2serv-antloc-high}
+\end{figure}
+
+\subsection{Three server start}
+
+This set of tests start with three servers in the cloud and different loads.
+
+\subsubsection{Under loaded cloud}
+
+Similar to the other cases the first test is started with a load which a single server can easily meet. As seen in figures \ref{fig:3serv-ant1-low}, \ref{fig:3serv-ant4-low} and \ref{fig:3serv-ant7-low} as well as in figure \ref{fig:3serv-pher-low} the pheromone level increases, and one of the server is removed. After the removal the pheromone level continues to increase but slower since a single server is sufficient. After the threshold is reached again a second server is removed and the cloud stabilizes. The performance graphs show that the load is taken by the other remaining server without any problems.
+
+For the house hunting optimization once the ants simulate the solutions, the initial state is that two of the ants want to remove 2 servers while one of the ants wishes to remove a single server.
+
+\begin{enumerate}
+	\item Initial solutions: 
+	\begin{itemize}
+		\item Ant 1 goes to Nest 1 - remove one servers
+		\item Ant 2 goes to Nest 2 - remove two servers
+		\item Ant 3 goes to Nest 3 - remove two server
+	\end{itemize}
+	\item Recruitment:
+	\begin{itemize}
+		\item Ant 1 recruits Ant 2 and nest 2 is dropped out as no ants go to it
+		\item Ant 3 recruits a newly created ant which looks like Ant 3
+	\end{itemize}
+	\item Recruitment:
+	\begin{itemize}
+		\item Ant 1 recruits Ant 4
+		\item Ant 2 recruits Ant 3
+	\end{itemize}
+	\item All ants go to same solution which is nest 1
+\end{enumerate}
+
+\begin{figure}[!h]
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-3-low/ant-1.png}
+	\caption{Under loaded cloud - Pheromone at Server 1 as seen by ants}
+	\label{fig:3serv-ant1-low}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-3-low/ant-4.png}
+	\caption{Under loaded cloud - Pheromone at Server 2 as seen by ants}
+	\label{fig:3serv-ant4-low}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-3-low/ant-7.png}
+	\caption{Under loaded cloud - Pheromone at Server 3 as seen by ants}
+	\label{fig:3serv-ant7-low}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-3-low/server-1.png}
+	\caption{Under loaded cloud - Pheromone as seen by servers}
+	\label{fig:3serv-pher-low}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-3-low/perf-1.png}
+	\caption{Under loaded cloud - Server performance}
+	\label{fig:3serv-perf-low}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-3-low/antLoc-1.png}
+	\caption{Under loaded cloud - Ant location}
+	\label{fig:3serv-antloc-low}
+\end{figure}
+
+\subsubsection{Medium/low loaded cloud}
+
+In the medium/low scenario the pheromone level increases slower than in the underloaded scenario as one server is sufficient for the workload, but it would put more strain on a single server as seen in figure \ref{fig:3serv-perf-lowmed}. In this case, once the threshold is reached, the house hunting optimization chooses to remove two servers. The initial solution set all choose to remove two servers, however the system still goes through the house hunting optimization algorithm.
+
+\begin{enumerate}
+	\item Initial solutions: 
+	\begin{itemize}
+		\item Ant 1 goes to Nest 1 - remove two servers
+		\item Ant 2 goes to Nest 2 - remove two servers
+		\item Ant 3 goes to Nest 3 - remove two server
+	\end{itemize}
+	\item Recruitment:
+	\begin{itemize}
+		\item Ant 2 recruits Ant 1 and nest 1 is dropped out as no ants go to it
+		\item Ant 3 recruits a newly created ant which looks like Ant 3
+	\end{itemize}
+	\item Recruitment:
+	\begin{itemize}
+		\item Ant 2 recruits Ant 3
+		\item Ant 1 recruits Ant 4
+	\end{itemize}
+	\item All ants go to same solution which is nest 2
+\end{enumerate}
+
+\begin{figure}[!h]
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-3-lowmed/ant-1.png}
+	\caption{Medium/low loaded cloud - Pheromone at Server 1 as seen by ants}
+	\label{fig:3serv-ant1-lowmed}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-3-lowmed/ant-4.png}
+	\caption{Medium/low loaded cloud - Pheromone at Server 2 as seen by ants}
+	\label{fig:3serv-ant4-lowmed}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-3-lowmed/ant-7.png}
+	\caption{Medium/low loaded cloud - Pheromone at Server 3 as seen by ants}
+	\label{fig:3serv-ant7-lowmed}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-3-lowmed/server-1.png}
+	\caption{Medium/low loaded cloud - Pheromone as seen by servers}
+	\label{fig:3serv-pher-lowmed}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-3-lowmed/perf-1.png}
+	\caption{Medium/low loaded cloud - Server performance}
+	\label{fig:3serv-perf-lowmed}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-3-lowmed/antLoc-1.png}
+	\caption{Medium/low loaded cloud - Ant location}
+	\label{fig:3serv-antloc-lowmed}
+\end{figure}
+
+\subsubsection{Medium loaded cloud}
+
+In the well balanced cloud case, one of the servers has less load than the other two servers and as such it has less bandwidth used when compared to the other two servers as seen in figure \ref{fig:3serv-perf-lowmed} - server 3 has less load. Because of this the pheromone at server 3 increases while the pheromone at the other two servers decreases. However, the average pheromone level across the cloud as seen by the ants is always bellow the thresholds and no house hunting optimization is triggered. In this case when looking at figure \ref{fig:3serv-antloc-med} it can be noticed that some of the ants only visit two of the servers and not all three. this is because of the randomness of the selection of the next 
+
+\begin{figure}[!h]
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-3-med/ant-1.png}
+	\caption{Medium loaded cloud - Pheromone at Server 1 as seen by ants}
+	\label{fig:3serv-ant1-med}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-3-med/ant-4.png}
+	\caption{Medium loaded cloud - Pheromone at Server 2 as seen by ants}
+	\label{fig:3serv-ant4-med}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-3-med/ant-7.png}
+	\caption{Medium loaded cloud - Pheromone at Server 3 as seen by ants}
+	\label{fig:3serv-ant7-med}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-3-med/server-1.png}
+	\caption{Medium loaded cloud - Pheromone as seen by servers}
+	\label{fig:3serv-pher-med}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-3-med/perf-1.png}
+	\caption{Medium loaded cloud - Server performance}
+	\label{fig:3serv-perf-med}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-3-med/antLoc-1.png}
+	\caption{Medium loaded cloud - Ant location}
+	\label{fig:3serv-antloc-med}
+\end{figure}
+
+\subsubsection{Medium/high loaded cloud}
+
+This test case tests a cloud which is slightly overloaded. The three servers are insufficient to meet the demands of the clients but barely, as can be seen in figure \ref{fig:3serv-perf-medhigh} where the CPU usage, bandwidth and latency show that more servers are needed to serve clients in the cloud. After approximately 12 minutes an SLA breach is detected and the house hunting optimization algorithm runs and decides to add 2 more servers to the cloud. After the two new servers are added one of the servers is underloaded, two of the servers are properly loaded and two of the servers are overloaded, as seen in figure \ref{fig:3serv-pher-medhigh} where after 15 minutes Server 2 and Server 5 maintain good pheromone levels, Server 1 has increasing pheromone levels (thus being underloaded) while servers 3 and 4 have decreasing pheromones being overloaded. This can also be seen in figure \ref{fig:3serv-perf-medhigh} looking at the bandwidth up graphs, where server 1 has very low bandwidth used, servers 3 and 4 have high bandwidth and servers 2 and 5 have medium bandwidth used.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-3-medhigh/ant-1.png}
+	\caption{Medium/high loaded cloud - Pheromone at Server 1 as seen by ants}
+	\label{fig:3serv-ant1-medhigh}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-3-medhigh/ant-6.png}
+	\caption{Medium/high loaded cloud - Pheromone at Server 2 as seen by ants}
+	\label{fig:3serv-ant6-medhigh}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-3-medhigh/ant-11.png}
+	\caption{Medium/high loaded cloud - Pheromone at Server 3 as seen by ants}
+	\label{fig:3serv-ant11-medhigh}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-3-medhigh/ant-16.png}
+	\caption{Medium/high loaded cloud - Pheromone at Server 4 as seen by ants}
+	\label{fig:3serv-ant16-medhigh}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-3-medhigh/ant-21.png}
+	\caption{Medium/high loaded cloud - Pheromone at Server 5 as seen by ants}
+	\label{fig:3serv-ant25-medhigh}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-3-medhigh/server-1.png}
+	\caption{Medium/high loaded cloud - Pheromone as seen by servers}
+	\label{fig:3serv-pher-medhigh}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-3-medhigh/perf-1.png}
+	\caption{Medium/high loaded cloud - Server performance}
+	\label{fig:3serv-perf-medhigh}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-3-medhigh/antLoc-1.png}
+	\caption{Medium/high loaded cloud - Ant location}
+	\label{fig:3serv-antloc-medhigh}
+\end{figure}
+
+\subsubsection{Over loaded/under loaded cloud}
+
+In this case the cloud is first over loaded and then suddenly the streaming clients stop and the cloud becomes underload. In the first part of the test the three servers are insufficient to meet the demands of the clients as seen in the performance graphs with high bandwidth, latency and CPU usage. This causes the pheromone in the cloud to drop until a SLA breach is detected and new servers are added to the cloud. The pheromone drop is faster than in the previous case due to more load on the server. After new servers are added to the cloud the performance improves as seen by lower bandwidth at each servers, and this remains stable until users stop streaming, at which point the usage drops and the pheromone increases until a new SLA breach is detected and three servers are removed.
+
+The first SLA breach results in two servers being added to the cloud. This is because of the fact that all three ants' initial solution starts with adding 2 new servers. The second SLA breach is more interesting however:
+
+\begin{enumerate}
+	\item Initial solutions: 
+	\begin{itemize}
+		\item Ant 1 goes to Nest 1 - remove three servers
+		\item Ant 2 goes to Nest 2 - remove two servers
+		\item Ant 3 goes to Nest 3 - remove four server
+		\item Ant 4 goes to Nest 4 - remove three server
+		\item Ant 5 goes to Nest 5 - remove three server
+	\end{itemize}
+	\item Recruitment:
+	\begin{itemize}
+		\item Ant 1 recruits Ant 4 and nest 4 is dropped out as no ants go to it
+		\item Ant 5 recruits Ant 3 and nest 3 is dropped out as no ants go to it
+		\item Ant 2 recruits a newly created ant which looks like Ant 2
+	\end{itemize}
+	\item Recruitment:
+	\begin{itemize}
+		\item Ant 1 recruits Ant 5 and Ant 4 recruits ant 3, next 5 is dropped out
+	\end{itemize}
+	\item Recruitment:
+	\begin{itemize}
+		\item Ant 1 recruits Ant 2
+	\end{itemize}
+	\item All ants go to same solution which is nest 1
+\end{enumerate}
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-3-high/ant-1.png}
+	\caption{Over loaded cloud - Pheromone at Server 1 as seen by ants}
+	\label{fig:3serv-ant1-high}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-3-high/ant-6.png}
+	\caption{Over loaded cloud - Pheromone at Server 2 as seen by ants}
+	\label{fig:3serv-ant6-high}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-3-high/ant-11.png}
+	\caption{Over loaded cloud - Pheromone at Server 3 as seen by ants}
+	\label{fig:3serv-ant11-high}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-3-high/ant-16.png}
+	\caption{Over loaded cloud - Pheromone at Server 4 as seen by ants}
+	\label{fig:3serv-ant16-high}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-3-high/ant-21.png}
+	\caption{Over loaded cloud - Pheromone at Server 5 as seen by ants}
+	\label{fig:3serv-ant21-high}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-3-high/server-1.png}
+	\caption{Over loaded cloud - Pheromone as seen by servers}
+	\label{fig:3serv-pher-high}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-3-high/perf-1.png}
+	\caption{Over loaded cloud - Server performance}
+	\label{fig:3serv-perf-high}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.95\columnwidth]{results/Run-3-high/antLoc-1.png}
+	\caption{Over loaded cloud - Ant location}
+	\label{fig:3serv-antloc-high}
+\end{figure}
+
+\section{Self-organizing self-optimization test conclusions}
+
+The performance tests show that the system behaves as desired and that the ACO algorithm properly detects a breach of SLA when the cloud is under loaded or over loaded while the house hunting algorithm can determine the number of servers added or removed. Due to the randomness which exists inside the house hunting algirthm it is possible to overshoot or undershoot the correct number of servers, however this is corrected quickly after another SLA breach is detected.
