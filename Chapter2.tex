@@ -85,7 +85,7 @@ Approaches to create such system range from biologically inspired architectures 
 
 Another approach for developing decentralized autonomic systems is that of using biologically inspired architectures. In recent years, biologically inspired algorithms like the Ant algorithm \cite{antalgorithm} for best route discovery in a network have been investigated and developed. In \cite{related:architecture:selflet}, the authors propose an approach which is closer to biological models, than to IBM's vision for autonomic systems. Instead of looking at an autonomic systems as a component that controls another resource, the authors design an autonomic system as a system that is able to change its internal behavior and its external interactions with other components, but is unable to modify external components. In order to reach this design, the authors create a ``SelfLet'' which is a self sufficient component, able to interact with other SelfLets in order to reach the high-level goals of the system. Each SelfLet has one or more behaviors, goals and actions. A goal represents a high-level objective, which can be achieved by executing some behaviors. Behaviors are performed by executing a set of local or remote actions. Similarly to the peer-to-peer architecture, SelfLets also have a negotiator manager, which they use in order to negotiate with other SelfLets a way to reach the goals.
 
-Ant algorithms have also been investigated in autonomic systems. In \cite{statmechcomplexnetwork} the authors present an ant algorithm to decide where to place services in a cluster. Ants are created and sent in the datacenter to find available servers to use. As the ants traverse the servers in the cluster, they select servers where to deploy the service by examining each servers local state. Similarly, in \cite{messor:loadbalaneants} the authors use ant algorithm to determine loads conditions and move jobs between servers in order to achieve load balancing in a data center.
+Ant algorithms have also been investigated in autonomic systems. In \cite{statmechcomplexnetwork} the authors present an ant algorithm to decide where to place services in a cluster. Ants are created and sent in the datacenter to find available servers to use. As the ants traverse the servers in the cluster, they select servers where to deploy the service by examining each servers local state. Similarly, in \cite{messor:loadbalaneants} the authors use ant algorithm to determine load conditions and move jobs between servers in order to achieve load balancing in a data center.
 
 In \cite{decentralized1} the authors use an approach similar to a peer-to-peer architecture. Each autonomic manager which comes online, for example for a new server starting, joins an autonomic management neighbourhood and exchanges messages periodically with members of the neighbourhood in order to determine the state of the system. Based on the information exchanged between autonomic managers, the autonomic managers can then make decisions on how to take actions to optimize the system. The authors apply the architecture to the grid problem of determining where to run various jobs in a grid while maintaining good performance for the various jobs running concurrently. In order to determine where to run the jobs, the system uses a neighbourhood of autonomic managers which decide the machines where jobs should be run, and once started monitor the jobs under their control to know the performance of the system. The managers also exchange information regarding the machines where jobs are being run and the performance of the respective jobs.
 
@@ -252,7 +252,7 @@ Particle swarm optimization uses as inspiration the behaviour of flocks of birds
 		\If{ $f(particle_{new}) > f(particle_{best})$ } 
 			\State update $particle_{best}$ = $particle_{new}$ 
 		\EndIf
-		\If{ $f(particle_new) > f(swarm)$ } 
+		\If{ $f(particle_{new}) > f(swarm)$ } 
 			\State update $best(swarm)$ = $particle_{new}$
 		\EndIf
 	\EndFor
@@ -294,7 +294,7 @@ Like the GA and PSO algorithms, this algorithm can not be used to detect problem
 
 Similar to the ABC algorithm, the ant colony optimization (ACO) algorithm is inspired by the behaviour of insect hives - in this case ants. The behaviour which inspired this algorithm is the way in which ants can build an efficient path between the nest and a food source using random search and reinforced learning. In real life, ants randomly search for food around the nest. When an ant finds a food source it returns to the nest with some food while laying a pheromone trail. Other ants which meet the pheromone trail are more likely to follow the trail then continue searching randomly. If the food source is large enough eventually a large number of ants follow the same path as each ant lays down a pheromone trail causing more ants to follow it. At the same time, the pheromones dissipate over time such that once a food source is depleted and ants no longer return with food from it, the trail will disappear. 
 
-The ACO algorithm is very similar to the behaviour of ants in real life and is best used to find optimal paths through graphs. For example, the algorithm has been used to provide reinforced learning for routers in a network for better packet forwarding \ref{Ant colony optimization for routing and load-balancing: survey and new directions}. In simple terms, the ACO is composed of a number of ants which are traversing the network by moving from node to node across edges. As ants move through the network they deposit pheromones on the edges based on some function. When ants decide the next node to go to, they choose based on the pheromones on the nodes going out from the current node. The selection of the next node is done pseudo-randomly such that not all ants follow the same path, however more ants will prefer edges with higher pheromone levels. 
+The ACO algorithm is very similar to the behaviour of ants in real life and is best used to find optimal paths through graphs. For example, the algorithm has been used to provide reinforced learning for routers in a network for better packet forwarding \cite{selforg:aco}. In simple terms, the ACO is composed of a number of ants which are traversing the network by moving from node to node across edges. As ants move through the network they deposit pheromones on the edges based on some function. When ants decide the next node to go to, they choose based on the pheromones on the nodes going out from the current node. The selection of the next node is done pseudo-randomly such that not all ants follow the same path, however more ants will prefer edges with higher pheromone levels. 
 
 In the case of routing in a network, the nodes are the routers and the edges are the connections between the routers. Ants are packets being sent between the routers and either they wait in a normal queue or have higher priority than normal packets. If the ants simply wait in the queues to be processed then they can measure the processing latency at the routers. As ants traverse the network they can update the routing table with information regarding how loaded is the network and also the best routes between different nodes. The pheromones in this case act as a way for more ants to go through low loaded network links such that those links are used by normal traffic.
 
@@ -307,7 +307,7 @@ The pseudocode in \ref{algo:aco} shows the behaviour of ACO algorithm from the p
 	\State Go to next node
 	\State Update pheromones for the edge just traversed
 \EndWhile
-\State return $best(solution) based on pheromones$
+\State return $best(solution)$ based on pheromones
 \end{algorithmic}
 \caption{Ant Colony Optimization}\label{algo:aco}
 \end{algorithm}
@@ -384,10 +384,9 @@ The goal of this thesis is to develop an autonomic system which optimizes a geog
 
 \begin{itemize}
 	\item The best approach to create an architecture for such a system is to use a decentralized self-organizing architecture which scales well with large numbers of servers in the cloud.
-	\item A number of approaches exist to develop autonomic systems, from machine learning to control theory based systems. Control theory offers the best ability to ensure guarantees such as stability and responsiveness and offers a number of existing algorithms which have been proven to work. This ensures a better chance of the system being put into practice in real-life as guarantees are offered to the system administrators.
 	\item The system must be able to manage the response time and latency as seen by end-users which is very important in real-time collaborative applications.
-	\item All current work into control theory for autonomic systems focuses on black-box models due to how complicated it is to develop a model from first principles for an IT system. This thesis proposal will present a system based on first principles.
-	\item There is no work performed, as far as investigated, which develops a geographically distributed cloud for real-time collaborative applications. The closest to such a system is Apache Wave which federates the data in a session across multiple servers, however no geographic knowledge is used in the system. Such a system will be presented in this thesis proposal.
+	\item A modified version of the ACO algorithm can be used to proactively detect breaches in a cloud's SLA.
+	\item There is no work performed, as far as investigated, which develops a geographically distributed cloud for real-time collaborative applications. The closest to such a system is Apache Wave which federates the data in a session across multiple servers, however no geographic knowledge is used in the system. Such a system will be presented in this thesis.
 \end{itemize}
 
-The requirements of the system and an initial control model are presented in Chapter \ref{Chapter3}.
+The requirements of the system and the system under control are presented in Chapter \ref{Chapter3}.

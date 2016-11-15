@@ -43,9 +43,11 @@ In the case of the geographically distributed cloud each server can be seen as h
 	\item Add a filter which computes the numbers of packets in and out from the bandwidth up/down
 	\item Add a fuzzy model which calculates the confidence that the server is overloaded. The fuzzy model computes two fuzzy functions:
 	\begin{enumerate}
-		\item Compute confidence1 based on number of clients, packets out, packets in and number of incoming streams.
-		\item Compute confidence2 based on packets in and CPU usage
-		\item Take the maximum value of the two confidences
+		\item Compute confidence1 based on number of clients
+		\item Compute confidence2 based on the rleation between packets out, packets in and number of incoming streams.
+		\item Compute confidence3 based on packets in 
+		\item Compute confidence3 based on CPU usage
+		\item Final value = average of 4 confidences
 	\end{enumerate}
 	\item Add an estimator which compares the confidence from the model with two given thresholds. If the confidence is above the higher threshold increment a counter of how many times the system was above the higher threshold. Similarly if the confidence is bellow the threshold increment a counter of how many time the system was bellow the lower threshold.
 	\item Add a decision maker which uses the count of how many times the system was above/bellow the thresholds in the estimator to decide if the server should accept or reject connections. If the server is above the higher threshold for more than a given count, then the server stops accepting new clients. If the server is bellow the lower threshold for a given amount of time and is not accepting clients, then it starts accepting clients.
@@ -73,7 +75,7 @@ The ant colony optimization (ACO) algorithm \cite{antalgorithm}, \cite{selforg:a
 	\label{fig:aco}
 \end{figure}
 
-For the self-organizing self-optimizing control system for the collaborative media application cloud presented in this thesis, the pheromone level in the network of servers is used as a proxy for how overloaded the entire cloud of servers is and used to decide when to add or remove servers. Whenever a media server starts, the media server's control system creates a new ant and sends it through the network of servers. Thus the total number of ants is equal to $N$ where $N$ is the number of servers. When an ant is first created, because it has no prior knowledge, it is sent to another server randomly. If only one server exists in the cloud, then the ant keeps visiting the same server.
+For the self-organizing self-optimizing control system for the collaborative media application cloud presented in this thesis, the pheromone level in the network of servers is used as a proxy for how loaded the entire cloud of servers is and used to decide when to add or remove servers. Whenever a media server starts, the media server's control system creates a new ant and sends it through the network of servers. Thus the total number of ants is equal to $N$ where $N$ is the number of servers. When an ant is first created, because it has no prior knowledge, it is sent to another server randomly. If only one server exists in the cloud, then the ant keeps visiting the same server.
 
 As ants reach other servers they deposit pheromone at the server they arrive at, at a rate inversely proportional to the load of the server. At the same time ants wait at the server a time proportional to the load of the server. Thus overloaded servers will have less pheromone deposited when compared to an under-loaded server. By having ants wait a longer time at overloaded servers, the overall amount of pheromone in the network will further decrease. With this approach, less pheromone in the network means that the cloud has more load as more servers have low pheromone levels because of being overloaded.
 
@@ -85,9 +87,9 @@ p^{t}_{n} = p^{t-1}_{n} + \sum_{i=1}^{K}(\tau * (1 - p)) - \rho
 
 where $p^{t}_{n}$ is the amount of pheromone at node $n$ at time $t$ where $t$ can be considered discrete in $15s$ increments and $K$ is the amount of ants arriving at the node in the time frame between $t-1$ and $t$.
 
-At the same time, ants store information about which servers they have visited and time passed since the last visit. When an ant decides which server to go to, it uses a random function which is proportional to the time since it has not visited a server combined with the pheromone level of the destination server. Thus the ant will give preference to the servers it has not visited in a long time, and especially the servers it has never visited. Because the server structure is not stable and servers can join and leave at any time, ants decide the next server to visit based on the servers known by the current server the ant is at.  Assume a cloud with 5 servers and an ant which has the following information in it's visit history table and which reaches Server 5.
+At the same time, ants store information about which servers they have visited and time passed since the last visit. When an ant decides which server to go to, it uses a random function which is proportional to the time since it has not visited a server combined with the pheromone level of the destination server. Thus the ant will give preference to the servers it has not visited in a long time, and especially the servers it has never visited. Because the server structure is not stable and servers can join and leave at any time, ants decide the next server to visit based on the servers known by the current server the ant is at.  Assume a cloud with 5 servers and an ant which has the information in table \ref{tab:ant_prio} in it's visit history table and which reaches Server 5.
 
-\begin{table}[]
+\begin{table}
 \centering
 \begin{tabular}{c|c|c}
 Server & Time since last visit (s) & Pheromone Level \\
@@ -109,7 +111,7 @@ P_s = (t_s / \sum_{i=1}^{N} t_i + p_{s} / \sum_{i=1}^{N} p_i) / 2
 
 where $P_s$ is the probability of visiting server $s$, $t_s$ is the time since it has visited server $s$ last time and $p_{s}$ is the pheromone at server $s$. These probabilities are computed only on the servers known as being up by the server the ant is at. The server the ant is currently at has to be excluded from the calculations, and it's probability will be 0. Let us assume also that Server 5, which is the server the ant is at currently does not yet know about server 3. As such, the visit probability table looks as in Table \ref{tab:ant_prob}.
 
-\begin{table}[]
+\begin{table}
 \centering
 \begin{tabular}{c|c}
 Server & Probability (\%) \\
@@ -122,9 +124,9 @@ Server 5 & 0 \\
 \label{tab:ant_prob}
 \end{table}
 
-As such, the ant will roll a random value between 0 and 1, and choose which server to go to. A value between 0 and 0.3842 means Server 4, between 0.3842 and 0.7352 means Server 1 and between 0.7352 and 1 means Server 2. Assuming the value the ant rolls is 0.7, and that the ant waits at Server 5 for 5s, the routing table after the ant moves to the next server will be as the one in Table \ref{tab:ant_post}.
+As such, the ant will roll a random value between 0 and 1, and choose which server to go to. A value between 0 and 0.3842 means Server 4, between 0.3842 and 0.7352 means Server 1 and between 0.7352 and 1 means Server 2. Assuming the value the ant rolls is 0.7, and that the ant waits at Server 5 for 5s and deposits 1 pheromone, the routing table after the ant moves to the next server will be as the one in Table \ref{tab:ant_post}.
 
-\begin{table}[]
+\begin{table}
 \centering
 \begin{tabular}{c|c|c}
 Server & Time since last visit (s) & Pheromone Level \\
@@ -132,13 +134,13 @@ Server 1 & 0 & 8 \\
 Server 2 & 25 & 5 \\
 Server 3 & 10 & 8 \\
 Server 4 & 40 & 5.5 \\
-Server 5 & 5 & 10 \\
+Server 5 & 5 & 11 \\
 \end{tabular}
 \caption{Ant routing knowledge posterior}
 \label{tab:ant_post}
 \end{table}
 
-In order to avoid having all ants visit a new node at the same time, whenever an ant discovers a new server it initializes the time since it visited the server with a random value. Assume that after the ant reaches Server 1, it discovers a new server which was unknown before - Server 6. The time since last visiting Server 6 will be initialized with a random value between 0 and the maximum time since last visiting a server which is known to be alive as in Equation \ref{eq:randomnew}. Furthermore the known pheromone level of the new server will be 0. If Server 1 only knows Server 2, 5 and 6 then the random value will be between 0 and 25s.
+In order to avoid having all ants visit a new node at the same time, whenever an ant discovers a new server it initializes the time since it visited the server with a random value. Assume that after the ant reaches Server 1, it discovers a new server which was unknown before - Server 6. The time since last visiting Server 6 will be initialized with a random value between 0 and the maximum time since last visiting a server which is known to be alive as in Equation \ref{eq:randomnew}. Furthermore the known pheromone level of the new server will be 0. If Server 1 only knows Server 2, 3 and 5 then the random value will be between 0 and 25s.
 
 \begin{equation}
 t_{new} = random(0, max(t_{known}))
@@ -280,15 +282,15 @@ This equation means that the pheromone rate at the node will decrease by $\rho *
 
 \subsection{Cluster optimization: Ant house hunting}
 
-The ant house hunting algorithm can be used in order to optimize the number of servers in the cloud by having ants search for the optimal number of servers which should be up in the cloud. This algorithm works by having each ant search for a new nest, where a nest is represented by a new optimum number of servers in the cloud. The algorithm assumes that there is a home nest where the ants can meet after searching for a new nest. Once more than half of the ants have agreed on the same optimum value, the servers are added or removed as desired and all ants are morphed back into food foraging ants for the ACO algorithm. \cite{selforg:antreloc}
+The ant house hunting algorithm can be used in order to optimize the number of servers in the cloud by having ants search for the optimal number of servers which should be up in the cloud. This algorithm works by having each ant search for a new nest, where a nest is represented by a new optimum number of servers in the cloud. The algorithm assumes that there is a home nest where the ants can meet after searching for a new nest. Once all the ants have agreed on the same optimum value, the servers are added or removed as desired and all ants are morphed back into food foraging ants for the ACO algorithm. \cite{selforg:antreloc}
 
-When an ant morphs into a house hunting ant it initializes itself with a range of possible solutions for the new size of the cloud. These possible solutions are computed as permutations of the current size of the cloud as known by the server the ant is at. If the ant was morphed because of lack of pheromone, then the ant generates a random value which would represent the number of servers to be added. Each random value is proportional to the size of the cloud and the pheromone level across the last $N$ servers known by the ant. For example, if the cloud contains only 2 servers, then the ant is initialized with a random value between 1 and 2. However, if the cloud contains 100 servers, then the ant would be initialized with a random values, which is defined as:
+When an ant morphs into a house hunting ant it initializes itself with a possible solution for the new size of the cloud. These possible solutions are computed as permutations of the current size of the cloud as known by the server the ant is at. If the ant was morphed because of lack of pheromone, then the ant generates a random value which would represent the number of servers to be added. Each random value is proportional to the size of the cloud and the pheromone level across the last $N$ servers known by the ant. For example, if the cloud contains only 2 servers, then the ant is initialized with a random value between 1 and 2. However, if the cloud contains 100 servers, then the ant would be initialized with a random values, which is defined as:
 
 \begin{equation}
 ServerCount_{add} = 1 + rand * N / (p_{ant})
 \end{equation}
 
-such that the lower the pheronomone value, the higher the probability of more servers being added. The random value has the effect of generating multiple possible solutions across different ants.
+such that the lower the pheromone value, the higher the probability of more servers being added. The random value has the effect of generating multiple possible solutions across different ants.
 
 If however the ant was morphed because of too much pheromone, then it does a similar initialization, but in this case it randomly chooses $X$ servers and hides them from its knowledge of the cloud. The servers are still in the ant's history but it does not consider them for optimization calculations. Each ant will create a different such permutation of servers which are hidden.
 

@@ -58,14 +58,14 @@ The data is measured from all the servers every 30 seconds, and is composed of: 
 
 The expectations are that as the number of servers increases for a given number of clients, sessions and streams the bandwidth and latency will decrease proportionally. Similar, as the number of collaborative sessions increases, with all other variables kept constant bandwidth and latency will decrease as the 1:N proportion, where N is how many clients receive the stream decreases. When the number of clients in a session increases bandwidth and latency should increase in a reverse fashion. Finally, when the number of streaming clients increases bandwidth and latency should increase similarly.
 
-The graphs for the performance tests can be found online as they would take too much space. In order to make the results more visible, the tests are grouped on the graphs 3 by 3, with the lowest test on one graph being the highest test on another graph. The following sections will present the results in tabular form.
+The graphs for the performance tests can be found online as they would take too much space here. In order to make the results more visible, the tests are grouped on the graphs 3 by 3, with the lowest test on one graph being the highest test on another graph. The following sections will present some of the results in tabular form and the rest of the results can be found online as well.
 
-In order to simplify notations, test will be abbreviated in the form clouds/servers/sessions/incoming streams per session. For a single cloud, the clouds part will be missing. For example, the test 2/3/1/4 refers to a test with 2 clouds, 3 servers, 1 session across all servers and 4 incoming streams from clients. Also, some of the test results will be skipped to preserve space.
+In order to simplify notations, test will be abbreviated in the form clouds/servers/sessions/incoming streams per session. For a single cloud, the clouds part will be missing. For example, the test 2/3/1/4 refers to a test with 2 clouds, 3 servers, 1 session across all servers and 4 incoming streams from clients.
 
 \subsubsection{1 Server, 1 Collaborative Session, 1 Stream Per Session}
 \label{sec:1serv_1sess_1str}
 
-The number of clients was varied from 2 to 40 in increments of 1. The number of outgoing streams is equal to (the number of users - 1) because the streaming user does not receive the stream back. These results show that as the number of users increases in a session, the latencies and CPU usage of the server increase at the same time. Interestingly CPU usage seems to reach an upper bound around 34 users while latencies continue to increase.
+The number of clients was varied from 2 to 40 in increments of 1. The number of outgoing streams is equal to (the number of users - 1) because the streaming user does not receive the stream back. These results show that as the number of users increases in a session, the latencies and CPU usage of the server increase at the same time. Interestingly mean CPU usage seems to reach an upper bound around 34 users while latencies continue to increase.
 
 \subsubsection{1 Server, 1 Collaborative Session, 2 Streams Per Session}
 \label{sec:1serv_1sess_2str180}
@@ -100,7 +100,7 @@ Number of Users & Median Latency (ms) & Mean Latency (ms) & Median Message Laten
 \end{tabu}
 \end{table}
 
-\clearpage\subsubsection{1 Server, 1 Collaborative Session, 4 Streams Per Session}
+\subsubsection{1 Server, 1 Collaborative Session, 4 Streams Per Session}
 \label{sec:1serv_1sess_4str180}
 
 For this test, users were varied from 4 to 11 in increments of 1. Outgoing streams behave as previous and will be equal to 4 * (the number of outgoing streams). Same results as for the previous tests are observed, as median latency for 12 outgoing streams is even higher than the previous tests.
@@ -124,7 +124,7 @@ Number of Users & Median Latency (ms) & Mean Latency (ms) & Median Message Laten
 \end{tabu}
 \end{table}
 
-\clearpage\subsubsection{1 Server, 2 Collaborative Sessions, 1 Stream}
+\subsubsection{1 Server, 2 Collaborative Sessions, 1 Stream}
 \label{sec:1serv_2sess_1str180}
 
 In this test 2 collaborative sessions of equal size are created, but only one session contains a streaming client. In the second session, clients only exchange text/synchronization messages. The goal of this test is to determine if there are other factors in the application outside video/audio streaming impacting latencies and CPU usage. If this test was compared to the test in section \ref{sec:1serv_1sess_1str}, it would be expected that latencies are very similar for equal numbers of clients. This expectation is not met however, as similar numbers of users result in higher latencies for this test. CPU usage values are very close for all tests however. This suggests that first of all, latencies are not directly related to CPU usage, and at the same time that only the number of outgoing streams is not sufficient to determine the latency of the system.
@@ -166,7 +166,7 @@ Number of Users/Session & Median Latency (ms) & Mean Latency (ms) & Median Messa
 \end{tabu}
 \end{table}
 
-\clearpage\subsubsection{1 Server, 3 Collaborative Sessions, 3 Streams}
+\subsubsection{1 Server, 3 Collaborative Sessions, 3 Streams}
 \label{sec:1serv_3sess_3str}
 
 Comparing this test results with the results for 1 Server, 2 Collaborative Sessions, 3 Streams, for the same number of outgoing streams, CPU usage is very similar, while latencies are higher for this test. The reason for this, is that a similar number of outgoing streams for this case has more total users across the server.
@@ -195,7 +195,7 @@ Number of Users/Session & Median Latency (ms) & Mean Latency (ms) & Median Messa
 \end{tabu}
 \end{table}
 
-\clearpage\subsubsection{1 Server, 3 Collaborative Sessions, 6 Streams}
+\subsubsection{1 Server, 3 Collaborative Sessions, 6 Streams}
 \label{sec:1serv_3sess_6str}
 
 Comparing this test results with the results from Table \ref{table:1serv_3sess_3str}, for the same number of outgoing streams, CPU usages are the same across all tests while latencies are lower for this test.
@@ -217,7 +217,7 @@ Number of Users & Median Latency (ms) & Mean Latency (ms) & Median Message Laten
 \end{tabu}
 \end{table}
 
-\clearpage\subsubsection{1 Server, 4 Collaborative Sessions, 4 Streams}
+\subsubsection{1 Server, 4 Collaborative Sessions, 4 Streams}
 \label{sec:1serv_4sess_4str}
 
 Comparing this test results with the tests in \ref{table:1serv_1sess_4str} and \ref{table:1serv_2sess_4str} across a similar number of outgoing streams, for 24 streams for example the latency medians are:
@@ -272,7 +272,7 @@ Number of Users/Server & Median Latency (ms) & Mean Latency (ms) & Median Messag
 \end{tabu}
 \end{table}
 
-\clearpage\subsubsection{2 Servers, 1 Collaborative Session, 4 Streams}
+\subsubsection{2 Servers, 1 Collaborative Session, 4 Streams}
 
 Comparing this result, with the result of the test for 1 Servers, 1 Collaborative Session, 4 Streams, while the outgoing number of streams can not be matched, the results look similar for similar numbers of outgoing streams.
 
@@ -316,7 +316,7 @@ Number of Users/Session/Server & Median Latency (ms) & Mean Latency (ms) & Media
 \end{tabu}
 \end{table}
 
-\clearpage\subsubsection{2 Servers, 3 Collaborative Sessions, 3 Streams}
+\subsubsection{2 Servers, 3 Collaborative Sessions, 3 Streams}
 
 Comparing this result with the result shown in \ref{table:1serv_3sess_3str} this test shows better results for equal number of outgoing streams.
 
@@ -344,7 +344,7 @@ Number of Users/Session/Server & Median Latency (ms) & Mean Latency (ms) & Media
 \end{tabu}
 \end{table}
 
-\clearpage\subsubsection{2 Servers, 3 Collaborative Sessions, 6 Streams}
+\subsubsection{2 Servers, 3 Collaborative Sessions, 6 Streams}
 
 Comparing results between this test and the test shown in Table \ref{table:1serv_3sess_6str}, median latency is better for this test while CPU results are similar for equal number of outgoing streams.
  
@@ -365,7 +365,7 @@ Number of Users/Session/Server & Median Latency (ms) & Mean Latency (ms) & Media
 \end{tabu}
 \end{table}
 
-\clearpage\subsubsection{2 Clouds, 2 Servers, 1 Collaborative Session, 1 Stream}
+\subsubsection{2 Clouds, 2 Servers, 1 Collaborative Session, 1 Stream}
 
 The system was also tested with multiple servers in multiple clouds. For this test, each of the two servers was in a different cloud with the collaborative session across all servers in the cloud. The CPU usage and median latencies are similar to those of the other tests with 1 session and 1 stream for equal numbers of outgoing streams. However, message latencies are much higher due to the data going between the two clouds.
 
@@ -401,7 +401,7 @@ Number of Users/Session/Server & Median Latency (ms) & Mean Latency (ms) & Media
 \end{tabu}
 \end{table}
 
-\clearpage\subsubsection{2 Clouds, 2 Servers, 2 Collaborative Sessions, 1 Stream}
+\subsubsection{2 Clouds, 2 Servers, 2 Collaborative Sessions, 1 Stream}
 
 The results for this test are again similar to the other results with 2 session and 1 stream, other than message latencies being higher. The results are worse than those of 2/2/1/1.
 
@@ -437,7 +437,7 @@ Number of Users/Session/Server & Median Latency (ms) & Mean Latency (ms) & Media
 \end{tabu}
 \end{table}
 
-\clearpage\subsubsection{2 Clouds, 2 Servers, 2 Collaborative Sessions, 4 Streams}
+\subsubsection{2 Clouds, 2 Servers, 2 Collaborative Sessions, 4 Streams}
 
 The results for this test are again similar to the other results with 2 sessions and 4 streams, other than message latencies being higher. The results are worse than those of 2/2/1/4.
 
@@ -461,7 +461,7 @@ Number of Users/Session/Server & Median Latency (ms) & Mean Latency (ms) & Media
 \end{tabu}
 \end{table}
 
-\clearpage\subsubsection{2 Clouds, 2 Servers, 3 Collaborative Sessions, 3 Stream}
+\subsubsection{2 Clouds, 2 Servers, 3 Collaborative Sessions, 3 Stream}
 
 The results for this test are better than those of 2/3/3, other than message latencies being higher.
 
@@ -489,7 +489,7 @@ Number of Users/Session/Server & Median Latency (ms) & Mean Latency (ms) & Media
 \end{table}
 
 
-\clearpage\subsubsection{2 Clouds, 2 Servers, 3 Collaborative Sessions, 6 Stream}
+\subsubsection{2 Clouds, 2 Servers, 3 Collaborative Sessions, 6 Stream}
 
 The results for this test are similar to the other results with 3 sessions and 6 streams, other than message latencies being higher. The results are similar to those of of 2/2/3/3, suggesting that the results of 2/2/3/3 are an outlier.
 
@@ -510,7 +510,7 @@ Number of Users/Session/Server & Median Latency (ms) & Mean Latency (ms) & Media
 \end{tabu}
 \end{table}
 
-\clearpage\subsubsection{2 Clouds, 2 Servers, 4 Collaborative Sessions, 4 Streams}
+\subsubsection{2 Clouds, 2 Servers, 4 Collaborative Sessions, 4 Streams}
 
 The results for this test are better than test 1/4/4 for similar numbers of outgoing streams.
 
@@ -534,7 +534,7 @@ Number of Users/Session/Server & Median Latency (ms) & Mean Latency (ms) & Media
 \end{tabu}
 \end{table}
 
-\clearpage\subsubsection{2 Clouds, 2 Servers, 4 Collaborative Sessions, 8 Streams}
+\subsubsection{2 Clouds, 2 Servers, 4 Collaborative Sessions, 8 Streams}
 
 The results for this test are better than test 1/4/8 for similar numbers of outgoing streams.
 
@@ -552,7 +552,7 @@ Number of Users/Session/Server & Median Latency (ms) & Mean Latency (ms) & Media
 \end{tabu}
 \end{table}
 
-\clearpage\subsubsection{2 Clouds, 3 Servers, 1 Collaborative Session, 1 Stream}
+\subsubsection{2 Clouds, 3 Servers, 1 Collaborative Session, 1 Stream}
 
 For the 2 clouds with 3 servers tests, two of the servers were placed in the same cloud with another server in a different cloud. For tests with less streams than the number of servers, the results shown are for one of the server receiving the stream via a streaming proxy. The CPU usage and median latencies are better than those of the other tests with 1 session and 1 stream for equal numbers of outgoing streams. However, message latencies are higher.
 
@@ -592,7 +592,7 @@ Number of Users & Median Latency (ms) & Mean Latency (ms) & Median Message Laten
 
 The tests presented in the previous sections can be compared in a number of ways. The first way to compare them is to look at tests with a similar number of incoming streams and sessions. For example, looking at tests with 1 session and 1 client streaming, it can be noticed that the median latency and median CPU usage are close to each other for all tests for similar numbers of clients connected. Tests 1/1/1, 2/1/1, 2/2/1/1 and 2/3/1/1 all show similar results for 10, 20, 30 and 36 users. At the same time tests 1/2/1, 2/2/1 and 2/2/2/1 have similar results to each other, but have higher median latencies and similar CPU usage at 10, 20, 30 and 36 users compared to the tests with 1 session. This is most likely due to having more users connected. The same behaviour can be noticed for the tests with 2 clients streaming.
 
-Another way to compare the tests results is by looking at results with the same number of collaboration sessions. By comparing these results it can be observed that as the number of incoming streams increases, latency decreases, while CPU is the same across the tests. For the same number of outgoing streams, tests 1/1/1, 1/1/2, 1/1/3 and 1/1/4 for example, show better results from 1 incoming streams to 4 incoming streams for 10 outgoing streams. This can be explained by the fact that to reach the same number of outgoing streams, as the incoming streams increase less users are in a session. The same behaviour can be observed across the other tests with equal number of sessions.
+Another way to compare the tests results is by looking at results with the same number of collaboration sessions. By comparing these results it can be observed that as the number of incoming streams increases, latency decreases, while CPU is the same across the tests. For the same number of outgoing streams - tests 1/1/1, 1/1/2, 1/1/3 and 1/1/4 for example - it can be seen that results from 1 incoming streams are better than results for 4 incoming streams when there is the same number of outgoing streams. This can be explained by the fact that in order for the test to have the same number of outgoing streams, as the incoming stream count increases less users are in a session. The same behaviour can be observed across the other tests with equal number of sessions.
 
 Looking at tests with the same number of sessions and streams but different numbers of servers, it can be noticed that the results are the same across different tests if the only variable is the number of servers. Similar behaviour can be observed if the only variable is the number of clouds, with everything else being constant. This confirms the assumption that better performance can be obtained by spreading the users across multiple servers.
 
@@ -602,7 +602,7 @@ As such, it can be assumed that median latency is a function of number of users 
 
 \subsubsection{Packet Sizes}
 
-Using the data obtained from the tests an average value for packet sizes can be determined. Figure \ref{fig:1serv1streampacketsizes} shows the average packet sizes as reported by the Operating System for one of the tests. All other tests exhibit similar packet size distributions. Taking packet distribution boundaries (64, 128, 256, etc.) from Figure \ref{fig:1serv1streampacketsizes} as the sizes of packets, the average packet size can be determined to be equal to 482 bytes.
+Using the data obtained from the tests an average value for packet sizes can be determined. This is important as the fuzzy model will use the packet size as a proxy for bandwidth used. Figure \ref{fig:1serv1streampacketsizes} shows the average packet sizes as reported by the Operating System for one of the tests. All other tests exhibit similar packet size distributions. Taking packet distribution boundaries (64, 128, 256, etc.) from Figure \ref{fig:1serv1streampacketsizes} as the sizes of packets, the average packet size can be determined to be equal to 482 bytes.
 
 \begin{figure}
 	\centering
@@ -611,13 +611,11 @@ Using the data obtained from the tests an average value for packet sizes can be 
 	\label{fig:1serv1streampacketsizes}
 \end{figure}
 
-\clearpage
-
 \section{Autonomic Computing Performance Tests}
 
-This section will present the performance of the autonomic system presented in this thesis proposal. The system will be run on top of the test bed under various loads in order to determine how the system behaves when being overloaded or underloaded.
+This section will present the performance of the self-organizing, self-optimizing autonomic system presented in this thesis. The system will be run on top of the test bed under various loads in order to determine how the system behaves when being overloaded or underloaded.
 
-The tests are split such that the same scenario is tested with various numbers of starting servers in the cluster and various loads such that up scaling, down scaling and no scaling are all tested. Some of the tests run for 30 minutes, while longer tests where servers are added due to the cloud being over-loaded are run for 60 minutes.
+The tests are split such that the same scenario is tested with various numbers of starting servers in the cluster and various loads such that up scaling, down scaling and no scaling are all tested. The tests are run a bit longer than 30 minutes, due to the fact that there is a ramp up at the beginning of the test while clients join, sessions are created and clients start streaming.
 
 \subsection{Single server start}
 
@@ -654,9 +652,9 @@ Finally, figure \ref{fig:1serv-perf} shows the performance of the server. The op
 
 \subsubsection{Medium/low loaded cloud}
 
-In this test case the cloud is still underloaded but the load is closer to what a single server can support. As such it can be seen that in figure \ref{fig:1serv-ant-lowmed} the pheromone level increases slower than in figure \ref{fig:1serv-ant} and similarly for figures \ref{fig:1serv-pher-lowmed} and figure {fig:1serv-pher-low}. At the same time figure  \ref{fig:1serv-perf-lowmed} shows that the CPU usage is higher than in the previous test case, while bandwidth usage and latencies are also higher.
+In this test case the cloud is still underloaded but the load is closer to what a single server can support. As such it can be seen that in figure \ref{fig:1serv-ant-lowmed} the pheromone level increases slower than in figure \ref{fig:1serv-ant} and similarly for figures \ref{fig:1serv-pher-lowmed} and figure \ref{fig:1serv-pher-lowmed}. At the same time figure  \ref{fig:1serv-perf-lowmed} shows that the CPU usage is higher than in the previous test case, while bandwidth usage and latencies are also higher.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 	\centering
 		\includegraphics[width=0.95\columnwidth]{results/Run-1-lowmed/ant-1.png}
 	\caption{Medium/low loaded cloud - Pheromone as seen by Ant 1}
@@ -681,7 +679,7 @@ In this test case the cloud is still underloaded but the load is closer to what 
 
 This test case tests a server which is neither overloaded nor underloaded. As such, the pheromone level should stay stable such that servers are not added or removed from the cloud. As seen in graphs \ref{fig:1serv-ant-med} and \ref{fig:1serv-pher-med} the pheromone level is largely stable except for two spikes around 14 and 29 minutes in. The two spikes coincide with the streams stopping and in figure \ref{fig:1serv-perf-med} it can be noticed that at those times the CPU usage and latency drops down, resulting in the server being underloaded for a brief period of time.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 	\centering
 		\includegraphics[width=0.95\columnwidth]{results/Run-1-med/ant-1.png}
 	\caption{Medium loaded cloud - Pheromone as seen by Ant 1}
@@ -753,7 +751,7 @@ This test is set up such that a single server can not handle by itself the reque
 
 The performance graphs show high CPU, bandwidth and latency before the second server is added. After the second server is added the performance metrics stabilize at good values. Similarly to the previous test figure \ref{fig:1serv-antloc-high} shows the ants moving from one server to the other. The optimization by the house hunting algorithm is also trivial as there is a single ant to begin with, so no recruitment can happen.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 	\centering
 		\includegraphics[width=0.95\columnwidth]{results/Run-1-high/ant-1.png}
 	\caption{Over-loaded cloud - Pheromone at Server 1 as seen by ants}
@@ -798,7 +796,7 @@ This test case tests the base case of an under-loaded cloud, where the cloud sta
 
 The server performance graphs show that the servers are under-loaded and even after the server is removed the load on the single remaining server is low enough not to cause a breach of SLA.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 	\centering
 		\includegraphics[width=0.95\columnwidth]{results/Run-2-low/ant-1.png}
 	\caption{Under-loaded cloud - Pheromone at Server 1 as seen by ants}
@@ -971,7 +969,7 @@ Performance graphs show that the two servers are overloaded in the beginning and
 
 When the system detects the SLA breach, the two ants meet and start the house hunting optimization. In this case, both ants choose to add 2 more servers to the cloud, and as such after the recruitment the solution is to add two more servers to the cloud.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 	\centering
 		\includegraphics[width=0.95\columnwidth]{results/Run-2-high/ant-1.png}
 	\caption{Over-loaded cloud - Pheromone at Server 1 as seen by ants}
@@ -1050,7 +1048,7 @@ For the house hunting optimization once the ants simulate the solutions, the ini
 	\item All ants go to same solution which is nest 1
 \end{enumerate}
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 	\centering
 		\includegraphics[width=0.95\columnwidth]{results/Run-3-low/ant-1.png}
 	\caption{Under loaded cloud - Pheromone at Server 1 as seen by ants}
@@ -1116,7 +1114,7 @@ In the medium/low scenario the pheromone level increases slower than in the unde
 	\item All ants go to same solution which is nest 2
 \end{enumerate}
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 	\centering
 		\includegraphics[width=0.95\columnwidth]{results/Run-3-lowmed/ant-1.png}
 	\caption{Medium/low loaded cloud - Pheromone at Server 1 as seen by ants}
@@ -1160,9 +1158,9 @@ In the medium/low scenario the pheromone level increases slower than in the unde
 
 \subsubsection{Medium loaded cloud}
 
-In the well balanced cloud case, one of the servers has less load than the other two servers and as such it has less bandwidth used when compared to the other two servers as seen in figure \ref{fig:3serv-perf-lowmed} - server 3 has less load. Because of this the pheromone at server 3 increases while the pheromone at the other two servers decreases. However, the average pheromone level across the cloud as seen by the ants is always bellow the thresholds and no house hunting optimization is triggered. In this case when looking at figure \ref{fig:3serv-antloc-med} it can be noticed that some of the ants only visit two of the servers and not all three. this is because of the randomness of the selection of the next 
+In the well balanced cloud case, one of the servers has less load than the other two servers and as such it has less bandwidth used when compared to the other two servers as seen in figure \ref{fig:3serv-perf-lowmed} - server 3 has less load. Because of this the pheromone at server 3 increases while the pheromone at the other two servers decreases. However, the average pheromone level across the cloud as seen by the ants is always bellow the thresholds and no house hunting optimization is triggered. In this case when looking at figure \ref{fig:3serv-antloc-med} it can be noticed that some of the ants only visit two of the servers and not all three. This is because of the randomness of the selection of the next server to jump to.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 	\centering
 		\includegraphics[width=0.95\columnwidth]{results/Run-3-med/ant-1.png}
 	\caption{Medium loaded cloud - Pheromone at Server 1 as seen by ants}
@@ -1287,7 +1285,7 @@ The first SLA breach results in two servers being added to the cloud. This is be
 	\end{itemize}
 	\item Recruitment:
 	\begin{itemize}
-		\item Ant 1 recruits Ant 5 and Ant 4 recruits ant 3, next 5 is dropped out
+		\item Ant 1 recruits Ant 5 and Ant 4 recruits ant 3, nest 5 is dropped out
 	\end{itemize}
 	\item Recruitment:
 	\begin{itemize}
