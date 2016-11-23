@@ -155,8 +155,8 @@
                 {UNIVERSITY OF OTTAWA}}
                 {UNIVERSITY OF OTTAWA}}
 \department  {\texorpdfstring{\href{http://www.ociece.ca}
-                {The Ottawa-Carleton Institute for Electrical and Computer Engineering}}
-                {The Ottawa-Carleton Institute for Electrical and Computer Engineering}}
+                {Ottawa-Carleton Institute for Electrical and Computer Engineering}}
+                {Ottawa-Carleton Institute for Electrical and Computer Engineering}}
 \DEPARTMENT  {\texorpdfstring{\href{http://www.ociece.ca}
                 {The OTTAWA-CARLETON INSTITUTE FOR ELECTRICAL AND COMPUTER ENGINEERING}}
                 {The OTTAWA-CARLETON INSTITUTE FOR ELECTRICAL AND COMPUTER ENGINEERING}}
@@ -187,7 +187,7 @@
     \let\footnoterule\relax
     \let \footnote \thanks
     \setcounter{footnote}{0}
-    \null\vfil
+    %\null\vfil
     %\vskip 60\p@
     \begin{center}
       \setlength{\parskip}{0pt}
@@ -199,14 +199,17 @@
       {\large A thesis submitted to the \par}
       {\large \facname \par}
       {\large in partial fulfillment of the requirements for the \par}
-      {\large Doctorate in Philosophy degree in \par}
-      \bigskip
-      \bigskip
-      \bigskip
+      {\large Doctorate in Philosophy degree in Electrical \& Computer Engineering\par}
+      %\bigskip
+      %\bigskip
+      %\bigskip
+			\vfill
       {\large \deptname \par}
-      {\large\textbf{\UNIVNAME}\par}
-      {\large \copyright \hspace{0.5mm} Bogdan Solomon, Ottawa, Canada, \@date \par}
-      \bigskip
+      {\large School of Electrical Engineering and Computer Science \par}
+			{\large Faculty of Engineering \par}
+      {\large\univname \par}
+			\vfill
+			{\large \copyright \hspace{0.5mm} Bogdan Solomon, Ottawa, Canada, 2016 \par}
     \end{center}
     \par
     \@thanks
