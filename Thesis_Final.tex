@@ -23,6 +23,9 @@
 \PrependGraphicsExtensions*{.pdf,.PDF}
 \numberwithin{algorithm}{chapter}  
 \pdfminorversion=7
+\usepackage{atbegshi}% http://ctan.org/pkg/atbegshi
+\AtBeginDocument{\AtBeginShipoutNext{\AtBeginShipoutDiscard}}
+\usepackage{IEEEtrantools}
 
 \lstset{%
   numbers=none,
@@ -38,6 +41,7 @@
 
 %% ----------------------------------------------------------------
 \begin{document}
+\bstctlcite{IEEEexample:BSTcontrol}
 
 \setlength{\headheight}{27.5pt}\textsl{}
 \frontmatter	  % Begin Roman style (i, ii, iii, iv...) page numbering
@@ -49,9 +53,7 @@
             {Bogdan Solomon}
             }
 \addresses  {\groupname\\\deptname\\\univname}  % Do not change this here, instead these must be set in the "Thesis.cls" file, please look through it instead
-\date       {November 2011}
-\subject    {}
-\keywords   {}
+\date       {November 2016}
 
 \maketitle
 %% ----------------------------------------------------------------
@@ -71,10 +73,10 @@
 
 \null\vfill
 % Now comes the "Funny Quote", written in italics
-\textit{``The important thing is not to stop questioning. Curiosity has its own reason for existing.''}
+\textit{``Blessed are those who find wisdom, those who gain understanding.''}
 
 \begin{flushright}
-Albert Einstein
+Proverbs 13
 \end{flushright}
 
 \vfill\vfill\vfill\vfill\vfill\vfill\null
@@ -86,7 +88,7 @@ Albert Einstein
 \abstract{
 \addtocontents{toc}{\vspace{1em}}  % Add a gap in the Contents, for aesthetics
 
-Recently a great deal of research has been undertaken in the area of automating the enterprise IT Infrastructure. For enterprises with a large number of computers the IT Infrastructure represents a considerable amount of the enterprise budget assigned to its operation. Autonomic Computing Systems are systems which were created to correct and optimize the IT infrastructure's own self-functioning by executing corrective operations without any need for human intervention. Applications of autonomic systems range from usage optimization for clusters of servers or virtual machines, to error prevention and error recovery for web applications. In most cases where autonomic computing systems have been developed this was achieved by the addition of external global controllers monitoring the subsystems of the enterprise IT Infrastructure, determining where changes should be made and applying appropriate commands to implement these changes. Self-Organizing systems on the other hand are systems which reach a global desired state without the use of any central authority. At the same time the software industry has seen an explosion in the usage of cloud based services. By moving services in the cloud companies can decrease the IT budget such that they only use the resources which are needed, when they are needed. Furthermore, services deployed in the cloud can be distributed geographically across multiple datacenters such that users obtain a higher quality service by connecting to a closer datacenter. In this thesis proposal, an autonomic system based on a self-organizing architecture is introduced. The system is applied to the self-optimization of a web-based real-time collaborative application running on a geographically distributed cloud. Experiments and simulations with the self-optimizing autonomic computing methodology are given to support the design and the implementation described.
+In recent years a great deal of research has been undertaken in the area of automating the enterprise IT Infrastructure. For enterprises with a large number of computers the IT Infrastructure represents a considerable amount of the enterprise budget assigned to its operation. Autonomic Computing Systems are systems which were created to correct and optimize the IT infrastructure's own self-functioning by executing corrective operations without any need for human intervention. Applications of autonomic systems range from usage optimization for clusters of servers or virtual machines, to error prevention and error recovery for web applications. In most cases where autonomic computing systems have been developed this was achieved by the addition of external global controllers monitoring the subsystems of the enterprise IT Infrastructure, determining where changes should be made and applying appropriate commands to implement these changes. Self-Organizing systems on the other hand are systems which reach a global desired state without the use of any central authority. At the same time the software industry has seen an explosion in the usage of cloud based services. By moving services in the cloud companies can decrease the IT budget such that they only use the resources which are needed, when they are needed. Furthermore, services deployed in the cloud can be distributed geographically across multiple datacenters such that users obtain a higher quality service by connecting to a closer datacenter. In this thesis, an autonomic system based on a self-organizing architecture is introduced. The system is applied to the self-optimization of a web-based real-time collaborative application running on a geographically distributed cloud. Experiments with the self-organizing, self-optimizing autonomic computing methodology are given to support the design and the implementation described.
 
 }
 
@@ -99,11 +101,13 @@ Recently a great deal of research has been undertaken in the area of automating 
 \acknowledgements{
 \addtocontents{toc}{\vspace{1em}}  % Add a gap in the Contents, for aesthetics
 
-I would like to first thank my supervisor, Dr. Dan Ionescu, for the guidance and encouragement that I received during my Master's and PhD work as well as for the oppurtunity of doing this degree. At the same time I would like to thank Dr. El Saddik for starting me, while I was still an undergraduate student, on the path that lead here.
+I would like to first thank my supervisor, Dr. Dan Ionescu, for the guidance and encouragement that I received during my Master's and PhD work as well as for the opportunity of doing this degree. At the same time I would like to thank Dr. El Saddik for starting me, while I was still an undergraduate student, on the path that lead here.
 
 Special thanks also go to all the people in the NCCTLab at University of Ottawa who allowed me to bounce ideas of them, and listened to my endless complaints.
 
-Last but not least, I would like to thank my parents and my brother for always cultivating in me the need to know more.
+I would also like to thank my parents and my brother for always cultivating in me the need to know more. 
+
+Last but not least, special thanks go to my wife who pushed me and encouraged me to finish this thesis and God who gave me the wisdom to complete it.
 
 }
 \clearpage  % End of the Acknowledgements
@@ -136,30 +140,20 @@ Last but not least, I would like to thank my parents and my brother for always c
 \textbf{CDN} & \textbf{C}ontent \textbf{D}elivery \textbf{N}etwork \\
 \textbf{DMTF} & \textbf{D}istributed \textbf{M}anagement \textbf{T}ask \textbf{F}orce \\
 \textbf{EC2} & \textbf{E}lastic \textbf{C}loud  \textbf{C}omputing \\
-\textbf{EKF} & \textbf{E}xtended \textbf{K}alman  \textbf{F}ilter \\
 \textbf{EVO} & \textbf{E}nigmatec \textbf{V}irtual \textbf{O}rchestrator \\
 \textbf{FCFS} & \textbf{F}irst \textbf{C}ome \textbf{F}irst \textbf{S}erved \\
 \textbf{FEC} & \textbf{F}orward \textbf{E}rror \textbf{C}orrection \\
 \textbf{GMS} & \textbf{G}roup \textbf{M}embership \textbf{S}ervice \\
 \textbf{IEEE} & \textbf{I}nstitute of \textbf{E}lectrical and \textbf{E}lectronics \textbf{E}ngineers \\
-\textbf{i.i.d.} & \textbf{i}ndependent and \textbf{i}dentically \textbf{d}istributed \\
 \textbf{JEE} & \textbf{J}ava \textbf{E}nterprise \textbf{E}dition \\
 \textbf{JMX} & \textbf{J}ava \textbf{M}anagement e\textbf{X}tension \\
 \textbf{JSON} & \textbf{J}ava\textbf{S}cript \textbf{O}bject \textbf{N}otation \\
 \textbf{MAPE} & \textbf{M}onitor \textbf{A}nalyze \textbf{P}lan \textbf{E}xecute \\
-\textbf{MDD} & \textbf{M}odel \textbf{D}riven \textbf{D}evelopment \\
 \textbf{N1 SPS}  & \textbf{N1} \textbf{S}ervice  \textbf{P}rovisioning \textbf{S}ystem \\
-\textbf{OASIS} & \textbf{O}rganization for the \textbf{A}dvancement of \textbf{S}tructured \textbf{I}nformation \\* \textbf{S}tandards \\
-\textbf{PIM} & \textbf{P}latform \textbf{I}ndependent \textbf{M}odel \\
-\textbf{PSM} & \textbf{P}latform \textbf{S}precific \textbf{M}odel \\
 \textbf{QNM} & \textbf{Q}ueueing \textbf{N}etwork  \textbf{M}odel \\
 \textbf{QoS} & \textbf{Q}uality \textbf{o}f \textbf{S}ervice \\
-\textbf{RPE} & \textbf{R}ecursive \textbf{P}rediction  \textbf{E}rror \\
 \textbf{SLA} & \textbf{S}ervice \textbf{L}evel \textbf{A}greement \\
 \textbf{SOAP} & \textbf{S}imple \textbf{O}bject \textbf{A}ccess \textbf{P}rotocol \\
-\textbf{TIO} & \textbf{T}ivoli \textbf{I}ntelligent  \textbf{O}rchestrator \\
-\textbf{TPM} & \textbf{T}ivoli \textbf{P}rovisioning  \textbf{M}anagement \\
-\textbf{WSDM} & \textbf{W}eb  \textbf{S}ervice   \textbf{D}istributed   \textbf{M}anagement \\
 }
 
 %% ----------------------------------------------------------------
@@ -190,7 +184,7 @@ Last but not least, I would like to thank my parents and my brother for always c
 \setstretch{1.3}  % Return the line spacing back to 1.3
 
 \pagestyle{empty}  % Page style needs to be empty for this page
-\dedicatory{Dedicated to my parents and my brother}
+\dedicatory{Dedicated to my wife, my parents and my brother}
 
 
 \addtocontents{toc}{\protect\setcounter{tocdepth}{2}\vspace{2em}}  % Add a gap in the Contents, for aesthetics
