@@ -1,0 +1,1078 @@
+
+%% bare_conf.tex
+%% V1.4b
+%% 2015/08/26
+%% by Michael Shell
+%% See:
+%% http://www.michaelshell.org/
+%% for current contact information.
+%%
+%% This is a skeleton file demonstrating the use of IEEEtran.cls
+%% (requires IEEEtran.cls version 1.8b or later) with an IEEE
+%% conference paper.
+%%
+%% Support sites:
+%% http://www.michaelshell.org/tex/ieeetran/
+%% http://www.ctan.org/pkg/ieeetran
+%% and
+%% http://www.ieee.org/
+
+%%*************************************************************************
+%% Legal Notice:
+%% This code is offered as-is without any warranty either expressed or
+%% implied; without even the implied warranty of MERCHANTABILITY or
+%% FITNESS FOR A PARTICULAR PURPOSE! 
+%% User assumes all risk.
+%% In no event shall the IEEE or any contributor to this code be liable for
+%% any damages or losses, including, but not limited to, incidental,
+%% consequential, or any other damages, resulting from the use or misuse
+%% of any information contained here.
+%%
+%% All comments are the opinions of their respective authors and are not
+%% necessarily endorsed by the IEEE.
+%%
+%% This work is distributed under the LaTeX Project Public License (LPPL)
+%% ( http://www.latex-project.org/ ) version 1.3, and may be freely used,
+%% distributed and modified. A copy of the LPPL, version 1.3, is included
+%% in the base LaTeX documentation of all distributions of LaTeX released
+%% 2003/12/01 or later.
+%% Retain all contribution notices and credits.
+%% ** Modified files should be clearly indicated as such, including  **
+%% ** renaming them and changing author support contact information. **
+%%*************************************************************************
+
+
+% *** Authors should verify (and, if needed, correct) their LaTeX system  ***
+% *** with the testflow diagnostic prior to trusting their LaTeX platform ***
+% *** with production work. The IEEE's font choices and paper sizes can   ***
+% *** trigger bugs that do not appear when using other class files.       ***                          ***
+% The testflow support page is at:
+% http://www.michaelshell.org/tex/testflow/
+
+
+
+\documentclass[conference]{IEEEtran}
+% Some Computer Society conferences also require the compsoc mode option,
+% but others use the standard conference format.
+%
+% If IEEEtran.cls has not been installed into the LaTeX system files,
+% manually specify the path to it like:
+% \documentclass[conference]{../sty/IEEEtran}
+
+
+
+
+
+% Some very useful LaTeX packages include:
+% (uncomment the ones you want to load)
+
+
+% *** MISC UTILITY PACKAGES ***
+%
+%\usepackage{ifpdf}
+% Heiko Oberdiek's ifpdf.sty is very useful if you need conditional
+% compilation based on whether the output is pdf or dvi.
+% usage:
+% \ifpdf
+%   % pdf code
+% \else
+%   % dvi code
+% \fi
+% The latest version of ifpdf.sty can be obtained from:
+% http://www.ctan.org/pkg/ifpdf
+% Also, note that IEEEtran.cls V1.7 and later provides a builtin
+% \ifCLASSINFOpdf conditional that works the same way.
+% When switching from latex to pdflatex and vice-versa, the compiler may
+% have to be run twice to clear warning/error messages.
+
+
+
+
+
+
+% *** CITATION PACKAGES ***
+%
+%\usepackage{cite}
+% cite.sty was written by Donald Arseneau
+% V1.6 and later of IEEEtran pre-defines the format of the cite.sty package
+% \cite{} output to follow that of the IEEE. Loading the cite package will
+% result in citation numbers being automatically sorted and properly
+% "compressed/ranged". e.g., [1], [9], [2], [7], [5], [6] without using
+% cite.sty will become [1], [2], [5]--[7], [9] using cite.sty. cite.sty's
+% \cite will automatically add leading space, if needed. Use cite.sty's
+% noadjust option (cite.sty V3.8 and later) if you want to turn this off
+% such as if a citation ever needs to be enclosed in parenthesis.
+% cite.sty is already installed on most LaTeX systems. Be sure and use
+% version 5.0 (2009-03-20) and later if using hyperref.sty.
+% The latest version can be obtained at:
+% http://www.ctan.org/pkg/cite
+% The documentation is contained in the cite.sty file itself.
+
+
+
+
+
+
+% *** GRAPHICS RELATED PACKAGES ***
+%
+\ifCLASSINFOpdf
+  % \usepackage[pdftex]{graphicx}
+  % declare the path(s) where your graphic files are
+  % \graphicspath{{../pdf/}{../jpeg/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  % \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+\else
+  % or other class option (dvipsone, dvipdf, if not using dvips). graphicx
+  % will default to the driver specified in the system graphics.cfg if no
+  % driver is specified.
+  % \usepackage[dvips]{graphicx}
+  % declare the path(s) where your graphic files are
+  % \graphicspath{{../eps/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  % \DeclareGraphicsExtensions{.eps}
+\fi
+% graphicx was written by David Carlisle and Sebastian Rahtz. It is
+% required if you want graphics, photos, etc. graphicx.sty is already
+% installed on most LaTeX systems. The latest version and documentation
+% can be obtained at: 
+% http://www.ctan.org/pkg/graphicx
+% Another good source of documentation is "Using Imported Graphics in
+% LaTeX2e" by Keith Reckdahl which can be found at:
+% http://www.ctan.org/pkg/epslatex
+%
+% latex, and pdflatex in dvi mode, support graphics in encapsulated
+% postscript (.eps) format. pdflatex in pdf mode supports graphics
+% in .pdf, .jpeg, .png and .mps (metapost) formats. Users should ensure
+% that all non-photo figures use a vector format (.eps, .pdf, .mps) and
+% not a bitmapped formats (.jpeg, .png). The IEEE frowns on bitmapped formats
+% which can result in "jaggedy"/blurry rendering of lines and letters as
+% well as large increases in file sizes.
+%
+% You can find documentation about the pdfTeX application at:
+% http://www.tug.org/applications/pdftex
+
+
+
+
+
+% *** MATH PACKAGES ***
+%
+%\usepackage{amsmath}
+% A popular package from the American Mathematical Society that provides
+% many useful and powerful commands for dealing with mathematics.
+%
+% Note that the amsmath package sets \interdisplaylinepenalty to 10000
+% thus preventing page breaks from occurring within multiline equations. Use:
+%\interdisplaylinepenalty=2500
+% after loading amsmath to restore such page breaks as IEEEtran.cls normally
+% does. amsmath.sty is already installed on most LaTeX systems. The latest
+% version and documentation can be obtained at:
+% http://www.ctan.org/pkg/amsmath
+
+
+
+
+
+% *** SPECIALIZED LIST PACKAGES ***
+%
+%\usepackage{algorithmic}
+% algorithmic.sty was written by Peter Williams and Rogerio Brito.
+% This package provides an algorithmic environment fo describing algorithms.
+% You can use the algorithmic environment in-text or within a figure
+% environment to provide for a floating algorithm. Do NOT use the algorithm
+% floating environment provided by algorithm.sty (by the same authors) or
+% algorithm2e.sty (by Christophe Fiorio) as the IEEE does not use dedicated
+% algorithm float types and packages that provide these will not provide
+% correct IEEE style captions. The latest version and documentation of
+% algorithmic.sty can be obtained at:
+% http://www.ctan.org/pkg/algorithms
+% Also of interest may be the (relatively newer and more customizable)
+% algorithmicx.sty package by Szasz Janos:
+% http://www.ctan.org/pkg/algorithmicx
+\usepackage{graphicx}
+\graphicspath{{Resources/Figures/MultiPurpose/}}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{tabu}
+\usepackage{amsmath}
+
+% *** ALIGNMENT PACKAGES ***
+%
+%\usepackage{array}
+% Frank Mittelbach's and David Carlisle's array.sty patches and improves
+% the standard LaTeX2e array and tabular environments to provide better
+% appearance and additional user controls. As the default LaTeX2e table
+% generation code is lacking to the point of almost being broken with
+% respect to the quality of the end results, all users are strongly
+% advised to use an enhanced (at the very least that provided by array.sty)
+% set of table tools. array.sty is already installed on most systems. The
+% latest version and documentation can be obtained at:
+% http://www.ctan.org/pkg/array
+
+
+% IEEEtran contains the IEEEeqnarray family of commands that can be used to
+% generate multiline equations as well as matrices, tables, etc., of high
+% quality.
+
+
+
+
+% *** SUBFIGURE PACKAGES ***
+%\ifCLASSOPTIONcompsoc
+%  \usepackage[caption=false,font=normalsize,labelfont=sf,textfont=sf]{subfig}
+%\else
+%  \usepackage[caption=false,font=footnotesize]{subfig}
+%\fi
+% subfig.sty, written by Steven Douglas Cochran, is the modern replacement
+% for subfigure.sty, the latter of which is no longer maintained and is
+% incompatible with some LaTeX packages including fixltx2e. However,
+% subfig.sty requires and automatically loads Axel Sommerfeldt's caption.sty
+% which will override IEEEtran.cls' handling of captions and this will result
+% in non-IEEE style figure/table captions. To prevent this problem, be sure
+% and invoke subfig.sty's "caption=false" package option (available since
+% subfig.sty version 1.3, 2005/06/28) as this is will preserve IEEEtran.cls
+% handling of captions.
+% Note that the Computer Society format requires a larger sans serif font
+% than the serif footnote size font used in traditional IEEE formatting
+% and thus the need to invoke different subfig.sty package options depending
+% on whether compsoc mode has been enabled.
+%
+% The latest version and documentation of subfig.sty can be obtained at:
+% http://www.ctan.org/pkg/subfig
+
+
+
+
+% *** FLOAT PACKAGES ***
+%
+%\usepackage{fixltx2e}
+% fixltx2e, the successor to the earlier fix2col.sty, was written by
+% Frank Mittelbach and David Carlisle. This package corrects a few problems
+% in the LaTeX2e kernel, the most notable of which is that in current
+% LaTeX2e releases, the ordering of single and double column floats is not
+% guaranteed to be preserved. Thus, an unpatched LaTeX2e can allow a
+% single column figure to be placed prior to an earlier double column
+% figure.
+% Be aware that LaTeX2e kernels dated 2015 and later have fixltx2e.sty's
+% corrections already built into the system in which case a warning will
+% be issued if an attempt is made to load fixltx2e.sty as it is no longer
+% needed.
+% The latest version and documentation can be found at:
+% http://www.ctan.org/pkg/fixltx2e
+
+
+%\usepackage{stfloats}
+% stfloats.sty was written by Sigitas Tolusis. This package gives LaTeX2e
+% the ability to do double column floats at the bottom of the page as well
+% as the top. (e.g., "\begin{figure*}[!b]" is not normally possible in
+% LaTeX2e). It also provides a command:
+%\fnbelowfloat
+% to enable the placement of footnotes below bottom floats (the standard
+% LaTeX2e kernel puts them above bottom floats). This is an invasive package
+% which rewrites many portions of the LaTeX2e float routines. It may not work
+% with other packages that modify the LaTeX2e float routines. The latest
+% version and documentation can be obtained at:
+% http://www.ctan.org/pkg/stfloats
+% Do not use the stfloats baselinefloat ability as the IEEE does not allow
+% \baselineskip to stretch. Authors submitting work to the IEEE should note
+% that the IEEE rarely uses double column equations and that authors should try
+% to avoid such use. Do not be tempted to use the cuted.sty or midfloat.sty
+% packages (also by Sigitas Tolusis) as the IEEE does not format its papers in
+% such ways.
+% Do not attempt to use stfloats with fixltx2e as they are incompatible.
+% Instead, use Morten Hogholm'a dblfloatfix which combines the features
+% of both fixltx2e and stfloats:
+%
+% \usepackage{dblfloatfix}
+% The latest version can be found at:
+% http://www.ctan.org/pkg/dblfloatfix
+
+
+
+
+% *** PDF, URL AND HYPERLINK PACKAGES ***
+%
+%\usepackage{url}
+% url.sty was written by Donald Arseneau. It provides better support for
+% handling and breaking URLs. url.sty is already installed on most LaTeX
+% systems. The latest version and documentation can be obtained at:
+% http://www.ctan.org/pkg/url
+% Basically, \url{my_url_here}.
+
+
+
+
+% *** Do not adjust lengths that control margins, column widths, etc. ***
+% *** Do not use packages that alter fonts (such as pslatex).         ***
+% There should be no need to do such things with IEEEtran.cls V1.6 and later.
+% (Unless specifically asked to do so by the journal or conference you plan
+% to submit to, of course. )
+
+
+% correct bad hyphenation here
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+
+\begin{document}
+%
+% paper title
+% Titles are generally capitalized except for words such as a, an, and, as,
+% at, but, by, for, in, nor, of, on, or, the, to and up, which are usually
+% not capitalized unless they are the first or last word of the title.
+% Linebreaks \\ can be used within to get better formatting as desired.
+% Do not put math or special symbols in the title.
+\title{Predictive self-organizing SLA breach detection in multimedia clouds}
+
+
+% author names and affiliations
+% use a multiple column layout for up to three different
+% affiliations
+\author{\IEEEauthorblockN{Bogdan Solomon\IEEEauthorrefmark{1}, Dan Ionescu\IEEEauthorrefmark{2}, Cristian Gadea\IEEEauthorrefmark{3}}
+\IEEEauthorblockA{School of Electrical Engineering and Computer Science\\
+University of Ottawa\\
+Ottawa, ON, Canada\\
+Email: \IEEEauthorrefmark{1}bsolomon@ncct.uottawa.ca, \IEEEauthorrefmark{2}dan@ncct.uottawa.ca, \IEEEauthorrefmark{3}cgadea@ncct.uottawa.ca}
+}
+
+% conference papers do not typically use \thanks and this command
+% is locked out in conference mode. If really needed, such as for
+% the acknowledgment of grants, issue a \IEEEoverridecommandlockouts
+% after \documentclass
+
+% for over three affiliations, or if they all won't fit within the width
+% of the page, use this alternative format:
+% 
+%\author{\IEEEauthorblockN{Michael Shell\IEEEauthorrefmark{1},
+%Homer Simpson\IEEEauthorrefmark{2},
+%James Kirk\IEEEauthorrefmark{3}, 
+%Montgomery Scott\IEEEauthorrefmark{3} and
+%Eldon Tyrell\IEEEauthorrefmark{4}}
+%\IEEEauthorblockA{\IEEEauthorrefmark{1}School of Electrical and Computer Engineering\\
+%Georgia Institute of Technology,
+%Atlanta, Georgia 30332--0250\\ Email: see http://www.michaelshell.org/contact.html}
+%\IEEEauthorblockA{\IEEEauthorrefmark{2}Twentieth Century Fox, Springfield, USA\\
+%Email: homer@thesimpsons.com}
+%\IEEEauthorblockA{\IEEEauthorrefmark{3}Starfleet Academy, San Francisco, California 96678-2391\\
+%Telephone: (800) 555--1212, Fax: (888) 555--1212}
+%\IEEEauthorblockA{\IEEEauthorrefmark{4}Tyrell Inc., 123 Replicant Street, Los Angeles, California 90210--4321}}
+
+
+
+
+% use for special paper notices
+%\IEEEspecialpapernotice{(Invited Paper)}
+
+
+
+
+% make the title area
+\maketitle
+
+% As a general rule, do not put math, special symbols or citations
+% in the abstract
+\begin{abstract}
+Autonomic systems received a great deal of interest from the research and industrial communities due to their ability to configure, optimize, heal and protect themselves with little to no human intervention. Such systems must be able to analyze themselves and their environment in order to determine how best they can achieve the high-level goals and policies given to them by system managers. Autonomic systems thus play a critical role in the development and management of cloud architectures as the complexity of cloud system management requires automation. One of the great advantages of cloud systems in their various forms (SaaS, PaaS, IaaS) is the ability to seamlessly scale up and down in the face of demand such that the proper SLA is maintained while not wasting resources when the system is underloaded. Autonomic systems are usually modeled based on a MAPE-K (Monitor, Analyze, Plan, Execute, Knowledge) loop. For the purpose of self-optimization, research has focused on the plan phase of the loop - answering the question of how many instances of the virtual service must be started or stopped to provide the desired SLA. The optimization algorithms used for this purpose are expensive in terms of computations and can not be run continuously. As such, it is desired to detect that an SLA breach will happen before the breach happens and take corrective actions. This paper proposes a new algorithm which can be used to detect SLA breaches ahead of time in a cloud environment. As such the algorithm maps on the analyze phase of the MAPE-K loop. The algorithm proposed is a decentralized self-organizing algorithm, such that there is no central authority in the cloud which decides when an SLA breach will happen. Using a self-organizing algorithm has the advantage of scaling at the same time the cloud scales, thus ensuring that the algorithm works for both small and large clouds. The algorithm is presented and tested on top of a collaborative multimedia cloud application.
+\end{abstract}
+
+% no keywords
+
+
+
+
+% For peer review papers, you can put extra information on the cover
+% page as needed:
+% \ifCLASSOPTIONpeerreview
+% \begin{center} \bfseries EDICS Category: 3-BBND \end{center}
+% \fi
+%
+% For peerreview papers, this IEEEtran command inserts a page break and
+% creates the second title. It will be ignored for other modes.
+\IEEEpeerreviewmaketitle
+
+
+
+\section{Introduction}
+% no \IEEEPARstart
+
+Cloud computing has become an integral technology as more and more services make use of the capability to both use hardware resources as a service and to scale a system from a small number of users to millions of users easily. Companies can now make use of outside resources and simply rent the hardware as needed from cloud providers like Amazon, Google, and Microsoft. In the past, scaling an application after release would take weeks as new servers would need to be purchased, configured, tested and finally set to production. With the advent of cloud computing, a new image of a server can be created and be ready for use in minutes or even seconds.
+
+At the same time, the world has become more connected with companies having offices all over the world and with people wishing to communicate with people in far away countries. Due to these reasons, collaboration tools have become more important allowing people to communicate not only by text but also audio/video chat while at the same time share documents, images, and videos and collaborate on them. Previous work in \cite{bogdan:cts2012} presented such a web based collaboration tool. The collaboration tool is cloud based and makes use of a geographically distributed server architecture, in which multiple clouds at different locations host instances of the media server for the collaboration application. Clients connect to one of the available clouds and can communicate via the collaboration application with clients connected to any other server in any cloud location. Within a cloud, servers use a Group Membership Service (GMS) to communicate with each other such that servers can be dynamically created/destroyed and the servers would join/leave the group as needed. A second level of communication is used through the addition of gateways which enable the communication between clouds. Through the use of these two levels of communication the system can keep the proper state across all the servers, no matter the location of the server.
+
+The geographically distributed cloud based collaboration system requires an autonomic system which would allow the clouds to scale dynamically based on demand. As more users connect to one of the cloud datacenters, that datacenter must be able to scale up. When users disconnect, the number of servers must decrease as well to avoid paying for unused resources. However, new servers must be added before the performance of the service has degraded due to too many users being connected to the service. Similarly, it is desired that the extra servers are removed once the system detects that they are unneeded with as little delay as possible, as every extra minute of resources being used can incur extra payments. Autonomic systems are usually modeled using a MAPE-K loop. The system which is being automated is monitored to determine its behaviour. The monitored data is analyzed such that possible breaches of the system's Service Level Agreement can be detected. Once such a breach is detected the plan function decides on a course of action to fix the problem. Finally the execute function applies the desired plan to bring the resource back into compliance. The K in the MAPE-K loop stands for knowledge and represents the various models, policies and information the control loop has about the resource being controlled.
+
+This paper focuses on the analyze function of the MAPE-K loop. As mentioned before it is desired that the analyze function discovers a SLA breach before the breach happens, in order to ensure that the user's experience does not degrade. An extra challenge comes from the fact that as the system's size increases in terms of number of servers, the performance of the analyze function must not degrade and become slower. Because of these requirements, this paper introduces a self-organizing algorithm which is capable of analyzing the performance of the cloud application and start an optimization phase when an SLA breach is suspected. The plan and execute functions are not presented in this paper. The self-organizing algorithm is inspired by the Ant Colony Optimization (ACO) algorithm with some modifications such that it can work for the analyze function.
+
+The rest of the paper is structured as follows. Section \ref{sec:selforganizingmodel} introduces the self-organizing model through which the SLA breach detection is achieved. Section \ref{sec:testbed} introduces a test bed used to test the collaboration tool as well as the self-organizing algorithm. Section \ref{sec:results} presents some performance data from the test bed. Finally, Section \ref{sec:conclusion} reflects on the contributions of this paper and proposes topics for future research.
+
+\section{Self-organizing Model}
+\label{sec:selforganizingmodel}
+ 
+The collaboration server which is managed by the SLA breach detection system presented in this paper is described in \cite{bogdan:miles2012chapter} and \cite{bogdan:cts2012} and uses a self-organizing approach in order to manage the distribution of clients across the cloud as well as to scale the cloud up and down. The self-organizing system can not be based on a model which considers only the number of clients as a perturbation because load for a collaboration server is a combination of the number of clients connected to the server, the number of sessions running on the server and most importantly the number of streams received by the server and multiplexed towards receiving clients. Based on these perturbations, each server can decide if it should receive more clients or not, independent of any decision made by another server. On top of the server self-organization with relation to accepting new clients, the system also needs an approach to determine when the cloud's SLA will be breached and take proactive action by adding or removing servers from the cloud. 
+
+The reason to use a self-organizing systems for the adaptation is due to the intrinsic properties that self-organizing systems poses:
+\begin{enumerate}
+	\item Adaptable - the ability to deal with changes in the environment which were not predicted at design time. This is important for the system developed for the paper as we do not know the bounds of how many servers could be in a cluster at one time or the maximum peak demand for the service and as such we want a system which is able to adapt the control law dynamically.
+	\item Resilient - parts of the system can die or be lost but the remaining still perform their goal. In a cloud environment this is desired, as servers can come up an down at any time, and even network connectivity could be lost between servers or between data centers.
+	\item Emergent - the complex behaviour arises from the properties and behaviour of the simple parts. As a cloud of servers increases in size it becomes more complicated for a single controller to manage the entire system. As such a system where the control emerges from the interactions of a lot of small parts is desired as it decreases complexity and can scale much more, at the cost of overall resource utilization.
+	\item Anticipation - the system can anticipate problems and solve them before they impact the whole system. This is obviously desired, as we wish to detect SLA breaches before they happen, such that corrective actions can be taken and the breach can be avoided.
+\end{enumerate}
+
+\subsection{SLA breach detection: Ant Colony Optimization}
+
+The ant colony optimization (ACO) algorithm is inspired by the behaviour of insect hives - in this case ants \cite{antalgorithm}, \cite{selforg:aco}. The behaviour which inspired this algorithm is the way in which ants can build an efficient path between the nest and a food source using random search and reinforced learning. In real life, ants randomly search for food around the nest. When an ant finds a food source it returns to the nest with some food while laying a pheromone trail. Other ants which meet the pheromone trail are more likely to follow the trail then continue searching randomly. If the food source is large enough eventually a large number of ants follow the same path as each ant lays down a pheromone trail causing more ants to follow it. At the same time, the pheromones dissipate over time such that once a food source is depleted and ants no longer return with food from it, the trail will disappear. 
+
+The ACO algorithm is best used to find optimal paths through graphs. For example, the algorithm has been used to provide reinforced learning for routers in a network for better packet forwarding \cite{selforg:aco}. In simple terms, the ACO is composed of a number of ants which are traversing the network by moving from node to node across edges. As ants move through the network they deposit pheromones on the edges based on some function. When ants decide the next node to go to, they choose based on the pheromones on the nodes going out from the current node. The selection of the next node is done pseudo-randomly such that not all ants follow the same path, however more ants will prefer edges with higher pheromone levels. 
+
+In the case of routing in a network, the nodes are the routers and the edges are the connections between the routers. Ants are packets being sent between the routers and either they wait in a normal queue or have higher priority than normal packets. If the ants simply wait in the queues to be processed then they can measure the processing latency at the routers. As ants traverse the network they can update the routing table with information regarding how loaded is the network and also the best routes between different nodes. The pheromones in this case act as a way for more ants to go through low loaded network links such that those links are used by normal traffic.
+
+The pseudocode in \ref{algo:aco} shows the behaviour of ACO algorithm from the perspective of an ant.
+
+\begin{algorithm}
+\begin{algorithmic}
+\While{end criteria not met}
+	\State Find next node based on pheromones/random
+	\State Go to next node
+	\State Update pheromones for the edge just traversed
+\EndWhile
+\State return $best(solution)$ based on pheromones
+\end{algorithmic}
+\caption{Ant Colony Optimization}\label{algo:aco}
+\end{algorithm}
+
+\subsection{SLA breach detection: Ant Colony Optimization Modifications}
+
+For the self-organizing SLA breach prediction system for the collaborative media application cloud presented in this paper, the pheromone level in the network of servers is used as a proxy for how loaded the entire cloud of servers is and used to decide when to add or remove servers. Whenever a media server starts, the media server's control system creates a new ant and sends it through the network of servers. Thus the total number of ants is equal to $N$ where $N$ is the number of servers. When an ant is first created, because it has no prior knowledge, it is sent to another server randomly. If only one server exists in the cloud, then the ant keeps visiting the same server.
+
+As ants reach other servers they deposit pheromone at the server they arrive at, at a rate inversely proportional to the load of the server. At the same time ants wait at the server a time proportional to the load of the server. Thus overloaded servers will have less pheromone deposited when compared to an under-loaded server. By having ants wait a longer time at overloaded servers, the overall amount of pheromone in the network will further decrease. With this approach, less pheromone in the network means that the cloud has more load as more servers have low pheromone levels because of being overloaded.
+
+Assume that an ant $k_{1}$ deposits an amount of pheromone $\tau_{k1}$ when it reaches a node which has 0 load - represented by a high fuzzy confidence value, and waits at an under-loaded node $15s$. Another ant $k_{2}$ which reaches a node where the confidence value is $50\%$ of the higher threshold will deposit only $\tau_{k} * (1 - p)$ where $p$ is the fuzzy confidence as a percentage and waits at the node a time of $15s/(1-p)$ with a maximum wait time of $60s$ to avoid waiting an infinite time when $p$ approaches $100\%$. At the same time, the pheromone left by the ants decays at a rate of $\rho$ every $15s$. As such, the amount of pheromone at any node can be seen as:
+
+\begin{equation}
+p^{t}_{n} = p^{t-1}_{n} + \sum_{i=1}^{K}(\tau * (1 - p)) - \rho
+\end{equation}
+
+where $p^{t}_{n}$ is the amount of pheromone at node $n$ at time $t$ where $t$ can be considered discrete in $15s$ increments and $K$ is the amount of ants arriving at the node in the time frame between $t-1$ and $t$.
+
+At the same time, ants store information about which servers they have visited and time passed since the last visit. When an ant decides which server to go to, it uses a random function which is proportional to the time since it has not visited a server combined with the pheromone level of the destination server. Thus the ant will give preference to the servers it has not visited in a long time, and especially the servers it has never visited. Because the server structure is not stable and servers can join and leave at any time, ants decide the next server to visit based on the servers known by the current server the ant is at.  Assume a cloud with 5 servers and an ant which has the information in table \ref{tab:ant_prio} in it's visit history table and which reaches Server 5.
+
+\begin{table}
+\centering
+\begin{tabular}{c|c|c}
+Server & Time since last visit (s) & Pheromone Level \\
+Server 1 & 15 & 10 \\ 
+Server 2 & 20 & 5 \\
+Server 3 & 5 & 8 \\
+Server 4 & 35 & 5.5 \\
+Server 5 & 0 & 10 \\
+\end{tabular}
+\caption{Ant routing knowledge prior}
+\label{tab:ant_prio}
+\end{table}
+
+Based on the table, the ant computes the probability of visiting each server as:
+
+\begin{equation}
+P_s = (t_s / \sum_{i=1}^{N} t_i + p_{s} / \sum_{i=1}^{N} p_i) / 2
+\end{equation}
+
+where $P_s$ is the probability of visiting server $s$, $t_s$ is the time since it has visited server $s$ last time and $p_{s}$ is the pheromone at server $s$. These probabilities are computed only on the servers known as being up by the server the ant is at. The server the ant is currently at has to be excluded from the calculations, and it's probability will be 0. Let us assume also that Server 5, which is the server the ant is at currently does not yet know about server 3. As such, the visit probability table looks as in Table \ref{tab:ant_prob}.
+
+\begin{table}
+\centering
+\begin{tabular}{c|c}
+Server & Probability (\%) \\
+Server 1 & 35.10 \\
+Server 2 & 26.48 \\
+Server 4 & 38.42 \\
+Server 5 & 0 \\
+\end{tabular}
+\caption{Ant routing probability}
+\label{tab:ant_prob}
+\end{table}
+
+As such, the ant will roll a random value between 0 and 1, and choose which server to go to. A value between 0 and 0.3842 means Server 4, between 0.3842 and 0.7352 means Server 1 and between 0.7352 and 1 means Server 2. Assuming the value the ant rolls is 0.7, and that the ant waits at Server 5 for 5s and deposits 1 pheromone, the routing table after the ant moves to the next server will be as the one in Table \ref{tab:ant_post}.
+
+\begin{table}
+\centering
+\begin{tabular}{c|c|c}
+Server & Time since last visit (s) & Pheromone Level \\
+Server 1 & 0 & 8 \\
+Server 2 & 25 & 5 \\
+Server 3 & 10 & 8 \\
+Server 4 & 40 & 5.5 \\
+Server 5 & 5 & 11 \\
+\end{tabular}
+\caption{Ant routing knowledge posterior}
+\label{tab:ant_post}
+\end{table}
+
+In order to avoid having all ants visit a new node at the same time, whenever an ant discovers a new server it initializes the time since it visited the server with a random value. Assume that after the ant reaches Server 1, it discovers a new server which was unknown before - Server 6. The time since last visiting Server 6 will be initialized with a random value between 0 and the maximum time since last visiting a server which is known to be alive as in Equation \ref{eq:randomnew}. Furthermore the known pheromone level of the new server will be 0. If Server 1 only knows Server 2, 3 and 5 then the random value will be between 0 and 25s.
+
+\begin{equation}
+t_{new} = random(0, max(t_{known}))
+\label{eq:randomnew}
+\end{equation}
+
+This proposed modified ACO algorithm is used in order to decide when the system is about to breach its SLAs, such that proactive actions can be taken to correct the breach before it happens.
+
+\subsection{ACO Parameter Identification}
+
+There are a number of parameters that are used in order to tune the ACO algorithm for the self-optimization of the media cloud:
+
+\begin{enumerate}
+	\item Decay amount - the amount that the pheromone level decreases at each server: $\rho$
+	\item Decay rate - how often does the pheromone level decay at each server: $T_{decay}$
+	\item Ant wait time - the minimum wait time for an ant at a server: $T_{minwait}$
+	\item Ant pheromone level - the maximum amount of pheromone deposited by an ant at a server: $\tau_{max}$
+	\item Ant history size - how many servers an ant should store in it's history
+	\item Minimum/maximum morph level - the minimum/maximum pheromone level across the last $x$ servers visited by the ant required for the ant to morph: $Pt_{max}$/$Pt_{min}$
+\end{enumerate}
+
+\subsubsection{Under-loaded server}
+
+If an under-loaded server is considered where the ant waits the minimum time and deposits the maximum amount of pheromone and we set $T_{decay} = T_{minwait}$ then in each time period the amount of pheromone at the server can be defined as:
+
+\begin{equation}
+\begin{aligned}
+p^{t}_{n} &= p^{t-1}_{n} + (\tau_{max} - \rho) \\
+p^{t}_{n} &= (n - 1) * (\tau_{max} - \rho)
+\end{aligned}
+\end{equation}
+
+At the same time the ant will make a decision when $p^{t}_{n} > Pt_{max}$ or $p^{t}_{n} < Pt_{min}$. Because the server is under-loaded we expect that the amount of pheromone will continuously increase since the ant's goal should be to remove servers due to over-provisioning. The ant will make a decision when:
+
+\begin{equation}
+\begin{aligned}
+p^{t}_{n} &= Pt_{max} \\
+(n - 1) * (\tau_{max} - \rho) &= Pt_{max} \\
+(n - 1) &= \frac{Pt_{max}}{(\tau_{max} - \rho)} 
+\end{aligned}
+\end{equation}
+
+As such it can be determined that:
+
+\begin{enumerate}
+	\item $\tau_{max}$ must be greater than $\rho$
+	\item The time to wait before the ant makes a decision can be defined by $Pt_{max}$ and $(\tau_{max} - \rho)$. A smaller difference between $\tau_{max}$ and $\rho$ will lead to slower decisions, while a smaller $Pt_{max}$ will lead to quicker decisions.
+\end{enumerate}
+
+\subsubsection{Balanced server}
+
+If a balanced server is considered - that is a server where the fuzzy function shows that the server is well balanced and neither under-loaded, nor overloaded then both the amount of pheromone and the wait time of the ant change. Define $T_{b}$ as the time for the ant to wait at a balanced server and $\tau_{b}$ as the amount of pheromone deposited at a balanced server. Both $T_{b}$ and $\tau_{b}$ are defined in terms of the fuzzy function, where $T_{b} = T_{minwait} / (1 - p)$ and $\tau_{b} = \tau_{max} * (1 - p)$
+
+\begin{equation}
+\begin{aligned}
+p^{t}_{n} &= \frac{t *  \tau_{b}}{T_{b}} - \frac{t *  \rho}{T_{decay}} \\
+p^{t}_{n} &= \frac{t *  \tau_{max}(1 - p)}{\frac{T_{minwait}}{1 - p}} - \frac{t *  \rho}{T_{decay}}
+\end{aligned}
+\end{equation}
+
+The goal of the ant system in such a case is to maintain the level of the pheromone such that servers are not added or removed. As such it can be determined that:
+
+\begin{equation}
+\frac{t *  \tau_{max}(1 - p)}{\frac{T_{minwait}}{1 - p}} = \frac{t *  \rho}{T_{decay}}
+\end{equation}
+
+which means that the amount of decay equals the amount of pheromone deposited over long periods of time.
+
+\begin{equation}
+\begin{aligned}
+t *  \tau_{max} * (1 - p) * T_{decay} &= t *  \rho * \frac{T_{minwait}}{1 - p} \\
+\tau_{max} * (1 - p)^2 * T_{decay} &= \rho * T_{minwait} \\
+\frac{\tau_{max} * (1 - p)^2}{\rho} &= \frac{T_{minwait}}{T_{decay}}
+\end{aligned}
+\end{equation}
+
+If as in the previous case for an under-loaded server $T_{minwait} = T_{decay}$, then the equation becomes:
+
+\begin{equation}
+\begin{aligned}
+\tau_{max} * (1 - p)^2 &= \rho
+\end{aligned}
+\end{equation}
+
+This equation allows the user to set the relation between $\tau_{max}$ and $\rho$ for a given $p$ where the cluster size should be stable. For example, if a cluster size should be stable when $p = 50\%$ then
+
+\begin{equation}
+\begin{aligned}
+\tau_{max} * (0.5)^2 &= \rho \\
+\tau_{max} * 0.25 &= \rho
+\end{aligned}
+\end{equation}
+
+\subsubsection{Over-loaded server}
+
+The previous equation holds for an over-loaded server as well. If we take the same example as before where the system is set to be balanced for $p = 50\%$, if $p$ goes up to $90\%$ then the previous equation becomes:
+
+\begin{equation}
+\begin{aligned}
+p^{t}_{n} &= \frac{t *  \frac{\rho}{0.25} * 0.1}{\frac{T_{decay}}{0.1}} - \frac{t *  \rho}{T_{decay}} \\
+p^{t}_{n} &= \frac{t *  \frac{\rho}{0.25} * 0.1}{\frac{T_{decay}}{0.1}} - \frac{t *  \rho}{T_{decay}} \\
+p^{t}_{n} &= \frac{t * \rho}{T_{decay}} * (0.04 - 1) \\
+p^{t}_{n} &= \frac{t * \rho}{T_{decay}} * -0.96
+\end{aligned}
+\end{equation}
+
+This equation means that the pheromone rate at the node will decrease by $\rho * -0.96$ every decay period.
+
+\section{Test-bed}
+\label{sec:testbed}
+
+In order to test the performance of the self-organizing system previously described, a test bed was developed and deployed to simulate a small cloud of servers. For the self-optimization tests, the testing is done with one cloud only as the self-organizing self-optimizing system works at the level of a cloud and not at the level of multiclouds as in the case of the geographically distributed cloud. For the geographically distributed cloud, each of the clouds will have it's own optimization.
+
+\section{Design and Implementation of a Test-Bed for the Self-Organizing Control of a Cloud Based Autonomic System}
+
+A small test bed was used where various loads were applied to a cloud of media servers and the required data was measured from the servers. All servers are currently located in the same location on the same LAN and VLANs are used in order to separate servers into different logical networks. This is done in order to be able to simulate multiple datacenters (clouds) and be able to simulate network load on the connections between datacenters to test the geographically distributed cloud. Each of the hardware servers in the cluster run Docker \cite{cloud:docker}. Each docker container runs the Ubuntu OS and the required software for the container. A number of containers are used by the application:
+
+\begin{enumerate}
+	\item Media server container
+	\item JGroups container for the communication between servers
+	\item Load balancer container for the cloud
+	\item Gateway container for cloud to cloud communication
+	\item Self-optimizing manager container for the cloud
+	\item Self-organizing manager for a single media cloud container
+\end{enumerate}
+
+In order to test audio/video streaming a prerecorded webcam video is streamed whenever the client simulator decides to start streaming. The stream used for testing is a 64x64 video stream at 25 frames per second with a bit rate of 180Kbps. The client simulator is written in Java and can simulate various client distributions by varying the amount of clients, the number of clients in every session, the number of clients streaming in each session and the time delay between messages being sent in a session. The simulator initially creates a number of sessions and a number of clients in each session. Each client is created with a given time to live. Periodically, the session calculates how many clients should be streaming in the session at that point in time. If more clients are required to stream than are currently streaming, the session simulator instructs a number of clients to start streaming also. If less clients are required to stream than are currently streaming, the session simulator instructs a number of clients to stop streaming. If there is no change in the number of clients needed to stream, then no change is made in which clients are streaming. Whenever a client reaches its time to live, the client is put to sleep and given a time after which it should wake up and reactivate. When a client reactivates it joins again the same session it was a member of, before going to sleep. The amount of time clients are awake and sleep is randomized thus generating various session sizes over time.
+
+\section{Results}
+\label{sec:results}
+
+This section will present the performance of the self-organizing SLA breach prediction detection system presented in this paper. The system will be run on top of the test bed under various loads in order to determine how the system behaves when being overloaded or underloaded.
+
+The tests are split such that the same scenario is tested with various numbers of starting servers in the cluster and various loads such that up scaling, down scaling and no scaling are all tested. The tests are run a bit longer than 30 minutes, due to the fact that there is a ramp up at the beginning of the test while clients join, sessions are created and clients start streaming. Not all tests run are presented here to preserve space. A simple system was added which adds or removed servers when an SLA breach is predicted.
+
+\subsection{Two server start}
+
+This set of tests start with two servers in the cloud and different loads.
+
+\subsubsection{Under-load cloud}
+
+This test case tests the base case of an under-loaded cloud, where the cloud starts with two servers but the number of clients and streams can be easily handled by a single server. Figure \ref{fig:2serv-pher-low} shows the pheromone level from the server's perspective. The pheromone goes up at both servers and after the threshold is reached one of the two servers is removed. After the removal the load is still too low for the single server and the pheromone level continues increasing. 
+
+The server performance graphs show that the servers are under-loaded and even after the server is removed the load on the single remaining server is low enough not to cause a breach of SLA.
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\columnwidth]{results/Run-2-low/server-1.png}
+	\caption{Under-loaded cloud - Pheromone as seen by servers}
+	\label{fig:2serv-pher-low}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\columnwidth]{results/Run-2-low/perf-1.png}
+	\caption{Under-loaded cloud - Server performance}
+	\label{fig:2serv-perf-low}
+\end{figure}
+
+\subsubsection{Medium/low loaded cloud}
+
+Similarly to the previous test, this test does not generate enough load for both servers. Unlike the previous test, which has a very low load, the load in this test is closer to the load of a well balanced cloud. Figure \ref{fig:2serv-pher-medlow} shows the pheromone as seen by the server. The pheromone increases similar to the previous test but at a lower rate. As before, the load is quite low on the two servers and once one of the two servers is removed the other server can take the load without problems.
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\columnwidth]{results/Run-2-lowmed/server-1.png}
+	\caption{Medium/low loaded cloud - Pheromone as seen by servers}
+	\label{fig:2serv-pher-medlow}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\columnwidth]{results/Run-2-lowmed/perf-1.png}
+	\caption{Medium/low loaded cloud - Server performance}
+	\label{fig:2serv-perf-medlow}
+\end{figure}
+
+\subsubsection{Medium loaded cloud}
+
+This test case puts enough load on the cloud to require two servers to provide good QoS to the clients. Figure \ref{fig:2serv-pher-med} shows the pheromone levels as seen at the servers. Looking at the performance graphs in figure \ref{fig:2serv-perf-med} it can be noticed that the two servers are not perfectly balanced as server 2 has a lower load than server 1 as seen by CPU utilization, bandwidth and latency. As such, the pheromone level at server 2 increases while the pheromone level at server 1 stays stable. Even though one server has increasing pheromone values no servers are removed because the ants history has a lower average pheromone than the threshold.
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\columnwidth]{results/Run-2-med/server-1.png}
+	\caption{Medium loaded cloud - Pheromone as seen by servers}
+	\label{fig:2serv-pher-med}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\columnwidth]{results/Run-2-med/perf-1.png}
+	\caption{Medium loaded cloud - Server performance}
+	\label{fig:2serv-perf-med}
+\end{figure}
+
+\subsubsection{Medium/high loaded cloud}
+
+In this test the load is higher than what two servers can support but not by a significant amount. Initially in figure \ref{fig:2serv-pher-medhigh} the pheromone level drops at the beginning of the test. After the threshold is breached one new server is added. After the server is added the system is largely stable, however due to the servers not being balanced server 1 sees an increase in pheromone levels. This increase however is not enough to cause a SLA breach as the other two servers are within proper bounds.
+
+Performance graphs show that the two servers are overloaded in the beginning and after the addition of the new servers, the system becomes stable until the end of the test.
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\columnwidth]{results/Run-2-medhigh/server-1.png}
+	\caption{Medium/high loaded cloud - Pheromone as seen by servers}
+	\label{fig:2serv-pher-medhigh}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\columnwidth]{results/Run-2-medhigh/perf-1.png}
+	\caption{Medium/high loaded cloud - Server performance}
+	\label{fig:2serv-perf-medhigh}
+\end{figure}
+
+\subsubsection{Over loaded cloud}
+
+Finally a test was run where the cloud is overloaded significantly for two servers. This can be seen in figure \ref{fig:2serv-pher-high} as the pheromone level drops at the beginning of the test. After the threshold is breached two new servers are added. Because after the two servers are added the cloud is not well balanced server 1 sees an increase in pheromone, while servers 3 and 4 see a decrease with server 2 being stable. Once server 1 stabilizes however, there are too many servers in the cloud due to the fact that the clients stop streaming. As such the servers are removed until one server remains in the cloud.
+
+Performance graphs show that the two servers are overloaded in the beginning and after the addition of the two new servers, the system becomes stable until the end of the test.
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\columnwidth]{results/Run-2-high/ant-13.png}
+	\caption{Over-loaded cloud - Pheromone at Server 4 as seen by ants}
+	\label{fig:2serv-ant13-high}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\columnwidth]{results/Run-2-high/server-1.png}
+	\caption{Over-loaded cloud - Pheromone as seen by servers}
+	\label{fig:2serv-pher-high}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\columnwidth]{results/Run-2-high/perf-1.png}
+	\caption{Over-loaded cloud - Server performance}
+	\label{fig:2serv-perf-high}
+\end{figure}
+
+\subsection{Three server start}
+
+This set of tests start with three servers in the cloud and different loads.
+
+\subsubsection{Under loaded cloud}
+
+Similar to the other cases the first test is started with a load which a single server can easily meet. As seen in figure \ref{fig:3serv-pher-low} the pheromone level increases, and one of the server is removed. After the removal the pheromone level continues to increase but slower since a single server is sufficient. After the threshold is reached again a second server is removed and the cloud stabilizes. The performance graphs show that the load is taken by the other remaining server without any problems.
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\columnwidth]{results/Run-3-low/server-1.png}
+	\caption{Under loaded cloud - Pheromone as seen by servers}
+	\label{fig:3serv-pher-low}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\columnwidth]{results/Run-3-low/perf-1.png}
+	\caption{Under loaded cloud - Server performance}
+	\label{fig:3serv-perf-low}
+\end{figure}
+
+\subsubsection{Medium/low loaded cloud}
+
+In the medium/low scenario the pheromone level increases slower than in the underloaded scenario as one server is sufficient for the workload, but it would put more strain on a single server as seen in figure \ref{fig:3serv-perf-lowmed}. In this case, once the threshold is reached, the house hunting optimization chooses to remove two servers. The initial solution set all choose to remove two servers, however the system still goes through the house hunting optimization algorithm.
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\columnwidth]{results/Run-3-lowmed/server-1.png}
+	\caption{Medium/low loaded cloud - Pheromone as seen by servers}
+	\label{fig:3serv-pher-lowmed}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\columnwidth]{results/Run-3-lowmed/perf-1.png}
+	\caption{Medium/low loaded cloud - Server performance}
+	\label{fig:3serv-perf-lowmed}
+\end{figure}
+
+\subsubsection{Medium loaded cloud}
+
+In the well balanced cloud case, one of the servers has less load than the other two servers and as such it has less bandwidth used when compared to the other two servers as seen in figure \ref{fig:3serv-perf-lowmed} - server 3 has less load. Because of this the pheromone at server 3 increases while the pheromone at the other two servers decreases. However, the average pheromone level across the cloud as seen by the ants is always bellow the thresholds and no house hunting optimization is triggered.
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\columnwidth]{results/Run-3-med/ant-1.png}
+	\caption{Medium loaded cloud - Pheromone at Server 1 as seen by ants}
+	\label{fig:3serv-ant1-med}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\columnwidth]{results/Run-3-med/ant-4.png}
+	\caption{Medium loaded cloud - Pheromone at Server 2 as seen by ants}
+	\label{fig:3serv-ant4-med}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\columnwidth]{results/Run-3-med/ant-7.png}
+	\caption{Medium loaded cloud - Pheromone at Server 3 as seen by ants}
+	\label{fig:3serv-ant7-med}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\columnwidth]{results/Run-3-med/server-1.png}
+	\caption{Medium loaded cloud - Pheromone as seen by servers}
+	\label{fig:3serv-pher-med}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\columnwidth]{results/Run-3-med/perf-1.png}
+	\caption{Medium loaded cloud - Server performance}
+	\label{fig:3serv-perf-med}
+\end{figure}
+
+\subsubsection{Medium/high loaded cloud}
+
+This test case tests a cloud which is slightly overloaded. The three servers are insufficient to meet the demands of the clients but barely, as can be seen in figure \ref{fig:3serv-perf-medhigh} where the CPU usage, bandwidth and latency show that more servers are needed to serve clients in the cloud. After approximately 12 minutes an SLA breach is detected and the house hunting optimization algorithm runs and decides to add 2 more servers to the cloud. After the two new servers are added one of the servers is underloaded, two of the servers are properly loaded and two of the servers are overloaded, as seen in figure \ref{fig:3serv-pher-medhigh} where after 15 minutes Server 2 and Server 5 maintain good pheromone levels, Server 1 has increasing pheromone levels (thus being underloaded) while servers 3 and 4 have decreasing pheromones being overloaded. This can also be seen in figure \ref{fig:3serv-perf-medhigh} looking at the bandwidth up graphs, where server 1 has very low bandwidth used, servers 3 and 4 have high bandwidth and servers 2 and 5 have medium bandwidth used.
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\columnwidth]{results/Run-3-medhigh/ant-1.png}
+	\caption{Medium/high loaded cloud - Pheromone at Server 1 as seen by ants}
+	\label{fig:3serv-ant1-medhigh}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\columnwidth]{results/Run-3-medhigh/ant-6.png}
+	\caption{Medium/high loaded cloud - Pheromone at Server 2 as seen by ants}
+	\label{fig:3serv-ant6-medhigh}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\columnwidth]{results/Run-3-medhigh/ant-11.png}
+	\caption{Medium/high loaded cloud - Pheromone at Server 3 as seen by ants}
+	\label{fig:3serv-ant11-medhigh}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\columnwidth]{results/Run-3-medhigh/ant-16.png}
+	\caption{Medium/high loaded cloud - Pheromone at Server 4 as seen by ants}
+	\label{fig:3serv-ant16-medhigh}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\columnwidth]{results/Run-3-medhigh/ant-21.png}
+	\caption{Medium/high loaded cloud - Pheromone at Server 5 as seen by ants}
+	\label{fig:3serv-ant25-medhigh}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\columnwidth]{results/Run-3-medhigh/server-1.png}
+	\caption{Medium/high loaded cloud - Pheromone as seen by servers}
+	\label{fig:3serv-pher-medhigh}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\columnwidth]{results/Run-3-medhigh/perf-1.png}
+	\caption{Medium/high loaded cloud - Server performance}
+	\label{fig:3serv-perf-medhigh}
+\end{figure}
+
+\subsubsection{Over loaded/under loaded cloud}
+
+In this case the cloud is first over loaded and then suddenly the streaming clients stop and the cloud becomes underloaded. In the first part of the test the three servers are insufficient to meet the demands of the clients as seen in the performance graphs with high bandwidth, latency and CPU usage. This causes the pheromone in the cloud to drop until a SLA breach is detected and new servers are added to the cloud. The pheromone drop is faster than in the previous case due to more load on the server. After new servers are added to the cloud the performance improves as seen by lower bandwidth at each servers, and this remains stable until users stop streaming, at which point the usage drops and the pheromone increases until a new SLA breach is detected and three servers are removed.
+
+The first SLA breach results in two servers being added to the cloud. This is because of the fact that all three ants' initial solution starts with adding 2 new servers.
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\columnwidth]{results/Run-3-high/ant-1.png}
+	\caption{Over loaded cloud - Pheromone at Server 1 as seen by ants}
+	\label{fig:3serv-ant1-high}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\columnwidth]{results/Run-3-high/ant-6.png}
+	\caption{Over loaded cloud - Pheromone at Server 2 as seen by ants}
+	\label{fig:3serv-ant6-high}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\columnwidth]{results/Run-3-high/ant-11.png}
+	\caption{Over loaded cloud - Pheromone at Server 3 as seen by ants}
+	\label{fig:3serv-ant11-high}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\columnwidth]{results/Run-3-high/ant-16.png}
+	\caption{Over loaded cloud - Pheromone at Server 4 as seen by ants}
+	\label{fig:3serv-ant16-high}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\columnwidth]{results/Run-3-high/ant-21.png}
+	\caption{Over loaded cloud - Pheromone at Server 5 as seen by ants}
+	\label{fig:3serv-ant21-high}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\columnwidth]{results/Run-3-high/server-1.png}
+	\caption{Over loaded cloud - Pheromone as seen by servers}
+	\label{fig:3serv-pher-high}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\columnwidth]{results/Run-3-high/perf-1.png}
+	\caption{Over loaded cloud - Server performance}
+	\label{fig:3serv-perf-high}
+\end{figure}
+
+The performance tests show that the system behaves as desired and that the ACO algorithm properly detects a breach of SLA when the cloud is under loaded or over loaded while the house hunting algorithm can determine the number of servers added or removed. Due to the randomness which exists inside the house hunting algorithm it is possible to overshoot or undershoot the correct number of servers, however this is corrected quickly after another SLA breach is detected.
+
+% An example of a floating figure using the graphicx package.
+% Note that \label must occur AFTER (or within) \caption.
+% For figures, \caption should occur after the \includegraphics.
+% Note that IEEEtran v1.7 and later has special internal code that
+% is designed to preserve the operation of \label within \caption
+% even when the captionsoff option is in effect. However, because
+% of issues like this, it may be the safest practice to put all your
+% \label just after \caption rather than within \caption{}.
+%
+% Reminder: the "draftcls" or "draftclsnofoot", not "draft", class
+% option should be used if it is desired that the figures are to be
+% displayed while in draft mode.
+%
+%\begin{figure}[!t]
+%\centering
+%\includegraphics[width=2.5in]{myfigure}
+% where an .eps filename suffix will be assumed under latex, 
+% and a .pdf suffix will be assumed for pdflatex; or what has been declared
+% via \DeclareGraphicsExtensions.
+%\caption{Simulation results for the network.}
+%\label{fig_sim}
+%\end{figure}
+
+% Note that the IEEE typically puts floats only at the top, even when this
+% results in a large percentage of a column being occupied by floats.
+
+
+% An example of a double column floating figure using two subfigures.
+% (The subfig.sty package must be loaded for this to work.)
+% The subfigure \label commands are set within each subfloat command,
+% and the \label for the overall figure must come after \caption.
+% \hfil is used as a separator to get equal spacing.
+% Watch out that the combined width of all the subfigures on a 
+% line do not exceed the text width or a line break will occur.
+%
+%\begin{figure*}[!t]
+%\centering
+%\subfloat[Case I]{\includegraphics[width=2.5in]{box}%
+%\label{fig_first_case}}
+%\hfil
+%\subfloat[Case II]{\includegraphics[width=2.5in]{box}%
+%\label{fig_second_case}}
+%\caption{Simulation results for the network.}
+%\label{fig_sim}
+%\end{figure*}
+%
+% Note that often IEEE papers with subfigures do not employ subfigure
+% captions (using the optional argument to \subfloat[]), but instead will
+% reference/describe all of them (a), (b), etc., within the main caption.
+% Be aware that for subfig.sty to generate the (a), (b), etc., subfigure
+% labels, the optional argument to \subfloat must be present. If a
+% subcaption is not desired, just leave its contents blank,
+% e.g., \subfloat[].
+
+
+% An example of a floating table. Note that, for IEEE style tables, the
+% \caption command should come BEFORE the table and, given that table
+% captions serve much like titles, are usually capitalized except for words
+% such as a, an, and, as, at, but, by, for, in, nor, of, on, or, the, to
+% and up, which are usually not capitalized unless they are the first or
+% last word of the caption. Table text will default to \footnotesize as
+% the IEEE normally uses this smaller font for tables.
+% The \label must come after \caption as always.
+%
+%\begin{table}[!t]
+%% increase table row spacing, adjust to taste
+%\renewcommand{\arraystretch}{1.3}
+% if using array.sty, it might be a good idea to tweak the value of
+% \extrarowheight as needed to properly center the text within the cells
+%\caption{An Example of a Table}
+%\label{table_example}
+%\centering
+%% Some packages, such as MDW tools, offer better commands for making tables
+%% than the plain LaTeX2e tabular which is used here.
+%\begin{tabular}{|c||c|}
+%\hline
+%One & Two\\
+%\hline
+%Three & Four\\
+%\hline
+%\end{tabular}
+%\end{table}
+
+
+% Note that the IEEE does not put floats in the very first column
+% - or typically anywhere on the first page for that matter. Also,
+% in-text middle ("here") positioning is typically not used, but it
+% is allowed and encouraged for Computer Society conferences (but
+% not Computer Society journals). Most IEEE journals/conferences use
+% top floats exclusively. 
+% Note that, LaTeX2e, unlike IEEE journals/conferences, places
+% footnotes above bottom floats. This can be corrected via the
+% \fnbelowfloat command of the stfloats package.
+
+\section{Conclusion And Future work}
+\label{sec:conclusion}
+
+This paper has presented a self-organizing SLA breach prediction algorithm based on the ACO algorithm. This algorithm is capable of predicting a future SLA breach by having small agents - ants - move from server to server based on a pseudo random chance and use the information at the servers to lay down pheromones for other ants to use in their calculations. The pheromone level across the servers then acts as a proxy for how overloaded is the server cloud.
+
+In this paper the amount of how much pheromone to add and how long an ant waits at a server is based on a single value which represents the stable cloud. It would be better if the calculation was using a range of values for when the cloud is stable, otherwise the system can lead to oscillations. Future work will be done to improve the algorithm and also add a robust self-organizing plan function to decide how many servers to add or remove from the server when an SLA breach is detected.
+
+% conference papers do not normally have an appendix
+
+
+% trigger a \newpage just before the given reference
+% number - used to balance the columns on the last page
+% adjust value as needed - may need to be readjusted if
+% the document is modified later
+%\IEEEtriggeratref{8}
+% The "triggered" command can be changed if desired:
+%\IEEEtriggercmd{\enlargethispage{-5in}}
+
+% references section
+
+% can use a bibliography generated by BibTeX as a .bbl file
+% BibTeX documentation can be easily obtained at:
+% http://mirror.ctan.org/biblio/bibtex/contrib/doc/
+% The IEEEtran BibTeX style support page is at:
+% http://www.michaelshell.org/tex/ieeetran/bibtex/
+%\bibliographystyle{IEEEtran}
+% argument is your BibTeX string definitions and bibliography database(s)
+%\bibliography{IEEEabrv,../bib/paper}
+%
+% <OR> manually copy in the resultant .bbl file
+% set second argument of \begin to the number of references
+% (used to reserve space for the reference number labels box)
+\bibliographystyle{IEEETran}
+\bibliography{Resources/Bibliography/Bibliography}
+
+
+
+
+% that's all folks
+\end{document}
+
+
